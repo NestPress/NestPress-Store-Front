@@ -1,0 +1,16 @@
+import img1 from './mockAssets/mockImg1.jpg';
+import img2 from './mockAssets/mockImg2.jpg';
+import img3 from './mockAssets/mockImg3.jpg';
+import img4 from './mockAssets/mockImg4.jpg';
+import img5 from './mockAssets/mockImg5.jpg';
+
+
+<section>
+  <div className="md:grid grid-cols-2 gap-2">
+    <img className="w-4/5 my-2 mx-auto md:w-full" src={img1} alt=""/>
+    <img className="w-4/5 my-2 mx-auto md:w-full"  src={img2} alt=""/>
+    <img className="w-4/5  my-2 mx-auto  md:w-full" src={img3} alt=""/>
+    <img className="w-4/5  my-2 mx-auto md:w-full" src={img4} alt=""/>
+    <img className="w-4/5  my-2 mx-auto md:w-full" src={img5} alt=""/>
+  </div>
+</section>

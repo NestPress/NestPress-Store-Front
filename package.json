@@ -1,0 +1,36 @@
+{
+  "name": "nextjs-med-blog",
+  "version": "0.1.0",
+  "description": "Next.js starter",
+  "author": "nestPress",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start -p 3001"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.4.16",
+    "autoprefixer": "^10.4.0",
+    "graphql": "^16.0.0",
+    "next": "@latest",
+    "next-compose-plugins": "^2.2.0",
+    "next-images": "^1.8.1",
+    "postcss": "^8.3.11",
+    "postcss-import": "^14.0.2",
+    "postcss-preset-env": "^6.7.0",
+    "react": "@latest",
+    "react-dom": "^17.0.2",
+    "react-icons": "^4.3.1",
+    "tailwindcss": "^2.2.19",
+    "zustand": "^3.6.2"
+  },
+  "devDependencies": {
+    "@types/next": "^9.0.0",
+    "@types/node": "^14.0.22",
+    "@types/react": "^16.9.43",
+    "@types/react-dom": "^16.9.8",
+    "typescript": "@latest"
+  }
+}
