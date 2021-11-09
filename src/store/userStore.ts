@@ -31,7 +31,7 @@ export const useUser = create<UserStoreType>(
 
 export const UserState = {
   setToken: (token: string) => useUser.setState({ token: `Bearer ${token}` }),
-  removeToken: (token: string) => useUser.setState({ token: null }),
+  removeToken: () => useUser.setState({ token: '' }),
   userCan:
     (permission: Permission | Permission[]) =>
     (state = useUser.getState()) => {

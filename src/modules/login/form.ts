@@ -1,14 +1,19 @@
-
-export const form = {
+export const form:any = {
 	username: {
-    input:{ value: '' }
+    component: "InputField",
+    input:{ 
+      value: '' 
+    }
   },
 	password: {
-    input:{ value: '' }
+    component: "InputField",
+    input:{ 
+      value: '' 
+    }
   },
 }
 
-export const submit = (e, addAuthenticate) => {
+export const submit = (e:any, addAuthenticate: any) => {
   e.preventDefault();
   addAuthenticate({ 
     variables: { 
@@ -21,8 +26,3 @@ export const submit = (e, addAuthenticate) => {
     } 
   });
 }
-
-
-
-
-

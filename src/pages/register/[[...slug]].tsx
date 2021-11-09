@@ -1,17 +1,16 @@
 import dynamic from 'next/dynamic'
 import { MainMenu, Footer } from 'components/nav'
 import { Breakpoints,EmptyCard, HighlightedCard } from 'components/layout'
-import { menu } from 'mockData/main'
 import { LineForm } from 'components/forms'
 import { useMutation } from "@apollo/client";
 import { useRouter } from 'next/router'
-import { form, submit } from "./form"
-import { REGISTER } from "./gql"
+import { form, submit } from "modules/register/form"
+import { REGISTER } from "modules/register/gql"
 import { useMessage } from 'store/messageStore'
 
 const Layout = dynamic(() => import(`layouts/PageLayout`))
 
-const Register: React.FC<Props> = () => {
+const Register: React.FC = () => {
   
   const router = useRouter()
   const { slug } = router.query
@@ -35,7 +34,6 @@ const Register: React.FC<Props> = () => {
           <HighlightedCard className="md:flex text-sm mb-2.5 gap-x-5">
             <LineForm 
               className="flex flex-col flex-1 gap-2 text-gray-400" 
-              name="loginForm" 
               fields={form} 
               callback={addRegister} 
               submit={submit}  />

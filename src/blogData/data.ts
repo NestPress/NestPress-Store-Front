@@ -13,6 +13,11 @@ export const profileMenu = [
 	{ label:"Close panel", to:"/" },
 ]
 
+export const panelMenu = [
+  { label:"Profile", to:"/panel/profile" },
+  { label:"Logout", to:"/", component:"LogoutLink" },
+]
+
 export const mainCategory = [
   {label:"Dark red colour", value:"dark-red"},
   {label:"Light red colour", value:"light-red"},
@@ -23,5 +28,4 @@ export const mainCategory = [
   {label:"Deep darkness blue colour", value:"dark-blue"},
   {label:"Dark purple colour", value:"dark-purple"},
   {label:"Middle light pink colour", value:"dark-pink"},
-
 ]

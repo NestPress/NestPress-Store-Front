@@ -2,7 +2,10 @@
 import { Breakpoints } from 'components/layout'
 import { NavLink } from 'components/nav'
 import Image from 'next/image'
-export const Footer: React.FC = () => {
+interface Props {
+  logo?: string
+}
+export const Footer: React.FunctionComponent<Props> = ({logo}) => {
   return (
     <Breakpoints className="text-gray-700 ">
       <section className="md:flex gap-x-5 py-10 text-left">
@@ -39,12 +42,14 @@ export const Footer: React.FC = () => {
         <div className="md:flex-1">
           <ul className="text-sm py-5 text-gray-500 leading-6">
             <li>
+              {logo &&
                <Image
-                src="/logo_inv.svg"
+                src={logo}
                 alt="Picture of the author"
                 width={100}
                 height={50}
               />
+              }
             </li>
             <li  className="mt-1">
               <div>1026 Tanglewood Road</div>

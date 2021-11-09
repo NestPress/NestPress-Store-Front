@@ -1,7 +1,7 @@
-// import { useRouter } from 'next/router'
-export const getLayout = () => {
-	// const router = useRouter()
-  	// const { slug } = router.query
-	// console.log(router)
-	return 'Layout'
+import { layouts } from 'blogData/config'
+/* TODO fix any type */
+// @ts-ignore: Unreachable code error
+export const getLayout = ( router:any ) => {
+	// @ts-ignore: Unreachable code error
+	return layouts[router.asPath.split('/')[1]] || 'Layout'
 }

@@ -20,7 +20,7 @@ const Layout: React.FunctionComponent<Props> = ({
       <meta charSet="utf-8" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>
-    <Background color="maincolor">
+    <Background gradient={true}>
       <Breakpoints className="text-white">
         <header className="md:flex text-sm items-center gap-x-5 uppercase">
           <NavLink  to="/">
@@ -36,7 +36,7 @@ const Layout: React.FunctionComponent<Props> = ({
       {children}
     </Breakpoints>
     <hr className="mt-10"/>
-    <Footer />
+    <Footer logo="/logo_dark.svg" />
   </div>
 )
 

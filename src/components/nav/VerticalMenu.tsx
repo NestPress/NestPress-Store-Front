@@ -1,21 +1,41 @@
 import { NavLink, LogoutLink } from 'components/nav'
-import { FiCalendar, FiMapPin, FiRotateCcw, FiUser, FiMessageSquare, FiChevronRight, FiLogOut} from "react-icons/fi";
+import { FiChevronRight, } from "react-icons/fi";
+import { menuType } from 'types/layout'
+import { useRouter } from 'next/router'
+import { useUser } from 'store/userStore'
 
-export const VerticalMenu: React.FC<Props> = () => {
-  const slug = ''
+interface Props {
+  className?: string
+  actions: menuType
+  iconColor?: string
+}
+
+export const VerticalMenu: React.FC<Props> = ({className, iconColor,  actions}) => {
+  const router = useRouter()
+  const token = () => useUser( state => state )?.token;
   return (
     <>
-      {/*<h2 className="text-xl font-bold">Panel</h2>*/}
+      {actions?.map((el,i)=>{
+          
+          const link = (<div className="flex items-center">
+              [ico]
+              <NavLink className={`m-2 ${router.asPath === el.to ? 'text-green-700' : null}`} to={el.to}>{el.label}</NavLink> 
+              { router.asPath === el.to ? <FiChevronRight className="ml-1 text-green-700"/> : null }
+            </div>)
+
+          return ( 
+            el.auth 
+              ? ( el.auth == 'logout' && !token()) 
+                ? link 
+                : ( el.auth == 'login' && token()) 
+                  ? link 
+                  : null
+              : link 
+            )
+        })} 
       <div className="flex items-center">
-        <FiUser/>
-        <NavLink className={`m-2 ${slug==='profile'? 'text-green-700' : null}`} to="/panel/profile">Profile</NavLink> 
-        { slug==='profile' ? <FiChevronRight className="ml-1 text-green-700"/> : null }
-      </div>
-      <div className="flex items-center">
-        <FiLogOut/>
+        [ico]
         <LogoutLink className={`m-2`}/>
-        {/*<NavLink className={`leading-10 ml-2 ${slug==='questions'? 'text-green-700' : null}`} to="/panel/logout">Logout</NavLink> */}
-        { slug==='questions' ? <FiChevronRight className="ml-1 text-green-700"/> : null }
       </div>
   </>
 )}

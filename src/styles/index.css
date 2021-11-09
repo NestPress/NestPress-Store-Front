@@ -5,3 +5,28 @@
 html {
   color: theme('colors.gray.900');
 }
+.main-background {
+  @apply bg-blue-700;
+}
+.main-background-gradient {
+  @apply bg-gradient-to-b from-blue-600 to-blue-500 opacity-75;
+}
+.light-background{
+  @apply bg-gray-200;
+}
+.dark-background{
+  @apply bg-gray-700;
+}
+.action-background{
+  @apply bg-blue-800
+}
+.main-text{
+  @apply text-blue-800;
+}
+.light-text{
+  @apply text-gray-500;
+}
+.dark-text{
+  @apply text-gray-700;
+}
+

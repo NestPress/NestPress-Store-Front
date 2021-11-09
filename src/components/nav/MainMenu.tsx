@@ -1,4 +1,4 @@
-import { apperiance } from 'blogData/config'
+import { ApperianceType } from 'types/layout'
 import { useState, useEffect } from 'react';
 import { useMenu } from 'store/menuStore'
 import { NavLink } from 'components/nav'
@@ -6,9 +6,9 @@ import { menuType } from 'types/layout'
 import { useUser } from 'store/userStore'
 
 interface Props {
-  className?: string;
-  actions?: menuType,
-  hideIcon?: bollean,
+  className?: string
+  actions: menuType
+  hideIcon?: boolean
   iconColor?: string
 }
 const getWindowDimensions = () => {
@@ -21,8 +21,8 @@ const getWindowDimensions = () => {
   };
 }
 export const MainMenu: React.FC<Props> = ({ className, actions, hideIcon, iconColor }) => {
-  const compIconColor:string = apperiance[iconColor || 'maincolor'];
-  const menu:any = useMenu( state => state )
+
+  const menu = useMenu( state => state )
   const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
   
   const token = () => useUser( state => state )?.token;
@@ -56,7 +56,7 @@ export const MainMenu: React.FC<Props> = ({ className, actions, hideIcon, iconCo
         <button
             onClick={() => useMenu.setState({ isOpen: !menu.isOpen })}
             type="button"
-            className={`bg-white inline-flex items-center justify-center p-1 mx-2 my-4 rounded-md text-${compIconColor.color}-${compIconColor.tone} hover:text-${compIconColor.color}-${compIconColor.tone+100}  hover:bg-gray-100 `}
+            className={`bg-white inline-flex items-center justify-center p-1 mx-2 my-4 rounded-md dark-text hover:light-text hover:light-background `}
             aria-controls="mobile-menu"
             aria-expanded="false"
           >

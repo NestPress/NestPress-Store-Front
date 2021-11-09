@@ -1,13 +1,13 @@
 import dynamic from 'next/dynamic'
 import { MainMenu, Footer } from 'components/nav'
 import { Breakpoints } from 'components/layout'
-import { menu } from 'mockData/main'
 import { useRouter } from 'next/router'
-const Layout = dynamic(() => import(`layouts/PageLayout`))
+import { getLayout } from 'helpers/getLayout'
 
 const Article: React.FC = () => {
   const router = useRouter()
   const { slug } = router.query
+  const Layout = dynamic(() => import(`layouts/${getLayout(router)}`)) 
   return (
     <Layout>
       <h2 className="text-2xl font-bold">{slug}</h2>

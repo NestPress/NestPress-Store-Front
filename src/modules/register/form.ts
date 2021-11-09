@@ -1,11 +1,9 @@
-export const form = {
-	// firstName: {value:''},
-	// lastName: {value:''},
-	emailAddress: {value:''},
+export const form:any = {
+ 	emailAddress: {value:''},
 	password: {value:''}
 }
 
-export const submit = (e, addAuthenticate) => {
+export const submit = (e:any, addRegister:any) => {
   e.preventDefault();
   addRegister({ 
     variables: { 

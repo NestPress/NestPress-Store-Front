@@ -1,4 +1,4 @@
-import { InputField, Button, LineForm } from 'components/forms'
+import { InputField, Button } from 'components/forms'
 import { FiArrowRightCircle } from "react-icons/fi";
 interface Props {
   className?: string;
@@ -7,7 +7,6 @@ interface Props {
   submit :any;
 }
 export const LineForm: React.FC<Props> = ({ className, fields, callback, submit }) => {
-  console.log('fields',fields)
   return (
     <>
     <form className={className} onSubmit={(e) => submit(e, callback)}>

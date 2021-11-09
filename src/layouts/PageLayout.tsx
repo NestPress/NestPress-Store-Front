@@ -20,7 +20,7 @@ const PageLayout: React.FunctionComponent<Props> = ({
       <meta charSet="utf-8" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>
-    <Background color="maincolor" gradient="true">
+    <Background gradient={true}>
       <Breakpoints className="text-white">
         <header className="md:flex text-sm items-center gap-x-5 uppercase">
           <NavLink  to="/">
@@ -32,7 +32,7 @@ const PageLayout: React.FunctionComponent<Props> = ({
         </header>
       </Breakpoints>
     </Background>
-    <Background color="lightbg">
+    <Background background="light-background">
       <Breakpoints className="text-gray-700 pt-10">
         {children}
       </Breakpoints>
