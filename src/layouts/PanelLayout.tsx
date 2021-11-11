@@ -38,15 +38,18 @@ const PanelLayout: React.FunctionComponent<Props> = ({
         </header>
       </Breakpoints>
     </Background>
-    <Breakpoints className="text-gray-700 pt-10 flex">
-      <div className="w-1/5 flex flex-col mr-5 mt-10">
-        <VerticalMenu actions={ panelMenu } className="test"/>
-      </div>
-      <EmptyCard className="flex-1 p-5">
-        { children }
-      </EmptyCard>
-    </Breakpoints>
-    <hr className="mt-10"/>
+    <Background background="light-background">
+      <Breakpoints className="text-gray-700 pt-10 flex">
+        <div className="w-1/5 flex flex-col mr-5 mt-10">
+          <VerticalMenu actions={ panelMenu } className="test"/>
+        </div>
+        <EmptyCard className="flex-1 p-5">
+          { children }
+        </EmptyCard>
+      </Breakpoints>
+      <hr className="mt-10"/>
+    </Background>
+    
     <Footer />
   </div>
 )}

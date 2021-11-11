@@ -15,7 +15,6 @@ const InsertUser: React.FC = () => {
   /* mutation */
   const [addNewCustomer, { data, loading, error }] = useMutation(CREATE_CUSTOMER, {
     onCompleted(data) {
-        console.log('addNewCustomer',data)
         useMessage.setState(  data.createCustomer.__typename === 'Customer' ? { 
           active: true,
           title: 'Create new user success',
@@ -23,6 +22,7 @@ const InsertUser: React.FC = () => {
         }:{ 
           active: true,
           title: data.createCustomer.__typename,
+          content: 'Try send form again',
           type: 'error'  
         }) 
     }, 
@@ -37,6 +37,7 @@ const InsertUser: React.FC = () => {
         className="flex flex-col flex-1 gap-2 text-gray-400" 
         fields={createNewCustomerForm} 
         callback={addNewCustomer} 
+        buttonText="Insert user"
         submit={submitNewCustomerForm}  />
     </Layout>
   );
