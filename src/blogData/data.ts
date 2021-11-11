@@ -15,6 +15,8 @@ export const profileMenu = [
 
 export const panelMenu = [
   { label:"Profile", to:"/panel/profile" },
+  { label:"Users", to:"/panel/users" },
+  { label:"Insert user", to:"/panel/insertUser" },
   { label:"Logout", to:"/", component:"LogoutLink" },
 ]
 

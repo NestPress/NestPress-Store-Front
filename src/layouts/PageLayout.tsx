@@ -12,7 +12,7 @@ type Props = {
 
 const PageLayout: React.FunctionComponent<Props> = ({
   children,
-  title = 'MedBlogPage',
+  title = 'BlogPage',
 }) => (
   <div>
     <Head>

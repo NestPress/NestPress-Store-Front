@@ -1,17 +1,23 @@
-export const form:any = {
-	username: {
+export const form:any = [
+	{
+    name:"username",
     component: "InputField",
+    label:'Email address',
+    placeholder:'Insert email address',
     input:{ 
       value: '' 
     }
   },
-	password: {
+	{
+    name:"password",
     component: "InputField",
+    label:'Password',
+    placeholder:'Insert password',
     input:{ 
       value: '' 
     }
   },
-}
+]
 
 export const submit = (e:any, addAuthenticate: any) => {
   e.preventDefault();

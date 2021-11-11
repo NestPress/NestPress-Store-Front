@@ -13,7 +13,7 @@ interface Props {
   list?: any
 }
 
-export const SelectField: React.FC<Props> = ({ label, value, placeholder, options, className }) => {
+const SelectField: React.FC<Props> = ({ label, value, placeholder, options, className }) => {
   const [active, setActive] = useState(false);
   const [activeValue, setActiveValue] = useState(value);
   return (
@@ -53,3 +53,4 @@ export const SelectField: React.FC<Props> = ({ label, value, placeholder, option
    </>
   );
 };
+export default SelectField

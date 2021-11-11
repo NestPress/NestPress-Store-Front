@@ -16,7 +16,7 @@ export const useUser = create<UserStoreType>(
         user: {
           roles: [
             {
-              // permissions: [Permission.REPORTS_PERIODIC_FINANCIAL_VIEW],
+              permissions: [],
             },
           ],
         },

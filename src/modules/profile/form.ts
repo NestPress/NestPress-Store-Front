@@ -1,29 +1,41 @@
-export const form:any = {
-	firstName: {
+export const form:any = [
+	{
+    name:"firstName",
     component: "InputField",
+    label:'Email address',
     input:{ value: '' }
   },
-	lastName: {
+	{
+    name:"lastName",
     component: "InputField",
+    label:'Email address',
     input:{ value: '' }
   },
-  nickName: {
+  {
+    name:"nickName",
     component: "InputField",
+    label:'Email address',
     input:{ value: '' }
   },
-  description: {
+  {
+    name:"description",
     component: "TextareaField",
+    label:'Email address',
     input:{ value: '' }
   },
-  primaryCategory: {
+  {
+    name:"primaryCategory",
     component: "SelectField",
+    label:'Email address',
     input:{ value: '' }
   },
-  secondaryCategory: {
+  {
+    name:"secondaryCategory",
     component: "SelectField",
+    label:'Email address',
     input:{ value: '' }
   },
-}
+]
 
 export const submit = (e:any, addAuthenticate:any) => {
   e.preventDefault();

@@ -6,7 +6,7 @@ import { profileMenu, panelMenu } from 'blogData/data'
 import Image from 'next/image'
 import { NavLink } from 'components/nav'
 import { FiCalendar, FiMapPin, FiRotateCcw, FiUser, FiMessageSquare,FiLogOut, FiChevronRight, } from "react-icons/fi";
-
+import { setMe } from "modules/me/me"
 type Props = {
   title?: string
   querySlug?: string
@@ -17,6 +17,8 @@ const PanelLayout: React.FunctionComponent<Props> = ({
   querySlug,
   title = 'PanelLayout.tsx',
 }) => {
+  // set current user to store
+  setMe();
   return (
   <div>
     <Head>

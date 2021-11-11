@@ -5,7 +5,7 @@ interface Props {
   className?: string;
   type?:string
 }
-export const InputField: React.FC<Props> = ({ label, set, type, placeholder, className }) => {
+const InputField: React.FC<Props> = ({ label, set, type, placeholder, className }) => {
   return (
     <div className={`${className}`}>
       { label ? <label className="text-gray-700 text-xs">{label}</label> : null }
@@ -19,3 +19,4 @@ export const InputField: React.FC<Props> = ({ label, set, type, placeholder, cla
     </div>
   );
 };
+export default InputField
