@@ -1,13 +1,13 @@
+import { gql } from "@apollo/client";
 export const CREATE_CUSTOMER = gql`
-  mutation createCustomer{
+  mutation createCustomer(
+    $input: CreateCustomerInput!
+    $password: String
+  ){
     createCustomer(
-      password:"dupa.8"
-      input:{
-      firstName:"Tim1",
-      lastName:"Dalton2"
-      title:"BigMan"
-      emailAddress:"tim@gmail.com"
-    }){
+      input: $input
+      password: $password
+    ){
     ... on Customer{
       id
     }

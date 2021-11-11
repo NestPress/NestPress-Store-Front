@@ -1,36 +1,43 @@
 
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
+import { useMutation } from "@apollo/client";
 import { FiArrowRightCircle} from "react-icons/fi";
-import { TextareaField, InputField,SelectField, Button } from 'components/forms'
 import { getLayout } from 'helpers/getLayout'
+import { LineForm } from 'components/forms'
+import { useMessage } from 'store/messageStore'
 
+import { createNewCustomerForm, submitNewCustomerForm } from "modules/user/form"
+import { CREATE_CUSTOMER } from "modules/user/gql"
 
 const InsertUser: React.FC = () => {
   const Layout = dynamic(() => import(`layouts/${getLayout(useRouter())}`)) 
-  /* form */
-  const form = {}
-  const sendForm = (event:any) => {
-    event.preventDefault();
-  }
+  /* mutation */
+  const [addNewCustomer, { data, loading, error }] = useMutation(CREATE_CUSTOMER, {
+    onCompleted(data) {
+        console.log('addNewCustomer',data)
+        useMessage.setState(  data.createCustomer.__typename === 'Customer' ? { 
+          active: true,
+          title: 'Create new user success',
+          type: 'success' 
+        }:{ 
+          active: true,
+          title: data.createCustomer.__typename,
+          type: 'error'  
+        }) 
+    }, 
+    optimisticResponse(){
+      useMessage.setState({ active: false })
+    }
+  });
   return (
     <Layout>
-        <h2 className="text-xl mb-5">Insert user</h2>
-        <form className="flex flex-col flex-1 gap-2" onSubmit={(event)=> {sendForm(event)}}>
-          <InputField label="First name" placeholder="First name" className="md:flex-2"  set={[form, 'setFormFirstName']} /> 
-          <InputField label="Last name" placeholder="Last name" className="md:flex-2" set={[form, 'setFormLastName']} /> 
-          <InputField label="Phone number" className="md:flex-2" placeholder="File name" set={[form, 'setFormPhoneNumber']} /> 
-          <InputField label="Nick name" className="md:flex-2" placeholder="File name" set={[form, 'setFormNickName']} /> 
-          <TextareaField label="Short descriotion" className="md:flex-2" placeholder="File name" value="" /> 
-          <label>Primary category</label>
-          <SelectField className="md:flex-2" placeholder="File name" value='' />
-          <label>Secondary category</label>
-          <SelectField className="md:flex-2" placeholder="File name" value='' />
-          <Button className="w-max">
-            <FiArrowRightCircle className="mr-1"/>
-            <span>Save profile</span>
-          </Button>
-        </form>
+      <h2 className="text-xl mb-5">Insert new user</h2>
+      <LineForm 
+        className="flex flex-col flex-1 gap-2 text-gray-400" 
+        fields={createNewCustomerForm} 
+        callback={addNewCustomer} 
+        submit={submitNewCustomerForm}  />
     </Layout>
   );
 };

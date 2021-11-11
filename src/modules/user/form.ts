@@ -1,59 +1,66 @@
-export const createNewCustomerForm:any = {
-  firstName: {
+export const createNewCustomerForm:any = [
+  {
+    name:"emailAddress",
     component: "InputField",
     label:'Email address',
     input:{ 
       value: '' 
     }
   },
-  lastName: {
+  {
+    name:"password",
     component: "InputField",
-    label:'Email address',
+    label:'Password',
     input:{ 
       value: '' 
     }
   },
- 	emailAddress: {
+  {
+    name:"firstName",
     component: "InputField",
-    label:'Email address',
+    label:'First name',
     input:{ 
       value: '' 
     }
   },
-  phoneNumber: {
+  {
+    name:"lastName",
     component: "InputField",
-    label:'Email address',
+    label:'Last name',
     input:{ 
       value: '' 
     }
   },
-  title: {
+  {
+    name:"phoneNumber",
     component: "InputField",
-    label:'Email address',
+    label:'Phone number',
     input:{ 
       value: '' 
     }
   },
-	password: {
+  {
+    name:"title",
     component: "InputField",
-    label:'Email address',
+    label:'Nickname',
     input:{ 
       value: '' 
     }
   }
-}
+	
+]
 
 export const submitNewCustomerForm = (e:any, addNewCustomer:any) => {
   e.preventDefault();
   addNewCustomer({ 
     variables: { 
-      password: form.password.value,
+      password: createNewCustomerForm.password.value,
       input:{
-        firstName:form.firstName.value,
-        lastName:form.lastName.value,
-        emailAddress: form.emailAddress.value,
-        phoneNumber: form.phoneNumber.value,
-        title: form.title.value,       
+        firstName:createNewCustomerForm.firstName.value,
+        lastName:createNewCustomerForm.lastName.value,
+        emailAddress: createNewCustomerForm.emailAddress.value,
+        phoneNumber: createNewCustomerForm.phoneNumber.value,
+        title: createNewCustomerForm.title.value,       
       } 
     } 
   });
