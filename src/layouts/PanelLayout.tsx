@@ -6,7 +6,7 @@ import { profileMenu, panelMenu } from 'blogData/data'
 import Image from 'next/image'
 import { NavLink } from 'components/nav'
 import { FiCalendar, FiMapPin, FiRotateCcw, FiUser, FiMessageSquare,FiLogOut, FiChevronRight, } from "react-icons/fi";
-import { setMe } from "modules/me/me"
+import { setMe } from "modules/user"
 type Props = {
   title?: string
   querySlug?: string

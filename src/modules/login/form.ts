@@ -1,9 +1,11 @@
+
 export const form:any = [
 	{
     name:"username",
     component: "InputField",
     label:'Email address',
     placeholder:'Insert email address',
+    defaultValue:'',
     input:{ 
       value: '' 
     }
@@ -13,6 +15,7 @@ export const form:any = [
     component: "InputField",
     label:'Password',
     placeholder:'Insert password',
+    defaultValue:'',
     input:{ 
       value: '' 
     }
@@ -21,13 +24,14 @@ export const form:any = [
 
 export const submit = (e:any, addAuthenticate: any) => {
   e.preventDefault();
+  const out = {}
+  form.map((el)=>
+    out[el.name] = el.input.value
+  )
   addAuthenticate({ 
     variables: { 
       input:{
-        native: {
-          username: form.username.value,
-          password: form.password.value
-        }
+        native: out
       } 
     } 
   });

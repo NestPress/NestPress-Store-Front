@@ -20,11 +20,18 @@ const Users: React.FC = () => {
     <Layout>
         <h2 className="text-xl mb-5">Users</h2>
         <table className="w-full">
+          <tr className="text-sm">
+            <th className="p-2">Nick name</th>
+            <th className="p-2">First name</th>
+            <th className="p-2">Last name</th>
+            <th className="p-2">Email</th>
+            <th className="p-2">Phone number</th>
+          </tr>
           {data?.customers?.items.map(customer => (
             <tr 
               className="border-b text-sm hover:bg-gray-100 cursor-pointer"
               key={customer.id}  
-              onClick={()=>router.push(`/article/example-article/${customer.id}`)}>
+              onClick={()=>router.push(`/panel/profile/${customer.id}`)}>
               <td className="p-2">{customer.title}</td>
               <td className="p-2">{customer.firstName}</td>
               <td className="p-2">{customer.lastName}</td>

@@ -4,8 +4,9 @@ interface Props {
   set?: any;
   className?: string;
   type?:string
+  index?:number
 }
-const InputField: React.FC<Props> = ({ label, set, type, placeholder, className }) => {
+const InputField: React.FC<Props> = ({ label, set, type, placeholder, className, index }) => {
   return (
     <div className={`${className}`}>
       { label ? <label className="text-gray-700 text-xs">{label}</label> : null }
@@ -13,8 +14,8 @@ const InputField: React.FC<Props> = ({ label, set, type, placeholder, className 
         placeholder={placeholder}
         className="bg-white p-3 rounded-sm w-full text-gray-500 text-sm border mt-1"
         type={type || 'text'} 
-        ref={ node => { set[0][set[1]] = node }}
-        // defaultValue={set[0]} 
+        defaultValue={ set[0][index || 0].defaultValue } 
+        ref={ node => { set[0][index || 0].input = node }}
       />
     </div>
   );

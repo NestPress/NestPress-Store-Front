@@ -17,7 +17,7 @@ export const VerticalMenu: React.FC<Props> = ({className, iconColor,  actions}) 
     <>
       {actions?.map((el,i)=>{
           
-          const link = (<div className="flex items-center">
+          const link = (<div key={i} className="flex items-center">
               [ico]
               <NavLink className={`m-2 ${router.asPath === el.to ? 'text-green-700' : null}`} to={el.to}>{el.label}</NavLink> 
               { router.asPath === el.to ? <FiChevronRight className="ml-1 text-green-700"/> : null }
