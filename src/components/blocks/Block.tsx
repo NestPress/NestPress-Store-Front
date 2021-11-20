@@ -1,4 +1,4 @@
- import { FiCornerRightDown, FiArrowDown } from "react-icons/fi";
+ import { FiCornerRightDown, FiArrowDown, FiExternalLink } from "react-icons/fi";
  import { BlocksHeader} from 'components/blocks'
  import { useBlocks } from 'store/blocksStore'
  export const Block: React.FC = () => {
@@ -7,6 +7,7 @@
   const block = () =>  blocks.find(x => x.id === selectedBlockId);
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
   const setBlockAttrs = useBlocks((state) => state.setBlockAttrs);
+  const replace = useBlocks((state) => state.replace);
 
   const buttonClass = "flex items-center bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500"
 
@@ -22,7 +23,7 @@
       <div className="col-span-3 bg-gray-100 p-1 border">{block().parentId}</div>
       {
         Object.keys(block().attrs).map((key, index) => {
-          return (
+          return !replace ? (
             <>
               <div className="py-1">{key}</div>
               { key==='text' && 
@@ -58,22 +59,35 @@
                   onChange={(e)=>setBlockAttrs({key:key,value:e.target.value})}  
                   className="col-span-3 border p-1" value={block().attrs[key]}/>
               }
-            </>
-          )
+            </> 
+          ) : null
         })
       }
     </div>
-    <div className="px-2 border-t pt-1">
+    
+    { !replace 
+      ? 
+      <div className="px-2 border-t pt-1">
       <button className={buttonClass} 
         onClick={(e)=>useBlocks.setState({panel:'insertChild'})}>
           <FiCornerRightDown/>
           <span className="ml-2">Insert child block</span>
         </button>
-      <button className={buttonClass} 
-        onClick={(e)=>useBlocks.setState({panel:'insertNext'})}>
-        <FiArrowDown/>
-        <span className="ml-2">Insert next block</span>
-      </button>
-    </div>
+        <button className={buttonClass} 
+          onClick={(e)=>useBlocks.setState({panel:'insertNext'})}>
+          <FiArrowDown/>
+          <span className="ml-2">Insert next block</span>
+        </button>
+        <button className={buttonClass} 
+          onClick={(e)=>useBlocks.setState({replace:true})}>
+          <FiExternalLink/>
+          <span className="ml-2">Move inside another block</span>
+        </button>
+      </div> 
+    : <div className="text-xs p-2 border-t border-b bg-yellow-100">Select parent block to replace</div> 
+    }
+      
+
+    
   </>
 }

@@ -1,8 +1,9 @@
 interface Props {
-  className?: string;
+  attrs:any
 }
-export const Breakpoints: React.FC<Props> = ({ children, className }) => {
+const Breakpoints: React.FC<Props> = ({ children, attrs }) => {
   return (
-    <div className={`mx-auto w-full md:w-5/6 xl:w-4/6 ${className}`}>{children}</div>
+    <div className={`grid mx-auto w-full md:w-5/6 xl:w-4/6`}>{children}</div>
   );
 };
+export default Breakpoints

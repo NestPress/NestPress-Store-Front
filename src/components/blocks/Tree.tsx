@@ -5,7 +5,8 @@ import { useBlocks } from 'store/blocksStore'
 // !EDITABLE
 
 export const Tree: React.FC<Props> = memo(({ blocks, parentId = 0, level = 0, editable }: TreeProps) => {
-  const preview = useBlocks((state) => state.preview);
+  
+  
   const items = blocks
     .filter((item) => item.parentId === parentId)
     // .sort((a, b) => (a.text > b.text ? 1 : -1)); - change sort
@@ -14,6 +15,9 @@ export const Tree: React.FC<Props> = memo(({ blocks, parentId = 0, level = 0, ed
   // EDITABLE
   const setBlock = useBlocks((state) => state.setBlock);
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
+  const preview = useBlocks((state) => state.preview);
+  const replace = useBlocks((state) => state.replace);
+  const setBlockParentId = useBlocks((state) => state.setBlockParentId)
   // !EDITABLE
   
   return (
@@ -39,8 +43,19 @@ export const Tree: React.FC<Props> = memo(({ blocks, parentId = 0, level = 0, ed
           key={`block-${item.id}`} 
           onClick={(e)=>{
             e.stopPropagation();
-            setBlock(item.id); 
-            useBlocks.setState({panel:'block'});
+            if(!replace){
+              setBlock(item.id); 
+              useBlocks.setState({panel:'block'});
+            }else{
+              if(selectedBlockId === item.id){
+                alert('You set this same block, select another')
+              }else{
+                useBlocks.setState({panel:'block'});
+                setBlockParentId({ parent:item.id, current:selectedBlockId })
+              }
+              
+            }
+            
           }}
         >
         

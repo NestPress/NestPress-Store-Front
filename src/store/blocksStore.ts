@@ -7,6 +7,7 @@ const useBlocks = create((set) => ({
   composerTab: 'page',
   insertBlocksType: 'layout',
   preview: false,
+  replace: false,
   
   blocks:[
     { "id": 1, "parentId": 0, block:"layout/Grid", layout:null, page:'home', attrs:{columns:'', colspan:'', rowspan:'', background:''} }
@@ -27,6 +28,14 @@ const useBlocks = create((set) => ({
         const block = _.blocks.find(x => x.id === _.selectedBlockId)
         block.attrs[_in.key] = _in.value
 
+      })
+    ),
+  setBlockParentId: (_in) =>
+    set(
+      produce((_) => {
+        const block = _.blocks.find(x => x.id === _in.current)
+        block.parentId = _in.parent
+        _.replace = false
       })
     ),
 }));

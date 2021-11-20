@@ -69,8 +69,25 @@ export const InsertBlock: React.FC<Props> = ({type}) => {
             })} >Title</button>
 
 
-          <button className={buttonClass} >Paragraph</button>
+          <button className={buttonClass} 
+            onClick={(e)=>addBlock( { 
+              ...prefix, 
+              block: "layout/Paragraph", 
+              attrs:{
+                text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                colspan: 0,
+              } 
+            })} >Paragraph</button>
+
+
           <button className={buttonClass} >Image</button>
+          
+          <button className={buttonClass} 
+            onClick={(e)=>addBlock( { 
+              ...prefix, 
+              block: "layout/Breakpoints", 
+              attrs:{} 
+            })} >Breakpoints</button>
         </div>
       }
 
@@ -131,9 +148,11 @@ export const InsertBlock: React.FC<Props> = ({type}) => {
           <button className={buttonClass} 
             onClick={(e)=>addBlock( { 
               ...prefix, 
-              block: "form/Form", 
+              block: "nav/NavLink", 
               attrs:{
-                cols: 1
+                title: 'Example link',
+                to: '/',
+                asButton: false
               } 
             })} >Navigation link</button>
 

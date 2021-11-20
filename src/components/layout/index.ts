@@ -6,3 +6,6 @@ export * from "./EmptyCard";
 export * from "./Stars";
 export * from "./SmallCalendar";
 export * from "./Message";
+export * from "./Title";
+export * from "./Paragraph";
+
