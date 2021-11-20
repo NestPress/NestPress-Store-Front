@@ -16,3 +16,10 @@ export const AUTHENTICATE = gql`
   }
 `;
 
+export const REGISTER = gql`
+  mutation registerAdministratorWithProfile($input: CreateAdministratorWithProfileInput!) {
+    registerAdministratorWithProfile(input: $input) {
+      id
+    }
+  }
+`;

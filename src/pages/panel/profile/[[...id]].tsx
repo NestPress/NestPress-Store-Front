@@ -57,7 +57,6 @@ const Profile: React.FC = () => {
         callback={addMutation} 
         submit={(e)=>{
           e.preventDefault(); 
-          // console.log(prepareToMutate(form))
           addMutation({ 
             variables: prepareToMutate(form)
           });
