@@ -6,9 +6,10 @@ const useBlocks = create((set) => ({
   panel: 'mainPanel',
   composerTab: 'page',
   insertBlocksType: 'layout',
+  preview: false,
   
   blocks:[
-    { "id": 1, "parentId": 0, block:"layout/Grid", layout:null, page:'home', attrs:{} }
+    { "id": 1, "parentId": 0, block:"layout/Grid", layout:null, page:'home', attrs:{columns:'', colspan:'', rowspan:'', background:''} }
   ],
   selectedBlockId: null,
   setBlock: (id) => set((state) => {

@@ -32,14 +32,28 @@
                   className="col-span-3 border p-1" value={block().attrs[key]}/>
               }
 
-              { key==='cols' && 
+              { (key==='columns' || key==='colspan' || key==='rowspan' || key==='rows') &&
                 <input 
                   type="number"
                   onChange={(e)=>setBlockAttrs({key:key,value:e.target.value})}  
                   className="col-span-3 border p-1" value={block().attrs[key]}/>
               }
 
-              { (key!=='text' && key!=='cols') && 
+              { (key==='background') &&
+                <>
+               
+                <select className="col-span-3 border bg-white" onChange={(e)=>setBlockAttrs({key:key,value:e.target.value})}  >
+                  <option selected={block().attrs[key] === ''} value="">Blank background</option>
+                  <option selected={block().attrs[key] === 'main-background'} value="main-background">Main background</option>
+                  <option selected={block().attrs[key] === 'light-background'} value="light-background">Lignt background</option>
+                  <option selected={block().attrs[key] === 'dark-background'} value="dark-background">Dark background</option>
+                  <option selected={block().attrs[key] === 'action-background'} value="action-background">Action background</option>
+                  <option selected={block().attrs[key] === 'main-background-gradient'} value="main-background-gradient">Main background gradient</option>
+                </select>
+                </>
+              }
+
+              { (key!=='text' && key!=='columns' && key!=='colspan' && key!=='rowspan' && key!=='rows' && key!=='background') && 
                 <input 
                   onChange={(e)=>setBlockAttrs({key:key,value:e.target.value})}  
                   className="col-span-3 border p-1" value={block().attrs[key]}/>

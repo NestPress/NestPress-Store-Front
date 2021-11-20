@@ -50,7 +50,10 @@ export const InsertBlock: React.FC<Props> = ({type}) => {
             	...prefix, 
             	block: "layout/Grid", 
             	attrs:{
-            		cols: 1
+            		columns: '',
+                colspan: '',
+                rowspan: '',
+                background: '',
             	} 
             })} >Grid</button>
 
@@ -60,7 +63,8 @@ export const InsertBlock: React.FC<Props> = ({type}) => {
             	block: "layout/Title", 
             	attrs:{
             		text: "Example title",
-            		color: "dark-text"
+            		color: "dark-text",
+                colspan: 0,
             	} 
             })} >Title</button>
 
@@ -76,9 +80,7 @@ export const InsertBlock: React.FC<Props> = ({type}) => {
             onClick={(e)=>addBlock( { 
               ...prefix, 
               block: "form/Form", 
-              attrs:{
-                cols: 1
-              } 
+              attrs:{} 
             })} >Form component</button>
 
           <button className={buttonClass} 
@@ -86,28 +88,28 @@ export const InsertBlock: React.FC<Props> = ({type}) => {
               ...prefix, 
               block: "form/InputField", 
               attrs:{
-                text: "Example title",
-                color: "dark-text"
+                label: "Example label",
+                placeholder: "Example placeholder"
               } 
             })} >Input field</button>
 
           <button className={buttonClass} 
             onClick={(e)=>addBlock( { 
               ...prefix, 
-              block: "form/InputField", 
+              block: "form/TextareaField", 
               attrs:{
-                text: "Example title",
-                color: "dark-text"
+                rows:6,
+                label: "Example label",
+                placeholder: "Example placeholder"
               } 
             })} >Textarea field</button>
 
           <button className={buttonClass} 
             onClick={(e)=>addBlock( { 
               ...prefix, 
-              block: "form/InputField", 
+              block: "form/SelectField", 
               attrs:{
-                text: "Example title",
-                color: "dark-text"
+                label: "Example label",
               } 
             })} >Select & search field</button>
           
@@ -116,7 +118,7 @@ export const InsertBlock: React.FC<Props> = ({type}) => {
               ...prefix, 
               block: "form/SubmitButton", 
               attrs:{
-                text: "Submit button",
+                title: "Submit button",
                 color: "dark-text"
               } 
             })} >Submit button</button>
