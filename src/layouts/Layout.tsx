@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as React from 'react'
 import Head from 'next/head'
 import { Breakpoints, Background } from 'components/layout'

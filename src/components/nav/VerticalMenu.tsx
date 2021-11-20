@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { NavLink, LogoutLink } from 'components/nav'
 import { FiChevronRight, } from "react-icons/fi";
 import { menuType } from 'types/layout'

@@ -1,7 +1,8 @@
+import { memo } from 'react'
 interface Props {
   attrs: any
 }
-const Grid: React.FC<Props> = ({ attrs, children }) => {
+const Grid: React.FC<Props> = memo( ({ attrs, children }) => {
   const columns = [
     '',
     'grid-cols-1',
@@ -40,5 +41,5 @@ const Grid: React.FC<Props> = ({ attrs, children }) => {
       {children}
     </div>
   );
-};
+});
 export default Grid

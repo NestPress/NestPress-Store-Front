@@ -5,18 +5,19 @@ import type { NextComponentType } from 'next';
 import type { AppContext, AppInitialProps, AppLayoutProps } from 'next/app';
 
 import 'styles/index.css';
-import { Message } from 'components/layout'
-import { mainMenu, rightMenu } from 'blogData/data'
+// import { Message } from 'components/layout'
+// import { mainMenu, rightMenu } from 'blogData/data'
 
 const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = (
   props: AppLayoutProps
 ) => {
   const { Component, pageProps } = props;
-  const getLayout = Component.getLayout || ((page: ReactNode) => page);
+  // const getLayout = Component.getLayout || ((page: ReactNode) => page);
   return( 
       <ApolloProvider client={ client }>
-          {getLayout(<Component {...pageProps} />)}
-        <Message/>
+        <Component {...pageProps} />
+        {/*getLayout(<Component {...pageProps} />)*/}
+        {/*<Message/>*/}
       </ApolloProvider>
 
   )

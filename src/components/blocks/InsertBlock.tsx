@@ -16,7 +16,7 @@ export const InsertBlock: React.FC<Props> = ({type}) => {
   const buttonClass = " bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500"
   const uid = () => ((new Date().getTime()).toString(36))
  	
-  const prefix = { "id": uid(), "parentId": type === 'next' ? block().parentId : block().id }
+  const prefix = { "id": uid(), "parentId": type === 'next' ? block()?.parentId : block()?.id }
   return(
     <>
       <BlocksHeader/> 

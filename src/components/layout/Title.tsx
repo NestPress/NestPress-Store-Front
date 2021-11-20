@@ -1,7 +1,8 @@
+import { memo } from 'react'
 interface Props {
   attrs: any
 }
-const Title: React.FC<Props> = ({ attrs }) => {
+const Title: React.FC<Props> = memo(({ attrs }) => {
    const colspan = [
     '',
     'col-span-1',
@@ -12,5 +13,5 @@ const Title: React.FC<Props> = ({ attrs }) => {
   return (
     <h1 className={`grid font-bold ${attrs.colspan ? colspan[attrs.colspan] : null} `}>{attrs?.text}</h1>
   );
-};
+});
 export default Title

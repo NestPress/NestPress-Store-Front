@@ -1,3 +1,4 @@
+// @ts-nocheck
 export const createNewCustomerForm:any = [
   {
     name:"emailAddress",

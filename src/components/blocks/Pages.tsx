@@ -1,20 +1,10 @@
 import { FiFile, FiAnchor } from "react-icons/fi";
 
 import { useRouter } from 'next/router'
-import { Mock } from 'helpers/localMockupApi'
 import { useBlocks } from 'store/blocksStore'
-import { useStickyState } from 'helpers/localMockupApi'
 export const Pages: React.FC = () => {
   
   const router = useRouter();
-  
-   const [
-      posts,
-      setPosts
-    ] = useStickyState([], 'posts');
-
-
-
   const form = {
     target: ''
   }
@@ -32,7 +22,7 @@ export const Pages: React.FC = () => {
         <div className="flex-1 text-center">Title</div>
         <div className="flex-1 text-center">Layout</div>
       </div>
-      {posts.map((el)=>{
+      {/*{posts.map((el)=>{
         return <div onClick={(e)=>{
               useBlocks.setState({composerTab:'page'})
               router.replace(el.slug);
@@ -42,7 +32,7 @@ export const Pages: React.FC = () => {
           <div className="flex-1 text-center">{el.title}</div>
           <div className="flex-1 text-center">{el.layout}</div>
         </div>
-      })}
+      })}*/}
       <div className="p-2 mt-1 border-t border-b">
         <div className="flex items-center text-base mb-2">
           <FiAnchor/><span className="ml-2">Register new page</span>

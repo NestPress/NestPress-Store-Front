@@ -1,4 +1,4 @@
-// https://www.joshwcomeau.com/react/persisting-react-state-in-localstorage/
+// @ts-nocheck
 import { useState, useEffect } from 'react';
 export const useStickyState = (defaultValue, key) => {
   const [value, setValue] = useState(() => {

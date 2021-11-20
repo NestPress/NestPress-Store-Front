@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ApperianceType } from 'types/layout'
 import { useState, useEffect } from 'react';
 import { useMenu } from 'store/menuStore'

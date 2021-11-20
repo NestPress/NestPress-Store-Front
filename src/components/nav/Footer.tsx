@@ -1,4 +1,4 @@
-
+// @ts-nocheck
 import { Breakpoints } from 'components/layout'
 import { NavLink } from 'components/nav'
 import Image from 'next/image'

@@ -8,6 +8,7 @@
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
   const setBlockAttrs = useBlocks((state) => state.setBlockAttrs);
   const replace = useBlocks((state) => state.replace);
+  const removeBlock = useBlocks((state) => state.removeBlock);
 
   const buttonClass = "flex items-center bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500"
 
@@ -16,40 +17,42 @@
     <BlocksHeader/> 
     <div className="grid grid-cols-4 text-xs gap-1 p-2">
       <div className="py-1">ID</div>
-      <div className="col-span-3 bg-gray-100 p-1 border">{block().id}</div>
+      <div className="col-span-3 bg-gray-100 p-1 border">{block()?.id || ''}</div>
       <div className="py-1">Block</div>
-      <div className="col-span-3 bg-gray-100 p-1 border">{block().block}</div>
+      <div className="col-span-3 bg-gray-100 p-1 border">{block()?.block || ''}</div>
       <div className="py-1">ParentID</div>
-      <div className="col-span-3 bg-gray-100 p-1 border">{block().parentId}</div>
+      <div className="col-span-3 bg-gray-100 p-1 border">{block()?.parentId || ''}</div>
       {
         Object.keys(block().attrs).map((key, index) => {
           return !replace ? (
             <>
-              <div className="py-1">{key}</div>
+              <div key={index} className="py-1">{key}</div>
               { key==='text' && 
                 <textarea 
                   onChange={(e)=>setBlockAttrs({key:key,value:e.target.value})}  
+                  /* TODO fix type */
+                  // @ts-ignore: Unreachable code error
                   rows="3" 
-                  className="col-span-3 border p-1" value={block().attrs[key]}/>
+                  className="col-span-3 border p-1" value={block()?.attrs[key]}/>
               }
 
               { (key==='columns' || key==='colspan' || key==='rowspan' || key==='rows') &&
                 <input 
                   type="number"
                   onChange={(e)=>setBlockAttrs({key:key,value:e.target.value})}  
-                  className="col-span-3 border p-1" value={block().attrs[key]}/>
+                  className="col-span-3 border p-1" value={block()?.attrs[key]}/>
               }
 
               { (key==='background') &&
                 <>
                
                 <select className="col-span-3 border bg-white" onChange={(e)=>setBlockAttrs({key:key,value:e.target.value})}  >
-                  <option selected={block().attrs[key] === ''} value="">Blank background</option>
-                  <option selected={block().attrs[key] === 'main-background'} value="main-background">Main background</option>
-                  <option selected={block().attrs[key] === 'light-background'} value="light-background">Lignt background</option>
-                  <option selected={block().attrs[key] === 'dark-background'} value="dark-background">Dark background</option>
-                  <option selected={block().attrs[key] === 'action-background'} value="action-background">Action background</option>
-                  <option selected={block().attrs[key] === 'main-background-gradient'} value="main-background-gradient">Main background gradient</option>
+                  <option selected={block()?.attrs[key] === ''} value="">Blank background</option>
+                  <option selected={block()?.attrs[key] === 'main-background'} value="main-background">Main background</option>
+                  <option selected={block()?.attrs[key] === 'light-background'} value="light-background">Lignt background</option>
+                  <option selected={block()?.attrs[key] === 'dark-background'} value="dark-background">Dark background</option>
+                  <option selected={block()?.attrs[key] === 'action-background'} value="action-background">Action background</option>
+                  <option selected={block()?.attrs[key] === 'main-background-gradient'} value="main-background-gradient">Main background gradient</option>
                 </select>
                 </>
               }
@@ -57,7 +60,7 @@
               { (key!=='text' && key!=='columns' && key!=='colspan' && key!=='rowspan' && key!=='rows' && key!=='background') && 
                 <input 
                   onChange={(e)=>setBlockAttrs({key:key,value:e.target.value})}  
-                  className="col-span-3 border p-1" value={block().attrs[key]}/>
+                  className="col-span-3 border p-1" value={block()?.attrs[key]}/>
               }
             </> 
           ) : null
@@ -82,6 +85,11 @@
           onClick={(e)=>useBlocks.setState({replace:true})}>
           <FiExternalLink/>
           <span className="ml-2">Move inside another block</span>
+        </button>
+        <button className={buttonClass} 
+          onClick={(e)=>{useBlocks.setState({panel:'mainPanel'}); removeBlock() }}>
+          <FiExternalLink/>
+          <span className="ml-2">Remove block</span>
         </button>
       </div> 
     : <div className="text-xs p-2 border-t border-b bg-yellow-100">Select parent block to replace</div> 

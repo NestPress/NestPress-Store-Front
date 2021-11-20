@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { gql, useQuery } from '@apollo/client';
 import { UserState, useUser } from "store/userStore";
 import { ME } from "modules/user"

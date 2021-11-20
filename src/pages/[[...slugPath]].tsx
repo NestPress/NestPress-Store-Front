@@ -20,7 +20,8 @@ const Home: React.FC = () => {
   return blocks && (
     <>
       <div style={{marginRight:'20rem'}}>
-        <Tree blocks={blocks} />
+        Tree
+        <Tree blocks={blocks}  />
       </div>
       <Composer />
     </>
