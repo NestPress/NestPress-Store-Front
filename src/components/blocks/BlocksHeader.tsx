@@ -16,7 +16,7 @@ export const BlocksHeader: React.FC = () => {
         onClick={(e) => useBlocks.setState({ preview: !preview })}
         className="border-l p-2 flex items-center cursor-pointer"
       >
-        {preview ? (
+        {!preview ? (
           <div>
             <FiEye />
           </div>

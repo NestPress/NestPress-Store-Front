@@ -1,5 +1,5 @@
 import { useBlocks } from "store/blocksStore";
-import { Block, InsertBlock, MainPanel } from "components/blocks";
+import { BlockControlls, InsertBlock, MainPanel } from "components/blocks";
 
 export const Composer: React.FC = () => {
   const panel = useBlocks((state) => state.panel);
@@ -8,7 +8,7 @@ export const Composer: React.FC = () => {
     <div className="fixed h-screen shadow border-l border-gray-300 top-0 right-0 w-80 bg-white ">
       {panel == "mainPanel" && <MainPanel />}
 
-      {panel == "block" && <Block />}
+      {panel == "block" && <BlockControlls />}
 
       {panel == "insertChild" && <InsertBlock type="child" />}
 

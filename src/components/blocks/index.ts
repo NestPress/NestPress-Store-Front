@@ -1,5 +1,5 @@
 export * from "./BlocksHeader";
-export * from "./Block";
+export * from "./BlockControlls";
 export * from "./InsertBlock";
 export * from "./MainPanel";
 export * from "./Pages";
