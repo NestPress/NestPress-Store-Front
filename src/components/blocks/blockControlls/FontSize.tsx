@@ -41,6 +41,12 @@ export const FontSize: React.FC<Props> = ({ keyName }) => {
       >
         Extra Large (XL)
       </option>
+      <option
+        selected={block()?.attrs[keyName] === "text-3xl"}
+        value="text-3xl"
+      >
+        Extra Large (3XL)
+      </option>
       
     </select>
   );

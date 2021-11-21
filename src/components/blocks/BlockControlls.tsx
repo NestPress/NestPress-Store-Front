@@ -5,7 +5,7 @@
 import { FiCornerRightDown, FiArrowDown, FiExternalLink } from "react-icons/fi";
 import { BlocksHeader } from "components/blocks";
 import { useBlocks } from "store/blocksStore";
-import { TextareaField, BackgroundColor, NumberField } from "components/blocks/blockControlls"
+import { TextareaField, BackgroundColor, NumberField, FontSize, TextColor } from "components/blocks/blockControlls"
 export const BlockControlls: React.FC = () => {
   const blocks = useBlocks((state) => state.blocks);
   const block = () => blocks.find((x) => x.id === selectedBlockId);
@@ -59,6 +59,10 @@ export const BlockControlls: React.FC = () => {
                 <FontSize keyName={key}/>
               )}
 
+              {key === "textcolor" && (
+                <TextColor keyName={key}/>
+              )}
+
               
 
               {key !== "text" &&
@@ -67,6 +71,8 @@ export const BlockControlls: React.FC = () => {
                 key !== "colspan" &&
                 key !== "rowspan" &&
                 key !== "rows" &&
+                key !== "fontsize" &&
+                key !== "textcolor" &&
                 key !== "background" && (
                   <input
                     onChange={(e) =>

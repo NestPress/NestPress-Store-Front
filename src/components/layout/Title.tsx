@@ -4,13 +4,14 @@ interface Props {
 }
 const Title: React.FC<Props> = memo(({ attrs }) => {
   const colspan = ["", "col-span-1", "col-span-2", "col-span-3", "col-span-4"];
+  
   return (
     <h1
-      className={`grid font-bold ${
+      className={`grid ${attrs.fontsize} ${attrs.textcolor} font-bold ${
         attrs.colspan ? colspan[attrs.colspan] : null
       } `}
     >
-      {attrs?.text}
+       {attrs?.text}
     </h1>
   );
 });

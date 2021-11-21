@@ -45,6 +45,8 @@ export const LayoutBlocks: React.FC = ({type}) => {
               text: "Example title",
               color: "dark-text",
               colspan: 0,
+              fontsize: '',
+              textcolor: '',
             },
           })
         }

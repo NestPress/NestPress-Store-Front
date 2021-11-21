@@ -19,35 +19,28 @@ export const TextColor: React.FC<Props> = ({ keyName }) => {
       >
         Empty definition
       </option>
+
       <option
         selected={block()?.attrs[keyName] === "light-text"}
         value="light-text"
       >
-        Dark
+        Light
       </option>
+
       <option
         selected={block()?.attrs[keyName] === "dark-text"}
         value="dark-text"
       >
-        Lignt
+        Dark
       </option>
+
       <option selected={block()?.attrs[keyName] === "main-text"} 
         value="main-text"
       >
         Main
       </option>
-      <option
-        selected={block()?.attrs[keyName] === "light-text"}
-        value="light-text"
-      >
-        Dark
-      </option>
-      <option
-        selected={block()?.attrs[keyName] === "dark-text"}
-        value="dark-text"
-      >
-        Lignt
-      </option>
+      
+      
     </select>
   );
 };
