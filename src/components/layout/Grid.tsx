@@ -1,10 +1,9 @@
-import { memo } from 'react'
-import {columns, colspan, rowspan} from 'blogData/blockClasses'
+import { memo } from "react";
+import { columns, colspan, rowspan } from "blogData/blockClasses";
 interface Props {
-  attrs: any
+  attrs: any;
 }
-const Grid: React.FC<Props> = memo( ({ attrs, children }) => {
-  
+const Grid: React.FC<Props> = memo(({ attrs, children }) => {
   // Tailwind compile hack
   // const columns = [
   //   '',
@@ -33,15 +32,17 @@ const Grid: React.FC<Props> = memo( ({ attrs, children }) => {
   // ]
 
   return (
-    <div className={`
+    <div
+      className={`
       grid  
       ${attrs.columns ? columns[attrs.columns] : null}  
       ${attrs.colspan ? colspan[attrs.colspan] : null} 
       ${attrs.rowspan ? rowspan[attrs.rowspan] : null} 
-    `}>
-      <div className={`absolute ${attrs.background} inset-0 z-0`}></div> 
+    `}
+    >
+      <div className={`absolute ${attrs.background} inset-0 z-0`}></div>
       {children}
     </div>
   );
 });
-export default Grid
+export default Grid;

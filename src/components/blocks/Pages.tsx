@@ -1,21 +1,20 @@
 import { FiFile, FiAnchor } from "react-icons/fi";
 
-import { useRouter } from 'next/router'
-import { useBlocks } from 'store/blocksStore'
+import { useRouter } from "next/router";
+import { useBlocks } from "store/blocksStore";
 export const Pages: React.FC = () => {
-  
   const router = useRouter();
   const form = {
-    target: ''
-  }
-  const buttonClass = " bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500"
+    target: "",
+  };
+  const buttonClass =
+    " bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500";
 
- 
-  
   return (
     <div className="text-sm">
       <div className="flex items-center text-base p-2 bg-pink-600 text-white">
-        <FiFile/><span className="ml-2">Pages list</span>
+        <FiFile />
+        <span className="ml-2">Pages list</span>
       </div>
       <div className="p-2 border-b flex">
         <div className="flex-1">Slug</div>
@@ -35,22 +34,25 @@ export const Pages: React.FC = () => {
       })}*/}
       <div className="p-2 mt-1 border-t border-b">
         <div className="flex items-center text-base mb-2">
-          <FiAnchor/><span className="ml-2">Register new page</span>
+          <FiAnchor />
+          <span className="ml-2">Register new page</span>
         </div>
-        <input 
-            className="w-full p-2 border" 
-            placeholder="Insert unique slug name"
-              // defaultValue={form.title}
-              onChange={(e)=>form.target = e.target.value}
-             />
-          <button onClick={(e)=>{
-
-             
-              router.replace(form.target);
-              useBlocks.setState({composerTab:'page'})
-              
-            }} className={buttonClass}>Register page</button>
+        <input
+          className="w-full p-2 border"
+          placeholder="Insert unique slug name"
+          // defaultValue={form.title}
+          onChange={(e) => (form.target = e.target.value)}
+        />
+        <button
+          onClick={(e) => {
+            router.replace(form.target);
+            useBlocks.setState({ composerTab: "page" });
+          }}
+          className={buttonClass}
+        >
+          Register page
+        </button>
       </div>
-
-    </div>  
-  )}
+    </div>
+  );
+};

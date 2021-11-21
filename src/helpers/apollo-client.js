@@ -1,6 +1,11 @@
 // ./apollo-client.js
 
-import { ApolloClient, InMemoryCache, ApolloLink, createHttpLink } from "@apollo/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloLink,
+  createHttpLink,
+} from "@apollo/client";
 import { UserState, useUser } from "store/userStore";
 import { setContext } from "@apollo/client/link/context";
 
@@ -30,15 +35,14 @@ const afterwareLink = new ApolloLink((operation, forward) => {
 });
 
 const httpLink = createHttpLink({
-    uri: 'http://localhost:3000/admin-api',
-    // uri: `${process.env.REACT_APP_API_URL}admin-api`,
-    credentials: "same-origin",
+  uri: "http://localhost:3000/admin-api",
+  // uri: `${process.env.REACT_APP_API_URL}admin-api`,
+  credentials: "same-origin",
 });
 
-
 const client = new ApolloClient({
-    link: afterwareLink.concat(authLink).concat(httpLink),
-    cache: new InMemoryCache(),
+  link: afterwareLink.concat(authLink).concat(httpLink),
+  cache: new InMemoryCache(),
 });
 
 export default client;

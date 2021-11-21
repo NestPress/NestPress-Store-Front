@@ -1,20 +1,17 @@
 // @ts-nocheck
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 export const useStickyState = (defaultValue, key) => {
   const [value, setValue] = useState(() => {
     if (typeof window !== "undefined") {
       const stickyValue = localStorage.getItem(key);
-      return stickyValue !== null
-      ? JSON.parse(stickyValue)
-      : defaultValue;
+      return stickyValue !== null ? JSON.parse(stickyValue) : defaultValue;
     }
-    
   });
   useEffect(() => {
     localStorage.setItem(key, JSON.stringify(value));
   }, [key, value]);
   return [value, setValue];
-}
+};
 
 // import { usePage } from 'store/pageStore'
 
@@ -37,16 +34,14 @@ export const useStickyState = (defaultValue, key) => {
 // 	let pages = getBlogPages();
 // 	if(!pages) pages = []
 // 	const page = pages.find(x => x.slug === input.slug);
-// 	!page 
+// 	!page
 // 		? pages.push(input)
 // 		: page = Object.assign(page, input);
 
-	
 // 	if (typeof window !== "undefined") {
 // 		sessionStorage.setItem('npPages', JSON.stringify(pages));
 // 	}
 // }
-
 
 // export const Mock = {
 // 	getPages: function () {
@@ -54,7 +49,7 @@ export const useStickyState = (defaultValue, key) => {
 //       const pages = sessionStorage.getItem('npPages')
 //       return pages && JSON.parse(pages)
 //     });
-//   },	
+//   },
 //   getPage: async function (slug) {
 //     await null;
 //     return Promise.resolve().then(function () {
@@ -66,15 +61,15 @@ export const useStickyState = (defaultValue, key) => {
 //         layout: ''
 //       };
 //     });
-//   }, 
+//   },
 //   setPage:  function (data) {
 //     return Promise.resolve().then(function () {
 //       const pages = sessionStorage.getItem('npPages')
 //       const parsePages = pages && JSON.parse(pages)
 //       if(!parsePages) parsePages = []
- 
+
 //       const page = parsePages.find(x => x.slug === data.slug);
-//        !page 
+//        !page
 //          ? parsePages.push(data)
 //          : page = Object.assign(page, data);
 
@@ -82,7 +77,7 @@ export const useStickyState = (defaultValue, key) => {
 //       // console.log(pages)
 //       sessionStorage.setItem('npPages', JSON.stringify(parsePages));
 //     });
-//   }, 
+//   },
 //   setItem: function (key, value) {
 //       return Promise.resolve().then(function () {
 //           localStorage.setItem(key, value);
@@ -94,4 +89,3 @@ export const useStickyState = (defaultValue, key) => {
 //       });
 //   }
 // };
-
