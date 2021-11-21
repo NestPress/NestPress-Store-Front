@@ -1,3 +1,7 @@
+/* TODO fix type */
+// @ts-ignore
+// @ts-nocheck
+
  import { FiCornerRightDown, FiArrowDown, FiExternalLink } from "react-icons/fi";
  import { BlocksHeader} from 'components/blocks'
  import { useBlocks } from 'store/blocksStore'
@@ -23,11 +27,11 @@
       <div className="py-1">ParentID</div>
       <div className="col-span-3 bg-gray-100 p-1 border">{block()?.parentId || ''}</div>
       {
-        Object.keys(block().attrs).map((key, index) => {
+        Object.keys(block()?.attrs || {}).map((key, index) => {
           return !replace ? (
             <>
               <div key={index} className="py-1">{key}</div>
-              { key==='text' && 
+              { (key==='text' || key==='mutation') && 
                 <textarea 
                   onChange={(e)=>setBlockAttrs({key:key,value:e.target.value})}  
                   /* TODO fix type */
@@ -57,7 +61,7 @@
                 </>
               }
 
-              { (key!=='text' && key!=='columns' && key!=='colspan' && key!=='rowspan' && key!=='rows' && key!=='background') && 
+              { (key!=='text' && key!=='mutation' && key!=='columns' && key!=='colspan' && key!=='rowspan' && key!=='rows' && key!=='background') && 
                 <input 
                   onChange={(e)=>setBlockAttrs({key:key,value:e.target.value})}  
                   className="col-span-3 border p-1" value={block()?.attrs[key]}/>

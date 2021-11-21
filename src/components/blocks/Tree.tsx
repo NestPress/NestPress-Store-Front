@@ -58,7 +58,7 @@ export const Tree: React.FC<Props> = memo(({ blocks, parentId = 0, level = 0 }: 
             }
           }}
         >
-          <Block attrs={item.attrs} key={item.id} item={item} level={level}>
+          <Block attrs={ {id:item.id, ...item.attrs} } key={item.id} item={item} level={level}>
              <Tree blocks={blocks} parentId={item.id} level={level + 1} item={item}/>
          </Block>
           <div style={{bottom:"-20px", right:"-1px", zIndex:1000}} className={`absolute text-xs text-white bg-blue-300 p-0.5 ${selectedBlockId == item.id ? 'visible' : 'invisible'}`}>{item.block}</div>

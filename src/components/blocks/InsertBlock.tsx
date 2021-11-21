@@ -97,7 +97,9 @@ export const InsertBlock: React.FC<Props> = ({type}) => {
             onClick={(e)=>addBlock( { 
               ...prefix, 
               block: "form/Form", 
-              attrs:{} 
+              attrs:{
+                mutation: ''
+              } 
             })} >Form component</button>
 
           <button className={buttonClass} 
@@ -106,7 +108,8 @@ export const InsertBlock: React.FC<Props> = ({type}) => {
               block: "form/InputField", 
               attrs:{
                 label: "Example label",
-                placeholder: "Example placeholder"
+                placeholder: "Example placeholder",
+                outputValue: "data.value"
               } 
             })} >Input field</button>
 
