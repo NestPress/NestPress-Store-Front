@@ -1,3 +1,4 @@
+import { FiLink, FiLogOut } from "react-icons/fi";
 import { useBlocks } from "store/blocksStore";
 interface Props {
   type: string;
@@ -14,7 +15,7 @@ export const NavBlocks: React.FC = ({type}) => {
   };
 
   const buttonClass =
-    " bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500";
+    "text-sm bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500 flex items-center";
   return (
     <div className="px-2">
       <button
@@ -31,7 +32,7 @@ export const NavBlocks: React.FC = ({type}) => {
           })
         }
       >
-        Navigation link
+        <FiLink/><span className="ml-2">Navigation link</span>
       </button>
 
       <button
@@ -47,7 +48,8 @@ export const NavBlocks: React.FC = ({type}) => {
           })
         }
       >
-        Navigation button
+        <FiLink/><span className="ml-2">Navigation button</span>
+        
       </button>
 
       <button
@@ -63,7 +65,7 @@ export const NavBlocks: React.FC = ({type}) => {
           })
         }
       >
-        Logout link
+        <FiLogOut/><span className="ml-2">Logout link</span>
       </button>
     </div>
   );

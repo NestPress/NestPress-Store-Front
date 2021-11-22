@@ -31,6 +31,8 @@ const Grid: React.FC<Props> = memo(({ attrs, children }) => {
   //   'row-span-4',
   // ]
 
+
+
   return (
     <div
       className={`
@@ -38,6 +40,7 @@ const Grid: React.FC<Props> = memo(({ attrs, children }) => {
       ${attrs.columns ? columns[attrs.columns] : null}  
       ${attrs.colspan ? colspan[attrs.colspan] : null} 
       ${attrs.rowspan ? rowspan[attrs.rowspan] : null} 
+      ${attrs.border ? attrs.border : null} 
     `}
     >
       <div className={`absolute ${attrs.background} inset-0 z-0`}></div>

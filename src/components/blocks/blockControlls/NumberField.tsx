@@ -13,7 +13,7 @@ export const NumberField: React.FC<Props> = ({ keyName }) => {
       onChange={(e) =>
         setBlockAttrs({ key: keyName, value: e.target.value})
       }
-      className="col-span-3 border p-1"
+      className="col-span-3 border p-2 text-sm"
       value={block()?.attrs[keyName]}
     />
   );

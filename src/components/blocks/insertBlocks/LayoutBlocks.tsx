@@ -1,3 +1,5 @@
+
+import { FiGrid, FiType, FiImage, FiMonitor } from "react-icons/fi";
 import { useBlocks } from "store/blocksStore";
 interface Props {
   type: string;
@@ -14,7 +16,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
   };
 
   const buttonClass =
-    " bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500";  
+    "text-sm bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500 flex items-center";  
   return (
     <div className="px-2">
       <button
@@ -28,11 +30,12 @@ export const LayoutBlocks: React.FC = ({type}) => {
               colspan: "",
               rowspan: "",
               background: "",
+              border: "",
             },
           })
         }
       >
-        Grid
+        <FiGrid/><span className="ml-2">Grid</span>
       </button>
 
       <button
@@ -51,7 +54,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
           })
         }
       >
-        Title
+        <FiType/><span className="ml-2">Title</span>
       </button>
 
       <button
@@ -67,10 +70,26 @@ export const LayoutBlocks: React.FC = ({type}) => {
           })
         }
       >
-        Paragraph
+        <FiType/><span className="ml-2">Paragraph</span>
       </button>
 
-      <button className={buttonClass}>Image</button>
+      <button
+        className={buttonClass}
+        onClick={(e) =>
+          addBlock({
+            ...prefix,
+            block: "layout/Paragraph",
+            attrs: {
+              text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+              colspan: 0,
+            },
+          })
+        }
+      >
+        <FiImage/><span className="ml-2">Image</span>
+      </button>
+
+   
 
       <button
         className={buttonClass}
@@ -82,7 +101,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
           })
         }
       >
-        Breakpoints
+        <FiMonitor/><span className="ml-2">Breakpoints</span>
       </button>
     </div>
   );

@@ -1,3 +1,4 @@
+import { FiClipboard, FiList, FiHash, FiSave } from "react-icons/fi";
 import { useBlocks } from "store/blocksStore";
 interface Props {
   type: string;
@@ -14,7 +15,7 @@ export const FormBlocks: React.FC = ({type}) => {
   };
 
   const buttonClass =
-    " bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500";
+    "text-sm bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500 flex items-center";
   return (
     <div className="px-2">
       <button
@@ -29,7 +30,7 @@ export const FormBlocks: React.FC = ({type}) => {
           })
         }
       >
-        Form component
+        <FiClipboard/><span className="ml-2">Form component</span>
       </button>
 
       <button
@@ -46,7 +47,7 @@ export const FormBlocks: React.FC = ({type}) => {
           })
         }
       >
-        Input field
+        <FiHash/><span className="ml-2">Input field</span>
       </button>
 
       <button
@@ -63,7 +64,8 @@ export const FormBlocks: React.FC = ({type}) => {
           })
         }
       >
-        Textarea field
+        <FiHash/><span className="ml-2">Textarea field</span>
+        
       </button>
 
       <button
@@ -78,7 +80,7 @@ export const FormBlocks: React.FC = ({type}) => {
           })
         }
       >
-        Select and search field
+        <FiList/><span className="ml-2"> Select and search field</span>
       </button>
 
       <button
@@ -94,7 +96,7 @@ export const FormBlocks: React.FC = ({type}) => {
           })
         }
       >
-        Submit button
+        <FiSave/><span className="ml-2"> Submit button</span>
       </button>
     </div>
   );

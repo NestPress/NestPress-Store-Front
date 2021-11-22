@@ -5,7 +5,7 @@
 import { FiCornerRightDown, FiArrowDown, FiExternalLink } from "react-icons/fi";
 import { BlocksHeader } from "components/blocks";
 import { useBlocks } from "store/blocksStore";
-import { TextareaField, BackgroundColor, NumberField, FontSize, TextColor } from "components/blocks/blockControlls"
+import { TextareaField, BackgroundColor, NumberField, FontSize, TextColor, Border } from "components/blocks/blockControlls"
 export const BlockControlls: React.FC = () => {
   const blocks = useBlocks((state) => state.blocks);
   const block = () => blocks.find((x) => x.id === selectedBlockId);
@@ -15,7 +15,9 @@ export const BlockControlls: React.FC = () => {
   const removeBlock = useBlocks((state) => state.removeBlock);
 
   const buttonClass =
-    "flex items-center bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500";
+    "flex items-center bg-blue-400 w-full p-2 rounded  text-white hover:bg-blue-500";
+  const buttonDel =
+    "flex items-center bg-red-400 w-full p-2 rounded  text-white hover:bg-blue-500";
 
   return (
     <>
@@ -63,11 +65,14 @@ export const BlockControlls: React.FC = () => {
                 <TextColor keyName={key}/>
               )}
 
-              
+              {key === "border" && (
+                <Border keyName={key}/>
+              )}
 
               {key !== "text" &&
                 key !== "mutation" &&
                 key !== "columns" &&
+                key !== "border" &&
                 key !== "colspan" &&
                 key !== "rowspan" &&
                 key !== "rows" &&
@@ -88,37 +93,37 @@ export const BlockControlls: React.FC = () => {
       </div>
 
       {!replace ? (
-        <div className="px-2 border-t pt-1">
+        <div className="px-2 border-t pt-2 grid grid-cols-2 gap-1 text-sm">
           <button
             className={buttonClass}
             onClick={(e) => useBlocks.setState({ panel: "insertChild" })}
           >
             <FiCornerRightDown />
-            <span className="ml-2">Insert child block</span>
+            <span className="ml-2">Insert child</span>
           </button>
           <button
             className={buttonClass}
             onClick={(e) => useBlocks.setState({ panel: "insertNext" })}
           >
             <FiArrowDown />
-            <span className="ml-2">Insert next block</span>
+            <span className="ml-2">Insert next</span>
           </button>
           <button
             className={buttonClass}
             onClick={(e) => useBlocks.setState({ replace: true })}
           >
             <FiExternalLink />
-            <span className="ml-2">Move inside another block</span>
+            <span className="ml-2">Replace deep</span>
           </button>
           <button
-            className={buttonClass}
+            className={buttonDel}
             onClick={(e) => {
               useBlocks.setState({ panel: "mainPanel" });
               removeBlock();
             }}
           >
             <FiExternalLink />
-            <span className="ml-2">Remove block</span>
+            <span className="ml-2">Remove</span>
           </button>
         </div>
       ) : (
