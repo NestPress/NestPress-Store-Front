@@ -1,10 +1,19 @@
 
 import { FiGrid, FiType, FiImage, FiMonitor } from "react-icons/fi";
+import { useStickyState, setItem} from "helpers/localMockupApi"
+import { useRouter } from "next/router";
+
 import { useBlocks } from "store/blocksStore";
 interface Props {
   type: string;
 }
 export const LayoutBlocks: React.FC = ({type}) => {
+  
+   const slugPath = useRouter().query?.slugPath || ["home"];
+  
+  /* Data loader localstorage */
+  const [ storageBlocks, setStorageBlocks ] = useStickyState([], 'storageBlocks');
+  
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
   const blocks = useBlocks((state) => state.blocks);
   const block = () => blocks.find((x) => x.id === selectedBlockId);
@@ -15,6 +24,12 @@ export const LayoutBlocks: React.FC = ({type}) => {
     parentId: type === "next" ? block()?.parentId : block()?.id,
   };
 
+  const teachSetBlock = (block) => {
+    addBlock(block);
+    /* Data loader localstorage */
+    setItem(block, storageBlocks, setStorageBlocks, 'id')
+  }
+
   const buttonClass =
     "text-sm bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500 flex items-center";  
   return (
@@ -22,9 +37,10 @@ export const LayoutBlocks: React.FC = ({type}) => {
       <button
         className={buttonClass}
         onClick={(e) =>
-          addBlock({
+          teachSetBlock({
             ...prefix,
             block: "layout/Grid",
+            post: slugPath[0],
             attrs: {
               columns: "",
               colspan: "",
@@ -41,9 +57,10 @@ export const LayoutBlocks: React.FC = ({type}) => {
       <button
         className={buttonClass}
         onClick={(e) =>
-          addBlock({
+          teachSetBlock({
             ...prefix,
             block: "layout/Title",
+            post: slugPath[0],
             attrs: {
               text: "Example title",
               color: "dark-text",
@@ -60,9 +77,10 @@ export const LayoutBlocks: React.FC = ({type}) => {
       <button
         className={buttonClass}
         onClick={(e) =>
-          addBlock({
+          teachSetBlock({
             ...prefix,
             block: "layout/Paragraph",
+            post: slugPath[0],
             attrs: {
               text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
               colspan: 0,
@@ -76,9 +94,10 @@ export const LayoutBlocks: React.FC = ({type}) => {
       <button
         className={buttonClass}
         onClick={(e) =>
-          addBlock({
+          teachSetBlock({
             ...prefix,
             block: "layout/Paragraph",
+            post: slugPath[0],
             attrs: {
               text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
               colspan: 0,
@@ -94,8 +113,9 @@ export const LayoutBlocks: React.FC = ({type}) => {
       <button
         className={buttonClass}
         onClick={(e) =>
-          addBlock({
+          teachSetBlock({
             ...prefix,
+            post: slugPath[0],
             block: "layout/Breakpoints",
             attrs: {},
           })

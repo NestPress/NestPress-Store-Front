@@ -4,6 +4,7 @@
 import { FiAnchor } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { usePage } from "store/pageStore";
+import { useStickyState, getPageBySlug, setItem} from "helpers/localMockupApi"
 
 export const Page: React.FC = () => {
   const slugPath = useRouter().query?.slugPath || ["home"];
@@ -12,23 +13,10 @@ export const Page: React.FC = () => {
   const buttonDeleteClass =
     " bg-red-400 w-full p-2 rounded mt-1 text-white hover:bg-red-500";
 
-  // const [
-  //   posts,
-  //   setPosts
-  // ] = useStickyState([], 'posts');
+  /* Data loader localstorage */
+  const [ storagePosts, setStoragePosts ] = useStickyState([], 'storagePosts');
+  const currentPage = getPageBySlug(slugPath[0], storagePosts);
 
-  /* TODO fix type */
-  // @ts-ignore: Unreachable code error
-  // const currentPage = posts?.find(ob => ob.slug === slugPath[0]) ||
-  //   {
-  //     title: '',
-  //     slug: slugPath[0],
-  //     layout: 'main',
-  //     type:'page',
-  //     new: true
-  //   }
-
-  const currentPage = {};
   return (
     currentPage && (
       <>
@@ -48,16 +36,8 @@ export const Page: React.FC = () => {
           onSubmit={(e) => {
             e.preventDefault();
             delete currentPage.new;
-            /* TODO fix type */
-            // @ts-ignore: Unreachable code error
-            // const copy = posts.map(el => ({ ...el }))
-            /* TODO fix type */
-            // @ts-ignore: Unreachable code error
-            // const updateEl = copy.find(x => x.slug === currentPage.slug)
-            /* TODO fix type */
-            // @ts-ignore: Unreachable code error
-            // updateEl ? updateEl = Object.assign(updateEl, currentPage) : copy.push(currentPage)
-            // setPosts(copy)
+            /* Data loader localstorage */
+            setItem(currentPage, storagePosts, setStoragePosts, 'slug')
           }}
         >
           <div className="p-2">
@@ -84,19 +64,19 @@ export const Page: React.FC = () => {
               </select>
             </div>
           )}
-          <div className="p-2 border-t flex">
-            {!currentPage.new && (
-              <>
-                <button className={buttonClass}>Update page</button>
-                <button className={buttonDeleteClass}>Delete page</button>
-              </>
-            )}
-            {currentPage.new && (
-              <>
-                <button className={buttonClass}>Create page</button>
-              </>
-            )}
-          </div>
+         
+          {!currentPage.new && (
+            <div className="p-2 border-t grid grid-cols-2 gap-1">
+              <button className={buttonClass}>Update page</button>
+              <button className={buttonDeleteClass}>Delete page</button>
+            </div>
+          )}
+          {currentPage.new && (
+            <div className="p-2 border-t">
+              <button className={buttonClass}>Create page</button>
+            </div>
+          )}
+    
         </form>
       </>
     )

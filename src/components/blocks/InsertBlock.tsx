@@ -2,17 +2,14 @@ import { FiCornerRightDown, FiArrowDown } from "react-icons/fi";
 import { BlocksHeader } from "components/blocks";
 import { DataBlocks, FormBlocks, LayoutBlocks, NavBlocks } from "components/blocks/insertBlocks";
 import { useBlocks } from "store/blocksStore";
+
 interface Props {
   type: string;
 }
 export const InsertBlock: React.FC<Props> = ({ type }) => {
-  // const blocks = useBlocks((state) => state.blocks);
-  // const addBlock = useBlocks((state) => state.addBlock);
-  // const selectedBlockId = useBlocks((state) => state.selectedBlockId);
-  const insertBlocksType = useBlocks((state) => state.insertBlocksType);
-  // const block = () => blocks.find((x) => x.id === selectedBlockId);
+  
 
- 
+  const insertBlocksType = useBlocks((state) => state.insertBlocksType);
   return (
     <>
       <BlocksHeader />

@@ -10,10 +10,10 @@ const useBlocks = create((set) => ({
   replace: false,
   components:{},
   blocks:[
-    { "id": 1, "parentId": 0, block:"layout/Grid", layout:null, page:'home', attrs:{
+    { "id": 1, "parentId": 0, block:"layout/Grid", layout:null, post:'home', attrs:{
       columns:'', colspan:'', rowspan:'', background:''} 
     },
-    { "id": 2, "parentId": 0, block:"layout/Title", layout:null, page:'home', attrs:{
+    { "id": 2, "parentId": 0, block:"layout/Title", layout:null, post:'home', attrs:{
       text:'aaa'} 
     }
   ],

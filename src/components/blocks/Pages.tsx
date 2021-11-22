@@ -1,9 +1,20 @@
 import { FiFile, FiAnchor } from "react-icons/fi";
+import { useStickyState } from "helpers/localMockupApi"
 
 import { useRouter } from "next/router";
 import { useBlocks } from "store/blocksStore";
 export const Pages: React.FC = () => {
+  
   const router = useRouter();
+  
+  /* 
+    Data loader 
+    localstorage mode
+  */
+  const [ storagePosts, setStoragePosts ] = useStickyState([], 'storagePosts');
+  /* !Data loader */
+
+
   const form = {
     target: "",
   };
@@ -21,7 +32,7 @@ export const Pages: React.FC = () => {
         <div className="flex-1 text-center">Title</div>
         <div className="flex-1 text-center">Layout</div>
       </div>
-      {/*{posts.map((el)=>{
+      {storagePosts.map((el)=>{
         return <div onClick={(e)=>{
               useBlocks.setState({composerTab:'page'})
               router.replace(el.slug);
@@ -31,7 +42,7 @@ export const Pages: React.FC = () => {
           <div className="flex-1 text-center">{el.title}</div>
           <div className="flex-1 text-center">{el.layout}</div>
         </div>
-      })}*/}
+      })}
       <div className="p-2 mt-1 border-t border-b">
         <div className="flex items-center text-base mb-2">
           <FiAnchor />
@@ -40,7 +51,7 @@ export const Pages: React.FC = () => {
         <input
           className="w-full p-2 border"
           placeholder="Insert unique slug name"
-          // defaultValue={form.title}
+          defaultValue={form.title}
           onChange={(e) => (form.target = e.target.value)}
         />
         <button
