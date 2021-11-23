@@ -19,7 +19,7 @@ export const Page: React.FC = () => {
 
   return (
     currentPage && (
-      <>
+      <div>
         <div className="p-2 flex items-center bg-pink-600 text-white">
           <FiAnchor />
           <span className="ml-2">{slugPath[0]}</span>
@@ -40,7 +40,7 @@ export const Page: React.FC = () => {
             setItem(currentPage, storagePosts, setStoragePosts, 'slug')
           }}
         >
-          <div className="p-2">
+          <fieldset className="p-2">
             <div className="w-full p-2 text-sm">Page title</div>
             <input
               key={currentPage?.title}
@@ -48,10 +48,10 @@ export const Page: React.FC = () => {
               defaultValue={currentPage?.title}
               onChange={(e) => (currentPage.title = e.target.value)}
             />
-          </div>
+          </fieldset>
           {!currentPage.new && (
-            <div className="p-2 border-t">
-              <div className="w-full px-2 text-sm">Layout</div>
+            <fieldset className="p-2 border-t">
+              <label className="w-full px-2 text-sm">Layout</label>
               <div className="px-2 text-xs pb-2">
                 Warning! Change layout dont unlink current page content. You
                 should link it manually
@@ -62,23 +62,23 @@ export const Page: React.FC = () => {
               >
                 <option>Main</option>
               </select>
-            </div>
+            </fieldset>
           )}
          
           {!currentPage.new && (
-            <div className="p-2 border-t grid grid-cols-2 gap-1">
+            <fieldset className="p-2 border-t grid grid-cols-2 gap-1">
               <button className={buttonClass}>Update page</button>
               <button className={buttonDeleteClass}>Delete page</button>
-            </div>
+            </fieldset>
           )}
           {currentPage.new && (
-            <div className="p-2 border-t">
+            <fieldset className="p-2 border-t">
               <button className={buttonClass}>Create page</button>
-            </div>
+            </fieldset>
           )}
     
         </form>
-      </>
+      </div>
     )
   );
 };

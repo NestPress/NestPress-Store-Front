@@ -27,6 +27,13 @@ export const MainPanel: React.FC = () => {
         >
           Layouts
         </div>
+        <div
+          onClick={(e) => useBlocks.setState({ composerTab: "settings" })}
+          className={`p-3 flex-1 border-r text-center 
+            ${composerTab === "settings" ? "bg-gray-100" : "cursor-pointer"}`}
+        >
+          Settings
+        </div>
       </div>
 
       {composerTab === "page" && <Page />}

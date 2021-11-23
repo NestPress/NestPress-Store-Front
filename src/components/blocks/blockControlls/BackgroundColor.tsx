@@ -4,8 +4,8 @@ interface Props {
 }
 export const BackgroundColor: React.FC<Props> = ({ keyName }) => {
   const blocks = useBlocks((state) => state.blocks);
-  const block = () => blocks.find((x) => x.id === selectedBlockId);
   const setBlockAttrs = useBlocks((state) => state.setBlockAttrs);
+  const block = () => blocks.find((x) => x.id === selectedBlockId);
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
   return (
     <select
