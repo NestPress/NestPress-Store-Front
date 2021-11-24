@@ -34,6 +34,16 @@ export const setItemToStorage = (element, elements, set, key) => {
   return element
 }
 
+export const removeItemFromStorage = (elements, set, key, value) => {
+  const copy = elements?.map(el => ({ ...el })) || []
+  const updateCopy = copy?.filter(x => x[key] !== value)
+  console.log(updateCopy)
+  set(updateCopy)
+  // TODO Remove all childerens //
+}
+
+
+
 export const downloadObjectAsJson = (exportObj: any, exportName: any) => {
   const dataStr =
     "data:text/json;charset=utf-8," +

@@ -5,11 +5,15 @@
 import { FiCornerRightDown, FiArrowDown, FiExternalLink } from "react-icons/fi";
 import { BlocksHeader } from "components/blocks";
 import { useBlocks } from "store/blocksStore";
+import { useStickyState , setItemToStorage, removeItemFromStorage } from "helpers/localMockupApi";
 
 import { getNestedChildren } from 'components/blocks/helpers/blocks'
 import { ImgObjectFit, TextareaField, BackgroundColor, NumberField, FontSize, TextColor, Border, Copypaste, GridFlow } from "components/blocks/blockControlls"
 
 export const BlockControlls: React.FC = () => {
+
+  // ----
+  const [ storageBlocks, setStorageBlocks ] = useStickyState([], 'storageBlocks');
   
   const blocks = useBlocks((state) => state.blocks);
   const block = () => blocks.find((x) => x.id === selectedBlockId);
@@ -23,6 +27,7 @@ export const BlockControlls: React.FC = () => {
     "flex items-center bg-blue-400 w-full p-2 rounded  text-white hover:bg-blue-500";
   const buttonDel =
     "flex items-center bg-red-400 w-full p-2 rounded  text-white hover:bg-blue-500";
+  
 
   
 
@@ -117,6 +122,7 @@ export const BlockControlls: React.FC = () => {
             <FiCornerRightDown />
             <span className="ml-2">Insert child</span>
           </button>
+          
           <button
             className={buttonClass}
             onClick={(e) => useBlocks.setState({ panel: "insertNext" })}
@@ -124,6 +130,7 @@ export const BlockControlls: React.FC = () => {
             <FiArrowDown />
             <span className="ml-2">Insert next</span>
           </button>
+          
           <button
             className={buttonClass}
             onClick={(e) => useBlocks.setState({ replace: true })}
@@ -131,11 +138,15 @@ export const BlockControlls: React.FC = () => {
             <FiExternalLink />
             <span className="ml-2">Replace deep</span>
           </button>
+          
           <button
             className={buttonDel}
             onClick={(e) => {
               useBlocks.setState({ panel: "mainPanel" });
               removeBlock();
+              // ---
+              removeItemFromStorage(storageBlocks, setStorageBlocks, 'id', selectedBlockId)
+
             }}
           >
             <FiExternalLink />
