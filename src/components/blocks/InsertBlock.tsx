@@ -7,8 +7,6 @@ interface Props {
   type: string;
 }
 export const InsertBlock: React.FC<Props> = ({ type }) => {
-  
-
   const insertBlocksType = useBlocks((state) => state.insertBlocksType);
   return (
     <>

@@ -14,12 +14,14 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = (
   const { Component, pageProps } = props;
   // const getLayout = Component.getLayout || ((page: ReactNode) => page);
   return (
-    <ApolloProvider client={client}>
-      <Component {...pageProps} />
-      {/*getLayout(<Component {...pageProps} />)*/}
-      {/*<Message/>*/}
-    </ApolloProvider>
+    <Component {...pageProps} />
   );
 };
 
 export default App;
+
+{/*<ApolloProvider client={client}>
+  <Component {...pageProps} />
+  getLayout(<Component {...pageProps} />)
+  <Message/>
+</ApolloProvider>*/}

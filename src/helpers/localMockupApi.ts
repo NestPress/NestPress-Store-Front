@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { useState, useEffect } from "react";
+   
 export const useStickyState = (defaultValue, key) => {
   const [value, setValue] = useState(() => {
     if (typeof window !== "undefined") {
@@ -13,7 +14,7 @@ export const useStickyState = (defaultValue, key) => {
   return [value, setValue];
 };
 
-
+// --------------------------------------------------------------------------------
 export const getPageBySlug = (slug, posts) => {
   return posts?.find(ob => ob.slug === slug) ||
     {
@@ -25,10 +26,10 @@ export const getPageBySlug = (slug, posts) => {
     }
 }
 
-export const setItem = (page, posts, set, key) => {
-  const copy = posts.map(el => ({ ...el }))
-  const updateEl = copy.find(x => x[key] === page[key])
-  updateEl ? updateEl = Object.assign(updateEl, page) : copy.push(page)
+export const setItemToStorage = (element, elements, set, key) => {
+  const copy = elements.map(el => ({ ...el }))
+  const updateEl = copy.find(x => x[key] === element[key])
+  updateEl ? updateEl = Object.assign(updateEl, element) : copy.push(element)
   set(copy)
 }
 

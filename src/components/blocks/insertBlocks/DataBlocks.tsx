@@ -5,10 +5,12 @@ interface Props {
   type: string;
 }
 export const DataBlocks: React.FC = ({type}) => {
+
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
   const blocks = useBlocks((state) => state.blocks);
   const block = () => blocks.find((x) => x.id === selectedBlockId);
   const addBlock = useBlocks((state) => state.addBlock);
+
   
   const slugPath = useRouter().query?.slugPath || ["home"];
   const uid = () => new Date().getTime().toString(36);

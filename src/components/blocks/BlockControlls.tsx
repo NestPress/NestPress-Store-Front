@@ -46,27 +46,27 @@ export const BlockControlls: React.FC = () => {
                 key === "colspan" ||
                 key === "rowspan" ||
                 key === "rows") && (
-                <NumberField keyName={key}/>
+                <NumberField key={`nbr-${index}`} keyName={key}/>
               )}
 
               {(key === "text" || key === "mutation") && (
-                <TextareaField keyName={key}/>
+                <TextareaField key={`txa-${index}`} keyName={key}/>
               )}
 
               {key === "background" && (
-                <BackgroundColor keyName={key}/>
+                <BackgroundColor key={`bgc-${index}`} keyName={key}/>
               )}
 
               {key === "fontsize" && (
-                <FontSize keyName={key}/>
+                <FontSize key={`fsz-${index}`} keyName={key}/>
               )}
 
               {key === "textcolor" && (
-                <TextColor keyName={key}/>
+                <TextColor key={`txc-${index}`} keyName={key}/>
               )}
 
               {key === "border" && (
-                <Border keyName={key}/>
+                <Border key={`brd-${index}`} keyName={key}/>
               )}
 
               {key !== "text" &&
@@ -83,6 +83,7 @@ export const BlockControlls: React.FC = () => {
                     onChange={(e) =>
                       setBlockAttrs({ key: key, value: e.target.value })
                     }
+                    key={`inp-${index}`}
                     className="col-span-3 border p-1"
                     value={block()?.attrs[key]}
                   />

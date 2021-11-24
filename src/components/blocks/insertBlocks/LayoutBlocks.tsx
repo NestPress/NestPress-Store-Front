@@ -1,37 +1,40 @@
 
 import { FiGrid, FiType, FiImage, FiMonitor } from "react-icons/fi";
-import { useStickyState, setItem} from "helpers/localMockupApi"
+import { useStickyState, setItemToStorage} from "helpers/localMockupApi"
+import { uid } from 'components/blocks/helpers/blocks'
 import { useRouter } from "next/router";
-
 import { useBlocks } from "store/blocksStore";
 interface Props {
   type: string;
 }
+
 export const LayoutBlocks: React.FC = ({type}) => {
-  
-   const slugPath = useRouter().query?.slugPath || ["home"];
   
   /* Data loader localstorage */
   const [ storageBlocks, setStorageBlocks ] = useStickyState([], 'storageBlocks');
   
+  /* Zustand states */
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
   const blocks = useBlocks((state) => state.blocks);
   const block = () => blocks.find((x) => x.id === selectedBlockId);
   const addBlock = useBlocks((state) => state.addBlock);
-  const uid = () => new Date().getTime().toString(36);
+  
+  /* local consts */
+  const slugPath = useRouter().query?.slugPath || ["home"];
   const prefix = {
     id: uid(),
     parentId: type === "next" ? block()?.parentId : block()?.id,
   };
+  const buttonClass =
+    "text-sm bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500 flex items-center";  
 
+  /* local methosd */
   const teachSetBlock = (block) => {
     addBlock(block);
     /* Data loader localstorage */
-    setItem(block, storageBlocks, setStorageBlocks, 'id')
+    setItemToStorage(block, storageBlocks, setStorageBlocks, 'id')
   }
 
-  const buttonClass =
-    "text-sm bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500 flex items-center";  
   return (
     <div className="px-2">
       <button

@@ -4,7 +4,7 @@
 import { FiAnchor } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { usePage } from "store/pageStore";
-import { useStickyState, getPageBySlug, setItem} from "helpers/localMockupApi"
+import { useStickyState, getPageBySlug, setItemToStorage} from "helpers/localMockupApi"
 
 export const Page: React.FC = () => {
   const slugPath = useRouter().query?.slugPath || ["home"];
@@ -37,7 +37,8 @@ export const Page: React.FC = () => {
             e.preventDefault();
             delete currentPage.new;
             /* Data loader localstorage */
-            setItem(currentPage, storagePosts, setStoragePosts, 'slug')
+            
+            setItemToStorage(currentPage, storagePosts, setStoragePosts, 'slug')
           }}
         >
           <fieldset className="p-2">
