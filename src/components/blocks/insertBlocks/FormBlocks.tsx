@@ -29,6 +29,7 @@ export const FormBlocks: React.FC = ({type}) => {
 
   /* local methosd */
   const teachSetBlock = (block) => {
+   /* Set to zustand state */
     addBlock(block);
     /* Data loader localstorage */
     setItemToStorage(block, storageBlocks, setStorageBlocks, 'id')
@@ -39,7 +40,7 @@ export const FormBlocks: React.FC = ({type}) => {
       <button
         className={buttonClass}
         onClick={(e) =>
-          addBlock({
+          teachSetBlock({
             ...prefix,
             block: "form/Form",
             post: slugPath[0],
@@ -55,7 +56,7 @@ export const FormBlocks: React.FC = ({type}) => {
       <button
         className={buttonClass}
         onClick={(e) =>
-          addBlock({
+          teachSetBlock({
             ...prefix,
             block: "form/InputField",
             post: slugPath[0],
@@ -73,7 +74,7 @@ export const FormBlocks: React.FC = ({type}) => {
       <button
         className={buttonClass}
         onClick={(e) =>
-          addBlock({
+          teachSetBlock({
             ...prefix,
             block: "form/TextareaField",
             post: slugPath[0],
@@ -92,7 +93,7 @@ export const FormBlocks: React.FC = ({type}) => {
       <button
         className={buttonClass}
         onClick={(e) =>
-          addBlock({
+          teachSetBlock({
             ...prefix,
             block: "form/SelectField",
             post: slugPath[0],
@@ -108,7 +109,7 @@ export const FormBlocks: React.FC = ({type}) => {
       <button
         className={buttonClass}
         onClick={(e) =>
-          addBlock({
+          teachSetBlock({
             ...prefix,
             block: "form/SubmitButton",
             post: slugPath[0],

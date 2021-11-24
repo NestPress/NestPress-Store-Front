@@ -1,4 +1,5 @@
 import { useBlocks } from "store/blocksStore";
+import { useStickyState, setItemToStorage} from "helpers/localMockupApi"
 interface Props {
   keyName: string;
 }
@@ -7,11 +8,19 @@ export const FontSize: React.FC<Props> = ({ keyName }) => {
   const block = () => blocks.find((x) => x.id === selectedBlockId);
   const setBlockAttrs = useBlocks((state) => state.setBlockAttrs);
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
+
+  /* Data loader localstorage */
+  const [ storageBlocks, setStorageBlocks ] = useStickyState([], 'storageBlocks');
+
   return (
     <select
       className="col-span-3 border bg-white"
-      onChange={(e) =>
+      onChange={(e) =>{
         setBlockAttrs({ key: keyName, value: e.target.value })
+        /* Data loader localstorage */
+        const toStorage = storageBlocks.find((x) => x.id === selectedBlockId).attrs[keyName] = e.target.value 
+        setItemToStorage(toStorage, storageBlocks, setStorageBlocks, 'id')
+        }
       }
     >
       <option selected={block()?.attrs[keyName] === ""} value="">

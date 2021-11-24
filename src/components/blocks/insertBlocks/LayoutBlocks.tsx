@@ -1,4 +1,3 @@
-
 import { FiGrid, FiType, FiImage, FiMonitor } from "react-icons/fi";
 import { useStickyState, setItemToStorage} from "helpers/localMockupApi"
 import { uid } from 'components/blocks/helpers/blocks'
@@ -30,6 +29,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
 
   /* local methosd */
   const teachSetBlock = (block) => {
+    /* Set to zustand state */
     addBlock(block);
     /* Data loader localstorage */
     setItemToStorage(block, storageBlocks, setStorageBlocks, 'id')
@@ -66,7 +66,6 @@ export const LayoutBlocks: React.FC = ({type}) => {
             post: slugPath[0],
             attrs: {
               text: "Example title",
-              color: "dark-text",
               colspan: 0,
               fontsize: '',
               textcolor: '',
@@ -87,6 +86,8 @@ export const LayoutBlocks: React.FC = ({type}) => {
             attrs: {
               text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
               colspan: 0,
+              fontsize: '',
+              textcolor: '',
             },
           })
         }

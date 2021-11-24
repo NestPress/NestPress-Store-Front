@@ -5,8 +5,12 @@
 import { FiCornerRightDown, FiArrowDown, FiExternalLink } from "react-icons/fi";
 import { BlocksHeader } from "components/blocks";
 import { useBlocks } from "store/blocksStore";
-import { TextareaField, BackgroundColor, NumberField, FontSize, TextColor, Border } from "components/blocks/blockControlls"
+
+import { getNestedChildren } from 'components/blocks/helpers/blocks'
+import { TextareaField, BackgroundColor, NumberField, FontSize, TextColor, Border, Copypaste } from "components/blocks/blockControlls"
+
 export const BlockControlls: React.FC = () => {
+  
   const blocks = useBlocks((state) => state.blocks);
   const block = () => blocks.find((x) => x.id === selectedBlockId);
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
@@ -14,22 +18,21 @@ export const BlockControlls: React.FC = () => {
   const replace = useBlocks((state) => state.replace);
   const removeBlock = useBlocks((state) => state.removeBlock);
 
+
   const buttonClass =
     "flex items-center bg-blue-400 w-full p-2 rounded  text-white hover:bg-blue-500";
   const buttonDel =
     "flex items-center bg-red-400 w-full p-2 rounded  text-white hover:bg-blue-500";
 
+  
+
   return (
     <>
-      <BlocksHeader />
+      <BlocksHeader title={block()?.block || ""} />
       <div className="grid grid-cols-4 text-xs gap-1 p-2">
         <div className="py-1">ID</div>
         <div className="col-span-3 bg-gray-100 p-1 border">
           {block()?.id || ""}
-        </div>
-        <div className="py-1">Block</div>
-        <div className="col-span-3 bg-gray-100 p-1 border">
-          {block()?.block || ""}
         </div>
         <div className="py-1">ParentID</div>
         <div className="col-span-3 bg-gray-100 p-1 border">
@@ -80,8 +83,10 @@ export const BlockControlls: React.FC = () => {
                 key !== "textcolor" &&
                 key !== "background" && (
                   <input
-                    onChange={(e) =>
-                      setBlockAttrs({ key: key, value: e.target.value })
+                    onChange={(e) => {
+                        setBlockAttrs({ key: key, value: e.target.value })
+                        
+                      }
                     }
                     key={`inp-${index}`}
                     className="col-span-3 border p-1"
