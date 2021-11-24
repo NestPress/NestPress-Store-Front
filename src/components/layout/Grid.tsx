@@ -36,11 +36,14 @@ const Grid: React.FC<Props> = memo(({ attrs, children }) => {
   return (
     <div
       className={`
-      grid  
+      
+      ${attrs.gridflow ? attrs.gridflow : 'grid '} 
       ${attrs.columns ? columns[attrs.columns] : null}  
       ${attrs.colspan ? colspan[attrs.colspan] : null} 
       ${attrs.rowspan ? rowspan[attrs.rowspan] : null} 
       ${attrs.border ? attrs.border : null} 
+      ${attrs.rounded ? attrs.rounded : null} 
+     
     `}
     >
       <div className={`absolute ${attrs.background} inset-0 z-0`}></div>

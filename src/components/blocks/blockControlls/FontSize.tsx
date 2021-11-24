@@ -14,7 +14,7 @@ export const FontSize: React.FC<Props> = ({ keyName }) => {
 
   return (
     <select
-      className="col-span-3 border bg-white"
+      className="col-span-3 border bg-white py-3 px-1"
       onChange={(e) =>{
         setBlockAttrs({ key: keyName, value: e.target.value })
         /* Data loader localstorage */

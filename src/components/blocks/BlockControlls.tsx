@@ -7,7 +7,7 @@ import { BlocksHeader } from "components/blocks";
 import { useBlocks } from "store/blocksStore";
 
 import { getNestedChildren } from 'components/blocks/helpers/blocks'
-import { TextareaField, BackgroundColor, NumberField, FontSize, TextColor, Border, Copypaste } from "components/blocks/blockControlls"
+import { ImgObjectFit, TextareaField, BackgroundColor, NumberField, FontSize, TextColor, Border, Copypaste, GridFlow } from "components/blocks/blockControlls"
 
 export const BlockControlls: React.FC = () => {
   
@@ -30,19 +30,19 @@ export const BlockControlls: React.FC = () => {
     <>
       <BlocksHeader title={block()?.block || ""} />
       <div className="grid grid-cols-4 text-xs gap-1 p-2">
-        <div className="py-1">ID</div>
+        <div className="py-1">ID:</div>
         <div className="col-span-3 bg-gray-100 p-1 border">
           {block()?.id || ""}
         </div>
-        <div className="py-1">ParentID</div>
+        <div className="py-1">ParentID:</div>
         <div className="col-span-3 bg-gray-100 p-1 border">
           {block()?.parentId || ""}
         </div>
         {Object.keys(block()?.attrs || {}).map((key, index) => {
           return !replace ? (
             <>
-              <div key={index} className="py-1">
-                {key}
+              <div key={index} className="py-1 flex items-center">
+                {key}:
               </div>
 
               {(key === "columns" ||
@@ -72,15 +72,25 @@ export const BlockControlls: React.FC = () => {
                 <Border key={`brd-${index}`} keyName={key}/>
               )}
 
+               {key === "gridflow" && (
+                <GridFlow key={`brd-${index}`} keyName={key}/>
+              )}
+
+              {key === "objectfit" && (
+                <ImgObjectFit key={`bgc-${index}`} keyName={key}/>
+              )}
+
               {key !== "text" &&
                 key !== "mutation" &&
                 key !== "columns" &&
                 key !== "border" &&
                 key !== "colspan" &&
                 key !== "rowspan" &&
+                key !== "gridflow" &&
                 key !== "rows" &&
                 key !== "fontsize" &&
                 key !== "textcolor" &&
+                key !== "objectfit" &&
                 key !== "background" && (
                   <input
                     onChange={(e) => {
@@ -89,7 +99,7 @@ export const BlockControlls: React.FC = () => {
                       }
                     }
                     key={`inp-${index}`}
-                    className="col-span-3 border p-1"
+                    className="col-span-3 border py-3 px-2 text-xs"
                     value={block()?.attrs[key]}
                   />
                 )}

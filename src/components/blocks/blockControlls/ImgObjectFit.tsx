@@ -2,10 +2,10 @@ import { useBlocks } from "store/blocksStore";
 interface Props {
   keyName: string;
 }
-export const TextColor: React.FC<Props> = ({ keyName }) => {
+export const ImgObjectFit: React.FC<Props> = ({ keyName }) => {
   const blocks = useBlocks((state) => state.blocks);
-  const block = () => blocks.find((x) => x.id === selectedBlockId);
   const setBlockAttrs = useBlocks((state) => state.setBlockAttrs);
+  const block = () => blocks.find((x) => x.id === selectedBlockId);
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
   return (
     <select
@@ -14,33 +14,21 @@ export const TextColor: React.FC<Props> = ({ keyName }) => {
         setBlockAttrs({ key: keyName, value: e.target.value })
       }
     >
-      <option selected={block()?.attrs[keyName] === ""} 
-        value="main-text"
-      >
+      <option selected={block()?.attrs[keyName] === ""} value="">
         Empty definition
       </option>
-
       <option
-        selected={block()?.attrs[keyName] === "light-text"}
-        value="light-text"
+        selected={block()?.attrs[keyName] === "objectFit"}
+        value="objectFit"
       >
-        Light
+        Object fit
       </option>
-
       <option
-        selected={block()?.attrs[keyName] === "dark-text"}
-        value="dark-text"
+        selected={block()?.attrs[keyName] === "cover"}
+        value="cover"
       >
-        Dark
+        Cover
       </option>
-
-      <option selected={block()?.attrs[keyName] === "main-text"} 
-        value="main-text"
-      >
-        Main
-      </option>
-      
-      
     </select>
   );
 };

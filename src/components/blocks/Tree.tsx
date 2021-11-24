@@ -41,13 +41,13 @@ export const Tree: React.FC<Props> = memo(
                 className={`
             ${
               !preview
-                ? "p-2 border-l-gray-300 border-gray-200 cursor-pointer border-l-4  m-1"
-                : null
+                ? "border border-white p-2 border-l-gray-300 border-gray-200 cursor-pointer border-l-4  m-1"
+                : ""
             } 
             ${item?.attrs?.colspan && "col-span-" + item.attrs.colspan} 
             ${item?.attrs?.rowspan && "row-span-" + item.attrs.rowspan} 
             ${selectedBlockId == item.id && "border-blue-300"} 
-            relative border border-white hover:border-pink-500 hover:border-opacity-50`}
+            relative hover:border hover:border-pink-500 hover:border-opacity-50`}
                 key={`block-${item.id}`}
                 onClick={(e) => {
                   e.stopPropagation();

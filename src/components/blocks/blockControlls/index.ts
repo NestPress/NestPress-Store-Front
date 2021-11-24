@@ -4,4 +4,6 @@ export * from "./BackgroundColor";
 export * from "./FontSize";
 export * from "./TextColor";
 export * from "./Border";
+export * from "./GridFlow";
 export * from "./Copypaste";
+export * from "./ImgObjectFit";

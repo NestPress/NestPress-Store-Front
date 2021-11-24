@@ -9,7 +9,7 @@ export const Border: React.FC<Props> = ({ keyName }) => {
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
   return (
     <select
-      className="col-span-3 border bg-white p-2"
+      className="col-span-3 border bg-white py-3 px-1"
       onChange={(e) =>
         setBlockAttrs({ key: keyName, value: e.target.value })
       }

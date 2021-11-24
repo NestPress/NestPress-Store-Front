@@ -45,11 +45,13 @@ export const LayoutBlocks: React.FC = ({type}) => {
             block: "layout/Grid",
             post: slugPath[0],
             attrs: {
-              columns: "",
-              colspan: "",
-              rowspan: "",
+              gridflow: "",
+              columns: 0,
+              colspan: 0,
+              rowspan: 0,
               background: "",
               border: "",
+              rounded: "",
             },
           })
         }
@@ -67,6 +69,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
             attrs: {
               text: "Example title",
               colspan: 0,
+              rowspan: 0,
               fontsize: '',
               textcolor: '',
             },
@@ -86,6 +89,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
             attrs: {
               text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
               colspan: 0,
+              rowspan: 0,
               fontsize: '',
               textcolor: '',
             },
@@ -100,11 +104,16 @@ export const LayoutBlocks: React.FC = ({type}) => {
         onClick={(e) =>
           teachSetBlock({
             ...prefix,
-            block: "layout/Paragraph",
+            block: "layout/Img",
             post: slugPath[0],
             attrs: {
-              text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
               colspan: 0,
+              rowspan: 0,
+              border: "",
+              rounded: "",
+              objectfit: "",
+              image: "/empty-person-dark.svg",
+              alt:""
             },
           })
         }
