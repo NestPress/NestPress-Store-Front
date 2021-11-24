@@ -27,10 +27,11 @@ export const getPageBySlug = (slug, posts) => {
 }
 
 export const setItemToStorage = (element, elements, set, key) => {
-  const copy = elements.map(el => ({ ...el }))
-  const updateEl = copy.find(x => x[key] === element[key])
+  const copy = elements?.map(el => ({ ...el })) || []
+  const updateEl = copy?.find(x => x[key] === element[key])
   updateEl ? updateEl = Object.assign(updateEl, element) : copy.push(element)
   set(copy)
+  return element
 }
 
 export const downloadObjectAsJson = (exportObj: any, exportName: any) => {

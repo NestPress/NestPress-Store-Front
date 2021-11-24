@@ -3,6 +3,7 @@ import { useStickyState } from "helpers/localMockupApi"
 
 import { useRouter } from "next/router";
 import { useBlocks } from "store/blocksStore";
+import {slugify} from "components/blocks/helpers/blocks";
 export const Pages: React.FC = () => {
   
   const router = useRouter();
@@ -56,7 +57,7 @@ export const Pages: React.FC = () => {
         />
         <button
           onClick={(e) => {
-            router.replace(form.target);
+            router.replace(slugify(form.target));
             useBlocks.setState({ composerTab: "page" });
           }}
           className={buttonClass}

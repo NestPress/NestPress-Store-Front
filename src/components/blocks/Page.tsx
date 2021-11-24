@@ -17,6 +17,8 @@ export const Page: React.FC = () => {
   const [ storagePosts, setStoragePosts ] = useStickyState([], 'storagePosts');
   const currentPage = getPageBySlug(slugPath[0], storagePosts);
 
+  
+
   return (
     currentPage && (
       <div>
@@ -37,7 +39,6 @@ export const Page: React.FC = () => {
             e.preventDefault();
             delete currentPage.new;
             /* Data loader localstorage */
-            
             setItemToStorage(currentPage, storagePosts, setStoragePosts, 'slug')
           }}
         >
