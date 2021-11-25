@@ -20,8 +20,11 @@ const Home: React.FC = () => {
       const key = e.which || e.keyCode, ctrl = e.ctrlKey ? e.ctrlKey : ((key === 17)
           ? true : false);
       if (key == 86 && ctrl) { // V
-          copiedBlocks[0].parentId = selectedBlockId;
-          copiedBlocks.map( (el) => { addBlock(el); setItemToStorage(el, storageBlocks, setStorageBlocks, 'id') } )
+          if(selectedBlockId){
+            copiedBlocks[0].parentId = selectedBlockId;
+            copiedBlocks.map( (el) => { addBlock(el); setItemToStorage(el, storageBlocks, setStorageBlocks, 'id') } )
+          }
+          
       }
       else if (key == 67 && ctrl) { // C
         const parsedEls = getNestedChildren(blocks, selectedBlockId, true) 

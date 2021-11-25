@@ -17,8 +17,6 @@ export const Page: React.FC = () => {
   const [ storagePosts, setStoragePosts ] = useStickyState([], 'storagePosts');
   const currentPage = getPageBySlug(slugPath[0], storagePosts);
 
-  
-
   return (
     currentPage && (
       <div>

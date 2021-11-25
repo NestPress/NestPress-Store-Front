@@ -43,7 +43,6 @@ export const removeItemFromStorage = (elements, set, key, value) => {
 }
 
 
-
 export const downloadObjectAsJson = (exportObj: any, exportName: any) => {
   const dataStr =
     "data:text/json;charset=utf-8," +

@@ -1,5 +1,5 @@
 import { useBlocks } from "store/blocksStore";
-import { Page, Pages } from "components/blocks";
+import { Page, Pages, Settings } from "components/blocks";
 
 export const MainPanel: React.FC = () => {
   const composerTab = useBlocks((state) => state.composerTab);
@@ -38,6 +38,7 @@ export const MainPanel: React.FC = () => {
 
       {composerTab === "page" && <Page />}
       {composerTab === "pages" && <Pages />}
+      {composerTab === "settings" && <Settings />}      
     </div>
   );
 };

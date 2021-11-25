@@ -5,4 +5,5 @@ export * from "./MainPanel";
 export * from "./Pages";
 export * from "./Page";
 export * from "./Composer";
+export * from "./Settings";
 export * from "./Tree";
