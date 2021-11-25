@@ -41,12 +41,12 @@ export const Tree: React.FC<Props> = memo(
                 className={`
             ${
               !preview
-                ? "border border-white p-2 border-l-gray-300 border-gray-200 cursor-pointer border-l-4  m-1"
+                ? "border border-white p-px border-l-gray-300 border-gray-200 cursor-pointer border-l-8 m-px border-opacity-50"
                 : ""
             } 
             ${item?.attrs?.colspan && "col-span-" + item.attrs.colspan} 
             ${item?.attrs?.rowspan && "row-span-" + item.attrs.rowspan} 
-            ${selectedBlockId == item.id && "border-blue-300"} 
+            ${selectedBlockId == item.id && "border-blue-800"} 
             relative hover:border hover:border-pink-500 hover:border-opacity-50`}
                 key={`block-${item.id}`}
                 onClick={(e) => {
@@ -82,7 +82,7 @@ export const Tree: React.FC<Props> = memo(
                 </Block>
                 <div
                   style={{ bottom: "-20px", right: "-1px", zIndex: 1000 }}
-                  className={`absolute text-xs text-white bg-blue-300 p-0.5 ${
+                  className={`absolute text-xs text-white bg-blue-800 bg-opacity-50 p-0.5 ${
                     selectedBlockId == item.id ? "visible" : "invisible"
                   }`}
                 >

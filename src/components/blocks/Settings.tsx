@@ -17,7 +17,6 @@ export const Settings: React.FC = () => {
   /* Data loader localstorage */
   const [ storagePosts, setStoragePosts ] = useStickyState([], 'storagePosts');
  
-
   return (
     
       <div>

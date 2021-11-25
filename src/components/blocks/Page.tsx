@@ -2,12 +2,13 @@
 // @ts-ignore
 // @ts-nocheck
 import { FiAnchor } from "react-icons/fi";
-import { useRouter } from "next/router";
+import { useRouter, useHistory } from "next/router";
 import { usePage } from "store/pageStore";
 import { useStickyState, getPageBySlug, setItemToStorage} from "helpers/localMockupApi"
 
 export const Page: React.FC = () => {
-  const slugPath = useRouter().query?.slugPath || ["home"];
+  const router = useRouter()
+  const slugPath = router.query?.slugPath || ["home"];
   const buttonClass =
     " bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500";
   const buttonDeleteClass =
@@ -27,8 +28,7 @@ export const Page: React.FC = () => {
 
         {currentPage.new && (
           <div className="text-xs px-4 py-2 border-b bg-yellow-100">
-            Slug ./{slugPath[0]} dont have created blog page. To create page{" "}
-            {slugPath[0]} insert page title and run Submit action
+            Slug ./{slugPath[0]} dont have created as blog page yet. To finished create page '{slugPath[0]}' insert page title and run 'Save page' action
           </div>
         )}
 
@@ -38,6 +38,7 @@ export const Page: React.FC = () => {
             delete currentPage.new;
             /* Data loader localstorage */
             setItemToStorage(currentPage, storagePosts, setStoragePosts, 'slug')
+            router.push(`/composer/${slugPath[0]}/${currentPage?.title}`)
           }}
         >
           <fieldset className="p-2">
@@ -73,7 +74,7 @@ export const Page: React.FC = () => {
           )}
           {currentPage.new && (
             <fieldset className="p-2 border-t">
-              <button className={buttonClass}>Create page</button>
+              <button className={buttonClass}>Save page</button>
             </fieldset>
           )}
     

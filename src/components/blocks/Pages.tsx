@@ -36,7 +36,7 @@ export const Pages: React.FC = () => {
       {storagePosts.map((el)=>{
         return <div onClick={(e)=>{
               useBlocks.setState({composerTab:'page'})
-              router.replace(el.slug);
+              router.replace(`${el.slug}/${el.title}`);
             }} 
             className="text-xs p-2 border-b flex  hover:bg-blue-100 cursor-pointer">
           <div className="flex-1">{el.slug}</div>
