@@ -7,3 +7,4 @@ export * from "./Page";
 export * from "./Composer";
 export * from "./Settings";
 export * from "./Tree";
+export * from "./Upload";

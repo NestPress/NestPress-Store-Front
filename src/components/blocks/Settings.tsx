@@ -1,10 +1,11 @@
 /* TODO fix type */
 // @ts-ignore
 // @ts-nocheck
-import { FiSettings, FiLogIn, FiLogOut } from "react-icons/fi";
+import { FiSettings, FiSave, FiLogIn, FiLogOut } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { usePage } from "store/pageStore";
 import { useStickyState, downloadObjectAsJson } from "helpers/localMockupApi"
+import { Upload } from "components/blocks"
 
 export const Settings: React.FC = () => {
   const slugPath = useRouter().query?.slugPath || ["home"];
@@ -29,20 +30,16 @@ export const Settings: React.FC = () => {
           Message
         </div>
 
-        <div className="p-2 border-b">
-          <button className={buttonClass}>
-            <FiLogIn/> 
-            <span className="ml-2">Import data</span>
-          </button>
-        </div>
+       
 
         <div className="p-2 border-b">
           <button className={buttonClass} onClick={(e)=>downloadObjectAsJson({foo:'bar'},'NP-exported-homepage')}>
-            <FiLogOut/>h
+            <FiSave/>
             <span className="ml-2">Export data</span>
           </button>
         </div>
 
+        <Upload/>
 
       </div>
  
