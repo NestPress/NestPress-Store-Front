@@ -14,7 +14,9 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = (
   const { Component, pageProps } = props;
   // const getLayout = Component.getLayout || ((page: ReactNode) => page);
   return (
-    <Component {...pageProps} />
+    <ApolloProvider client={client}>
+      <Component {...pageProps} />
+    </ApolloProvider>
   );
 };
 

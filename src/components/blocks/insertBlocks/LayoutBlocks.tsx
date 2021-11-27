@@ -1,16 +1,14 @@
+import { useMutation } from '@apollo/client';
 import { FiGrid, FiType, FiImage, FiMonitor } from "react-icons/fi";
-import { useStickyState, setItemToStorage} from "helpers/localMockupApi"
-import { uid } from 'components/blocks/helpers/blocks'
+import { v4 as uuidv4 } from 'uuid';
 import { useRouter } from "next/router";
 import { useBlocks } from "store/blocksStore";
+import { CREATE_BLOCK } from "components/blocks/gql/composer"
 interface Props {
   type: string;
 }
 
 export const LayoutBlocks: React.FC = ({type}) => {
-  
-  /* Data loader localstorage */
-  const [ storageBlocks, setStorageBlocks ] = useStickyState([], 'storageBlocks');
   
   /* Zustand states */
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
@@ -21,18 +19,21 @@ export const LayoutBlocks: React.FC = ({type}) => {
   /* local consts */
   const slugPath = useRouter().query?.slugPath || ["home"];
   const prefix = {
-    id: uid(),
+    id: uuidv4(),
     parentId: type === "next" ? block()?.parentId : block()?.id,
   };
   const buttonClass =
     "text-sm bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500 flex items-center";  
-
-  /* local methosd */
+ 
+  /* mutation */
+  const [addNewBlock, { data, loading, error }] = useMutation(CREATE_BLOCK, {
+    onCompleted(data) {
+        addBlock(data.createBlock);
+    }, 
+  });
   const teachSetBlock = (block) => {
     /* Set to zustand state */
-    addBlock(block);
-    /* Data loader localstorage */
-    setItemToStorage(block, storageBlocks, setStorageBlocks, 'id')
+    addNewBlock({ variables: {input:block}});
   }
 
   return (
