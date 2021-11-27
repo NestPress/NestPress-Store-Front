@@ -46,6 +46,7 @@ export const FormBlocks: React.FC = ({type}) => {
             post: slugPath[0],
             attrs: {
               mutation: "",
+              refname: "default_form",
             },
           })
         }
@@ -63,7 +64,7 @@ export const FormBlocks: React.FC = ({type}) => {
             attrs: {
               label: "Example label",
               placeholder: "Example placeholder",
-              outputValue: "data.value",
+              outputValue: "data.input_value",
             },
           })
         }
@@ -82,6 +83,7 @@ export const FormBlocks: React.FC = ({type}) => {
               rows: 6,
               label: "Example label",
               placeholder: "Example placeholder",
+              outputValue: "data.textarea_value",
             },
           })
         }
@@ -99,11 +101,49 @@ export const FormBlocks: React.FC = ({type}) => {
             post: slugPath[0],
             attrs: {
               label: "Example label",
+              outputValue: "data.select_value",
             },
           })
         }
       >
         <FiList/><span className="ml-2"> Select and search field</span>
+      </button>
+
+      <button
+        className={buttonClass}
+        onClick={(e) =>
+          teachSetBlock({
+            ...prefix,
+            block: "form/KeyValueField",
+            post: slugPath[0],
+            attrs: {
+              placeholder1: "Insert key",
+              placeholder2: "Insert value",
+              submit: "Insert",
+              label: "Example label",
+              outputValue: "data.keys_value",
+            },
+          })
+        }
+      >
+        <FiList/><span className="ml-2"> Key and value field</span>
+      </button>
+
+      <button
+        className={buttonClass}
+        onClick={(e) =>
+          teachSetBlock({
+            ...prefix,
+            block: "form/SwithField",
+            post: slugPath[0],
+            attrs: {
+              label: "Example label",
+              outputValue: "data.swith_value",
+            },
+          })
+        }
+      >
+        <FiList/><span className="ml-2">Swith field</span>
       </button>
 
       <button
@@ -122,6 +162,8 @@ export const FormBlocks: React.FC = ({type}) => {
       >
         <FiSave/><span className="ml-2"> Submit button</span>
       </button>
+
+
     </div>
   );
 };

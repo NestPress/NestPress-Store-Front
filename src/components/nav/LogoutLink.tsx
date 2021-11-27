@@ -1,5 +1,5 @@
 import { gql, useMutation } from "@apollo/client";
-import { useMessage } from 'store/messageStore'
+// import { useMessage } from 'store/messageStore'
 import { UserState} from "store/userStore";
 interface Props {
   className?: string;
@@ -23,7 +23,7 @@ export const LogoutLink: React.FC<Props> = ({ className }) => {
         })
     }, 
     optimisticResponse(){
-      useMessage.setState({ active: false })
+      // useMessage.setState({ active: false })
     }
   });
   return (

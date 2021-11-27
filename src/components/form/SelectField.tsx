@@ -1,27 +1,28 @@
+import { useBlocks, useForms } from "store";
+import { findOutByBlock } from "components/blocks/helpers/blocks"
+
 // https://blog.logrocket.com/building-a-custom-dropdown-menu-component-for-react-e94f02ced4a1/
 import { FiChevronDown, FiX } from "react-icons/fi";
-import React, { useState } from "react";
+import { useState } from "react";
 import { categoryType } from "types/layout";
 
 // TODO - add vlid types
 interface Props {
-  label?: string;
-  placeholder?: string;
-  value?: string;
-  className?: string;
-  options?: any;
-  list?: any;
+  attrs: any;
 }
 
-const SelectField: React.FC<Props> = ({
-  label,
-  value,
-  placeholder,
-  options,
-  className,
-}) => {
+  // label?: string;
+  // placeholder?: string;
+  // value?: string;
+  // options?: any;
+
+const SelectField: React.FC<Props> = ({attrs}) => {
+  const blocks = useBlocks((state) => state.blocks);
+  const updateForm = useForms((state) => state.updateForm);
+  const ref = findOutByBlock(blocks, attrs.id, 'form/Form').attrs.refname
+
   const [active, setActive] = useState(false);
-  const [activeValue, setActiveValue] = useState(value);
+  const [activeValue, setActiveValue] = useState(attrs.value);
   return (
     <>
       {active ? (
@@ -32,15 +33,19 @@ const SelectField: React.FC<Props> = ({
           className="fixed top-0 left-0 w-full h-full bg-gray-900 opacity-50 z-10"
         ></div>
       ) : null}
+      {attrs.label ? <label className="text-xs">{attrs.label}</label> : null}
       <div
-        className={`relative text-sm  ${className}  ${active ? "z-10" : null}`}
+        className={`relative text-sm ${active ? "z-10" : null}`}
       >
-        {label ? <label>{label}</label> : null}
+        
         <input
           className="bg-white p-2.5 pr-12 rounded-sm w-full border"
           type="text"
           defaultValue={activeValue}
-          onChange={(e) => setActiveValue(e.target.value)}
+          onChange={(e)=>{ 
+            setActiveValue(e.target.value)
+            updateForm({ref:ref, path:attrs.outputValue, data:e.target.value}) 
+          }}
         />
         {/* dropdownicon */}
         <div
@@ -54,13 +59,14 @@ const SelectField: React.FC<Props> = ({
         {/* options*/}
         {active ? (
           <ul className="w-full md:w-auto absolute text-left bg-white mt-1 rounded-sm flex flex-col right-0 cursor-pointer z-10">
-            {options &&
-              options.map((el: categoryType) => {
+            {attrs.options &&
+              attrs.options.map((el: categoryType) => {
                 return (
                   <li
                     onClick={() => {
                       setActiveValue(el.value);
                       setActive(!active);
+                      updateForm({ref:ref, path:attrs.outputValue, data:e.target.value}) 
                     }}
                     className="px-3 py-1 leading-8 border-b hover:bg-gray-100"
                   >

@@ -1,3 +1,4 @@
+// https://tailwindcss-custom-forms.netlify.app/
 import { FiFile, FiAnchor } from "react-icons/fi";
 import { useStickyState } from "helpers/localMockupApi"
 
@@ -13,11 +14,15 @@ export const Pages: React.FC = () => {
     localstorage mode
   */
   const [ storagePosts, setStoragePosts ] = useStickyState([], 'storagePosts');
-  /* !Data loader */
+  
+ 
 
+
+  /* !Data loader */
 
   const form = {
     target: "",
+    type:"page"
   };
   const buttonClass =
     " bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500";
@@ -26,8 +31,19 @@ export const Pages: React.FC = () => {
     <div className="text-sm">
       <div className="flex items-center text-base p-2 bg-pink-600 text-white">
         <FiFile />
-        <span className="ml-2">Pages list</span>
+        <span className="ml-2">Blog posts list</span>
       </div>
+
+      <label className="block p-1 border-b">
+        <select className="form-select mt-1 block w-full border py-2 bg-white text-xs">
+          <option>Type post</option>
+          <option>Type page</option>
+          <option>Type comment</option>
+          <option>Type event</option>
+          <option>Type facet</option>
+        </select>
+      </label>
+
       <div className="p-2 border-b flex">
         <div className="flex-1">Slug</div>
         <div className="flex-1 text-center">Title</div>
@@ -47,7 +63,7 @@ export const Pages: React.FC = () => {
       <div className="p-2 mt-1 border-t border-b">
         <div className="flex items-center text-base mb-2">
           <FiAnchor />
-          <span className="ml-2">Register new page</span>
+          <span className="ml-2">Register new post</span>
         </div>
         <input
           className="w-full p-2 border"
