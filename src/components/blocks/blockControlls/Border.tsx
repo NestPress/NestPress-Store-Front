@@ -4,7 +4,7 @@ interface Props {
 }
 export const Border: React.FC<Props> = ({ keyName }) => {
   const blocks = useBlocks((state) => state.blocks);
-  const block = () => blocks.find((x) => x.id === selectedBlockId);
+  const block:any = () => blocks.find((x:any) => x.id === selectedBlockId);
   const setBlockAttrs = useBlocks((state) => state.setBlockAttrs);
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
   return (

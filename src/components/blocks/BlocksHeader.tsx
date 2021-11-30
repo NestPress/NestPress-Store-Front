@@ -1,7 +1,9 @@
 import { FiEyeOff, FiEye, FiChevronLeft } from "react-icons/fi";
 import { useBlocks } from "store/blocksStore";
-
-export const BlocksHeader: React.FC<props> = ({title}) => {
+interface Props {
+  title?: string;
+}
+export const BlocksHeader: React.FC<Props> = ({title}) => {
   const preview = useBlocks((state) => state.preview);
   return (
     <div className="flex justify-between bg-pink-600 text-white">

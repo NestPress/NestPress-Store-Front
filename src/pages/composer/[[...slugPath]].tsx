@@ -1,3 +1,6 @@
+/* TODO fix type */
+// @ts-ignore
+// @ts-nocheck
 import { FiFile } from "react-icons/fi";
 import { Composer, Tree } from "components/blocks";
 import { useBlocks } from "store/blocksStore";
@@ -7,7 +10,7 @@ import { useEffect , useRef} from "react";
 import { uid, getNestedChildren } from 'components/blocks/helpers/blocks'
 
 
-const Home: React.FC = () => {
+const ComposerPage: React.FC = () => {
 
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
   const copiedBlocks = useBlocks((state) => state.copiedBlocks);
@@ -71,7 +74,7 @@ const Home: React.FC = () => {
   const currentPage = getPageBySlug(slugPath[0], storagePosts);
 
   return (
-    blocks?.length > 0 && (
+    blocks?.length > 0 ? (
       <div tabIndex="0" onKeyDown={keysHandler}>
 
         <div style={{ marginRight: "20rem" }}>
@@ -84,7 +87,7 @@ const Home: React.FC = () => {
         </div>
         <Composer />
       </div>
-    ) 
+    ) : null
   );
 };
-export default Home;
+export default ComposerPage;

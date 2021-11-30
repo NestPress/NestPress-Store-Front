@@ -6,7 +6,7 @@ interface Props {
 export const TextareaField: React.FC<Props> = ({ keyName }) => {
 	const blocks = useBlocks((state) => state.blocks);
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
-  const block = () => blocks.find((x) => x.id === selectedBlockId);
+  const block:any = () => blocks.find((x:any) => x.id === selectedBlockId);
   const setBlockAttrs = useBlocks((state) => state.setBlockAttrs);
 
   /* Data loader localstorage */
@@ -18,7 +18,7 @@ export const TextareaField: React.FC<Props> = ({ keyName }) => {
         {
           setBlockAttrs({ key: keyName, value: e.target.value})
           /* Data loader localstorage */
-          const toStorage = storageBlocks.find((x) => x.id === selectedBlockId).attrs[keyName] = e.target.value 
+          const toStorage = storageBlocks.find((x:any) => x.id === selectedBlockId).attrs[keyName] = e.target.value 
           setItemToStorage(toStorage, storageBlocks, setStorageBlocks, 'id')
         }
       }

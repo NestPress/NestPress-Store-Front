@@ -1,3 +1,6 @@
+/* TODO fix type */
+// @ts-ignore
+// @ts-nocheck
 export const uid = () => (Math.floor(Math.random() * 9999) * 100000000 + new Date().getTime()).toString(36);
 
 export const slugify = (string: string) => {
@@ -15,9 +18,9 @@ export const slugify = (string: string) => {
 /* 
   parse blocks by parent
 */
-export const getNestedChildren = (arr: any, parent: string, withFirst: bollean) => {
+export const getNestedChildren = (arr: any, parent: string, withFirst: boolean) => {
     const out: any = [];
-    withFirst &&  out.push(arr?.filter((x) => x.id === parent)[0]);
+    withFirst &&  out.push(arr?.filter((x:any) => x.id === parent)[0]);
     for (const i in arr) {
       if (arr[i].parentId === parent) {
         const children = getNestedChildren(arr, arr[i].id, false);
@@ -33,8 +36,8 @@ export const getNestedChildren = (arr: any, parent: string, withFirst: bollean) 
 /* 
   find parent by block name
 */
-export const findOutByBlock = (regBlocks, currentId, blockName) => {
-    const block = regBlocks.find(el => el.id === currentId)
+export const findOutByBlock:any = (regBlocks:any, currentId:number, blockName:string) => {
+    const block:any = regBlocks.find(el => el.id === currentId)
     if(block.block === blockName){
       return block 
     }else{
@@ -56,6 +59,9 @@ export const  setByPath = (obj, path, value) => {
   o[a[0]] = value
 }
 
+/* 
+  get value from object by path 
+*/
 export const get = (obj, path) => {
   let e = Array.isArray(path) ? path : typeof path === 'string' ? path.split('.') : path,v,i;
   for (v = obj, i = 0; v && i < e.length; ++i) {

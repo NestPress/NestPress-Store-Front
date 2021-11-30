@@ -1,3 +1,6 @@
+/* TODO fix type */
+// @ts-ignore
+// @ts-nocheck
 import { FiClipboard, FiList, FiHash, FiSave } from "react-icons/fi";
 import { useStickyState, setItemToStorage} from "helpers/localMockupApi"
 import { uid } from 'components/blocks/helpers/blocks'

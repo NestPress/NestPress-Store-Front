@@ -1,3 +1,6 @@
+/* TODO fix type */
+// @ts-ignore
+// @ts-nocheck
 import { FiCornerRightDown, FiArrowDown } from "react-icons/fi";
 import { BlocksHeader } from "components/blocks";
 import { DataBlocks, FormBlocks, LayoutBlocks, NavBlocks } from "components/blocks/insertBlocks";

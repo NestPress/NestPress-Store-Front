@@ -1,22 +1,44 @@
+/* TODO fix type */
+// @ts-ignore
+// @ts-nocheck
 // https://tailwindcss-custom-forms.netlify.app/
 import { FiFile, FiAnchor } from "react-icons/fi";
-import { useStickyState } from "helpers/localMockupApi"
-
 import { useRouter } from "next/router";
 import { useBlocks } from "store/blocksStore";
-import {slugify} from "components/blocks/helpers/blocks";
+import { slugify } from "components/blocks/helpers/blocks";
+import { gql, useQuery } from '@apollo/client';
+import { FILTER_POSTS } from "components/blocks/gql/composer"
+
+interface Filter {
+  post_type: {
+    eq: String
+  }
+}
+
 export const Pages: React.FC = () => {
   
   const router = useRouter();
   
-  /* 
-    Data loader 
-    localstorage mode
-  */
-  const [ storagePosts, setStoragePosts ] = useStickyState([], 'storagePosts');
-  
- 
+  /* query */
+  // const [addNewBlock, { data, loading, error }] = useMutation(CREATE_BLOCK, {
+  //   onCompleted(data) {
+  //       addBlock(data.createBlock);
+  //   }, 
+  // });
 
+  
+  const { loading, error, data } = useQuery(FILTER_POSTS,{
+    variables: { 
+      filter:{
+        postType:{
+          eq:"Comment"
+        }
+      }
+    },
+    onCompleted(data) {
+      console.log('no i co?',data)
+    }
+  });
 
   /* !Data loader */
 
@@ -49,7 +71,7 @@ export const Pages: React.FC = () => {
         <div className="flex-1 text-center">Title</div>
         <div className="flex-1 text-center">Layout</div>
       </div>
-      {storagePosts.map((el)=>{
+      {/*{storagePosts.map((el)=>{
         return <div onClick={(e)=>{
               useBlocks.setState({composerTab:'page'})
               router.replace(`${el.slug}/${el.title}`);
@@ -59,7 +81,7 @@ export const Pages: React.FC = () => {
           <div className="flex-1 text-center">{el.title}</div>
           <div className="flex-1 text-center">{el.layout}</div>
         </div>
-      })}
+      })}*/}
       <div className="p-2 mt-1 border-t border-b">
         <div className="flex items-center text-base mb-2">
           <FiAnchor />

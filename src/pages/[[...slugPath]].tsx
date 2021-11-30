@@ -1,3 +1,6 @@
+/* TODO fix type */
+// @ts-ignore
+// @ts-nocheck
 import { Composer, Tree } from "components/blocks";
 import { useBlocks } from "store/blocksStore";
 import { useStickyState , setItemToStorage } from "helpers/localMockupApi";

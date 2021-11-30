@@ -5,7 +5,7 @@ interface Props {
 export const GridFlow: React.FC<Props> = ({ keyName }) => {
   const blocks = useBlocks((state) => state.blocks);
   const setBlockAttrs = useBlocks((state) => state.setBlockAttrs);
-  const block = () => blocks.find((x) => x.id === selectedBlockId);
+  const block:any = () => blocks.find((x:any) => x.id === selectedBlockId);
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
   return (
     <select

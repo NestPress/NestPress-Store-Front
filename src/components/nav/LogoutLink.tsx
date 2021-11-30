@@ -1,3 +1,6 @@
+/* TODO fix type */
+// @ts-ignore
+// @ts-nocheck
 import { gql, useMutation } from "@apollo/client";
 // import { useMessage } from 'store/messageStore'
 import { UserState} from "store/userStore";

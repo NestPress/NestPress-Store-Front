@@ -804,3 +804,4 @@ export type CountryTranslation = {
   languageCode: LanguageCode;
   name: Scalars['String'];
 };
+
