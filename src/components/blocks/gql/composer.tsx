@@ -18,6 +18,31 @@ export const CREATE_BLOCK = gql`
     }
   }
 `
+export const GET_BLOCKS = gql`
+  query getBlocks(
+    $query: String
+    $limit: Int
+    $offset: Int
+    $filter: BlocksFilter
+  ){
+    getBlocks(
+      filter:$filter,
+      query:$query,
+      offset:$offset,
+      limit:$limit
+    ){
+      list{
+        id
+        parentId
+        block
+        attrs
+        post
+      }
+    }
+  }
+`
+
+
 export const CREATE_POST = gql`
   mutation createPost(
     $input: CreatePostInput!
@@ -40,10 +65,17 @@ export const FILTER_POSTS = gql`
       $offset: Int
       $filter: PostsFilter
     ) {
-  getPosts(filter:$filter,query:$query,offset:$offset,limit:$limit) {
+    getPosts(
+      filter:$filter,
+      query:$query,
+      offset:$offset,
+      limit:$limit
+    ) {
     list, {
       id,
-      title
+      slug,
+      title,
+      postType
     }
   }
 }

@@ -5,7 +5,7 @@ export const Composer: React.FC = () => {
   const panel = useBlocks((state) => state.panel);
 
   return (
-    <div className="fixed h-screen shadow border-l border-gray-300 top-0 right-0 w-80 bg-white ">
+    <div style={{background:'#fafafa'}} className="fixed h-screen shadow border-l border-gray-300 top-0 right-0 w-80 bg-white ">
       {panel == "mainPanel" && <MainPanel />}
 
       {panel == "block" && <BlockControlls />}

@@ -4,11 +4,12 @@
 import { FiFile } from "react-icons/fi";
 import { Composer, Tree } from "components/blocks";
 import { useBlocks } from "store/blocksStore";
-import { useStickyState, setItemToStorage, getPageBySlug } from "helpers/localMockupApi";
 import { useRouter } from "next/router";
-import { useEffect , useRef} from "react";
-import { uid, getNestedChildren } from 'components/blocks/helpers/blocks'
-
+import { useEffect , useRef } from "react";
+import { getNestedChildren } from 'components/blocks/helpers/blocks'
+import { gql, useQuery, useMutation} from '@apollo/client';
+import { GET_BLOCKS } from "components/blocks/gql/composer"
+import { v4 as uuidv4 } from 'uuid';
 
 const ComposerPage: React.FC = () => {
 
@@ -16,11 +17,11 @@ const ComposerPage: React.FC = () => {
   const copiedBlocks = useBlocks((state) => state.copiedBlocks);
   const router = useRouter();
   const slugPath = router.query?.slugPath || ["home"];
-  const blocks = useBlocks((state) => state.blocks)?.filter((x) => x.post === slugPath[0]) || [];
+  const blocks = useBlocks((state) => state.blocks) || [];
   const addBlock = useBlocks((state) => state.addBlock);
 
-  const keysHandler = (e) => {
-    // e = e || window.event; 
+
+  const keysHandler = (e) => { 
       const key = e.which || e.keyCode, ctrl = e.ctrlKey ? e.ctrlKey : ((key === 17)
           ? true : false);
       if (key == 86 && ctrl) { // V
@@ -42,39 +43,42 @@ const ComposerPage: React.FC = () => {
         useBlocks.setState({ copiedBlocks: JSON.parse(text) })
     }
   }
-      
-   
 
-  // ----
-  const [ storageBlocks, setStorageBlocks ] = useStickyState([], 'storageBlocks');
-  const blocksBySlug = () => storageBlocks?.filter((x) => x.post === slugPath[0]);
-  
-  const starterBlocks = [{
-        "id": uid(),
+
+  const { loading, error, data, refetch } = useQuery(GET_BLOCKS,{
+    variables: { 
+      filter:{
+        post:{
+          eq:slugPath[1]
+        }
+      }
+    },
+    onCompleted(data) {
+      data?.getBlocks?.list.length 
+      ? useBlocks.setState({ 
+          blocks: data.getBlocks.list.map(el => el.parentId === "0" ? {...el, parentId:0} : el) 
+        })
+      : useBlocks.setState({ blocks: [{
+        "id": uuidv4(),
         "parentId": 0,
         "block": "layout/Grid",
         "post": slugPath[0],
         "attrs": {
             "columns": "",
-            "colspan": "",
+            "colspan": "",  
             "rowspan": "",
             "background": "",
             "border": ""
         }
-      }]
-
-  if(blocks?.length === 0){
-     blocksBySlug()?.length 
-      ? blocksBySlug().map(el => { addBlock(el); setItemToStorage(el, storageBlocks, setStorageBlocks, 'id') }) 
-      : starterBlocks.map(el => { addBlock(el);  setItemToStorage(el, storageBlocks, setStorageBlocks, 'id') })
-  }
-
-  /* Data loader localstorage */
-  const [ storagePosts, setStoragePosts ] = useStickyState([], 'storagePosts');
-  const currentPage = getPageBySlug(slugPath[0], storagePosts);
-
+      }] 
+      })
+    }
+  });
+      
+  const currentPage = {}
+  
   return (
-    blocks?.length > 0 ? (
+    blocks.length > 0 ? (
       <div tabIndex="0" onKeyDown={keysHandler}>
 
         <div style={{ marginRight: "20rem" }}>
@@ -82,7 +86,7 @@ const ComposerPage: React.FC = () => {
             <FiFile/><span key={router.asPath} className="ml-1">{currentPage?.title || slugPath[1]}</span>
           </div>
           <div className="pr-px">
-            { slugPath[1] && <Tree blocks={blocks} /> }
+            { <Tree blocks={blocks} /> }
           </div>
         </div>
         <Composer />
