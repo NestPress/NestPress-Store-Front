@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { useEffect , useRef } from "react";
 import { getNestedChildren } from 'components/blocks/helpers/blocks'
 import { gql, useQuery, useMutation} from '@apollo/client';
-import { GET_BLOCKS } from "components/blocks/gql/composer"
+import { GET_BLOCKS, CREATE_BLOCK } from "components/blocks/gql/composer"
 import { v4 as uuidv4 } from 'uuid';
 
 const ComposerPage: React.FC = () => {
@@ -54,25 +54,44 @@ const ComposerPage: React.FC = () => {
       }
     },
     onCompleted(data) {
-      data?.getBlocks?.list.length 
+      console.log('first load blocks', data.getBlocks.list)
+      data.getBlocks.list.length 
       ? useBlocks.setState({ 
           blocks: data.getBlocks.list.map(el => el.parentId === "0" ? {...el, parentId:0} : el) 
         })
-      : useBlocks.setState({ blocks: [{
-        "id": uuidv4(),
-        "parentId": 0,
-        "block": "layout/Grid",
-        "post": slugPath[0],
-        "attrs": {
-            "columns": "",
-            "colspan": "",  
-            "rowspan": "",
-            "background": "",
-            "border": ""
+      : addNewBlock({ 
+        variables: { 
+          input:{
+            "id": uuidv4(),
+            "parentId": "0",
+            "block": "layout/Grid",
+            "post": slugPath[1],
+            "attrs": {
+                "columns": "",
+                "colspan": "",  
+                "rowspan": "",
+                "background": "",
+                "border": ""
+            }
+          }
         }
-      }] 
-      })
+      }).catch(error => {
+         console.log(error.message)
+          // if (error.networkError) {
+          //   getNetworkErrors(error).then(console.log)
+          // } else {
+          //   console.log(error.message)
+          // }
+        })
     }
+  });
+
+  /* mutation */
+  const [addNewBlock, { addNewBlockData, addNewBlockLoading, addNewBlockError }] = useMutation(CREATE_BLOCK, {
+    onCompleted(addNewBlockData) {
+      addNewBlockData.createBlock.parentId = 0
+      useBlocks.setState({ blocks: [addNewBlockData.createBlock] })
+    }, 
   });
       
   const currentPage = {}

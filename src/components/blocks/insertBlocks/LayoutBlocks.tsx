@@ -31,6 +31,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
   /* mutation */
   const [addNewBlock, { data, loading, error }] = useMutation(CREATE_BLOCK, {
     onCompleted(data) {
+        console.log('insert block', data.createBlock)
         addBlock(data.createBlock);
     }, 
   });
@@ -47,7 +48,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "layout/Grid",
-            post: slugPath[0],
+            post: slugPath[1],
             attrs: {
               gridflow: "",
               columns: 0,
@@ -69,7 +70,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "layout/Title",
-            post: slugPath[0],
+            post: slugPath[1],
             attrs: {
               text: "Example title",
               colspan: 0,
@@ -89,7 +90,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "layout/Paragraph",
-            post: slugPath[0],
+            post: slugPath[1],
             attrs: {
               text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
               colspan: 0,
@@ -109,7 +110,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "layout/Img",
-            post: slugPath[0],
+            post: slugPath[1],
             attrs: {
               colspan: 0,
               rowspan: 0,
@@ -132,7 +133,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
         onClick={(e) =>
           teachSetBlock({
             ...prefix,
-            post: slugPath[0],
+            post: slugPath[1],
             block: "layout/Breakpoints",
             attrs: {},
           })
