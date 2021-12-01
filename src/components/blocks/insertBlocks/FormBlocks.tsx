@@ -1,19 +1,17 @@
 /* TODO fix type */
 // @ts-ignore
 // @ts-nocheck
+import { useMutation } from '@apollo/client';
 import { FiClipboard, FiList, FiHash, FiSave } from "react-icons/fi";
-import { useStickyState, setItemToStorage} from "helpers/localMockupApi"
-import { uid } from 'components/blocks/helpers/blocks'
+import { v4 as uuidv4 } from 'uuid';
 import { useRouter } from "next/router";
 import { useBlocks } from "store/blocksStore";
+import { CREATE_BLOCK } from "components/blocks/gql/composer"
 interface Props {
   type: string;
 }
 
 export const FormBlocks: React.FC = ({type}) => {
-  
-  /* Data loader localstorage */
-  const [ storageBlocks, setStorageBlocks ] = useStickyState([], 'storageBlocks');
   
   /* Zustand states */
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
@@ -22,20 +20,25 @@ export const FormBlocks: React.FC = ({type}) => {
   const addBlock = useBlocks((state) => state.addBlock);
   
   /* local consts */
-  const slugPath = useRouter().query?.slugPath || ["home"];
+  const router = useRouter()
+  const slugPath = router.query?.slugPath || ["Page", "home"];
   const prefix = {
-    id: uid(),
+    id: uuidv4(),
     parentId: type === "next" ? block()?.parentId : block()?.id,
   };
   const buttonClass =
     "text-sm bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500 flex items-center";  
 
-  /* local methosd */
+  /* mutation */
+  const [addNewBlock, { data, loading, error }] = useMutation(CREATE_BLOCK, {
+    onCompleted(data) {
+        console.log('insert block', data.createBlock)
+        addBlock(data.createBlock);
+    }, 
+  });
   const teachSetBlock = (block) => {
    /* Set to zustand state */
-    addBlock(block);
-    /* Data loader localstorage */
-    setItemToStorage(block, storageBlocks, setStorageBlocks, 'id')
+     addNewBlock({ variables: {input:block}});
   }
   
   return (
@@ -46,10 +49,11 @@ export const FormBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "form/Form",
-            post: slugPath[0],
+            post: slugPath[1],
             attrs: {
               mutation: "",
               refname: "default_form",
+              consts:[]
             },
           })
         }
@@ -63,7 +67,7 @@ export const FormBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "form/InputField",
-            post: slugPath[0],
+            post: slugPath[1],
             attrs: {
               label: "Example label",
               placeholder: "Example placeholder",
@@ -81,7 +85,7 @@ export const FormBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "form/TextareaField",
-            post: slugPath[0],
+            post: slugPath[1],
             attrs: {
               rows: 6,
               label: "Example label",
@@ -101,7 +105,7 @@ export const FormBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "form/SelectField",
-            post: slugPath[0],
+            post: slugPath[1],
             attrs: {
               label: "Example label",
               outputValue: "data.select_value",
@@ -118,7 +122,7 @@ export const FormBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "form/KeyValueField",
-            post: slugPath[0],
+            post: slugPath[1],
             attrs: {
               placeholder1: "Insert key",
               placeholder2: "Insert value",
@@ -138,7 +142,7 @@ export const FormBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "form/SwithField",
-            post: slugPath[0],
+            post: slugPath[1],
             attrs: {
               label: "Example label",
               outputValue: "data.swith_value",
@@ -155,7 +159,7 @@ export const FormBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "form/SubmitButton",
-            post: slugPath[0],
+            post: slugPath[1],
             attrs: {
               title: "Submit button",
               color: "dark-text",

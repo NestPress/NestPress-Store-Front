@@ -16,31 +16,29 @@ const ComposerPage: React.FC = () => {
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
   const copiedBlocks = useBlocks((state) => state.copiedBlocks);
   const router = useRouter();
-  const slugPath = router.query?.slugPath || ["home"];
+  const slugPath = router.query?.slugPath || ["Page","home"];
   const blocks = useBlocks((state) => state.blocks) || [];
   const addBlock = useBlocks((state) => state.addBlock);
 
 
   const keysHandler = (e) => { 
+      
       const key = e.which || e.keyCode, ctrl = e.ctrlKey ? e.ctrlKey : ((key === 17)
           ? true : false);
       if (key == 86 && ctrl) { // V
           if(selectedBlockId){
-            copiedBlocks[0].parentId = selectedBlockId;
-            copiedBlocks.map( (el) => { addBlock(el); setItemToStorage(el, storageBlocks, setStorageBlocks, 'id') } )
+            const text = JSON.stringify(copiedBlocks)
+            copiedBlocks.map(el=>{
+              text = text.replaceAll(el.id, uuidv4())
+            })
+            const toPaste = JSON.parse(text);
+            toPaste[0].parentId = selectedBlockId;
+            toPaste.map( (el) => { addBlock(el) } )
           }
-          
       }
       else if (key == 67 && ctrl) { // C
         const parsedEls = getNestedChildren(blocks, selectedBlockId, true) 
-        const ids = parsedEls.map((el) => {
-            return el.id
-         })
-        const text = JSON.stringify(parsedEls)
-        ids.map(el=>{
-          text = text.replaceAll(el, uid())
-        })
-        useBlocks.setState({ copiedBlocks: JSON.parse(text) })
+        useBlocks.setState({ copiedBlocks: parsedEls })
     }
   }
 

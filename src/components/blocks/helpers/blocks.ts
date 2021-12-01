@@ -1,7 +1,7 @@
 /* TODO fix type */
 // @ts-ignore
 // @ts-nocheck
-export const uid = () => (Math.floor(Math.random() * 9999) * 100000000 + new Date().getTime()).toString(36);
+// export const uid = () => (Math.floor(Math.random() * 9999) * 100000000 + new Date().getTime()).toString(36);
 
 export const slugify = (string: string) => {
   return string
@@ -80,3 +80,6 @@ export const buildFormOutput = (blocks) => {
   })
   return out
 }
+
+
+

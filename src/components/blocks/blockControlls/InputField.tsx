@@ -6,7 +6,7 @@ interface Props {
 export const InputField: React.FC<Props> = ({ keyName, res, block }) => {
   return (
     <input
-      type="number"
+      type="text"
       onChange={(e) => {
         res({ 
           key: keyName, 
@@ -14,7 +14,7 @@ export const InputField: React.FC<Props> = ({ keyName, res, block }) => {
         })
       }
       }
-      className="col-span-3 border p-2 text-sm"
+      className="col-span-3 border p-2 text-sm w-full"
       value={block?.attrs[keyName]}
     />
   );

@@ -7,7 +7,7 @@ import { BlocksHeader } from "components/blocks";
 import { useBlocks } from "store/blocksStore";
 
 import { useMutation} from '@apollo/client';
-import { UPDATE_BLOCK } from "components/blocks/gql/composer"
+import { UPDATE_BLOCK, DELETE_BLOCK } from "components/blocks/gql/composer"
 
 import { getNestedChildren } from 'components/blocks/helpers/blocks'
 import { InputField, ImgObjectFit, TextareaField, BackgroundColor, NumberField, FontSize, TextColor, Border, GridFlow } from "components/blocks/blockControlls"
@@ -24,10 +24,13 @@ export const BlockControlls: React.FC = () => {
   const [updateBlock, { updateBlockData, updateBlockLoading, updateBlockError }] = useMutation(UPDATE_BLOCK, {
     onCompleted(updateBlockData) {
       console.log('update', updateBlockData)
-    }, 
-    // optimisticResponse(updateBlockData){
+    }
+  });
 
-    // }
+  const [deleteBlock, { deleteBlockData, deleteBlockLoading, deleteBlockError }] = useMutation(DELETE_BLOCK, {
+    onCompleted(deleteBlockData) {
+      console.log('delete', deleteBlockData)
+    }
   });
 
   const buttonClass =
@@ -75,7 +78,7 @@ export const BlockControlls: React.FC = () => {
   return (
     <>
       <BlocksHeader title={block()?.block || ""} />
-      <div className={`${updateBlockLoading ? 'pointer-events-none' : null} grid grid-cols-4 text-xs gap-1 p-2`}>
+      <div className={`${updateBlockLoading ? 'pointer-events-none' : null}  grid-cols-4 text-xs gap-1 p-2`}>
         <div className="py-1">ID:</div>
         <div className="col-span-3 bg-gray-100 p-1 border">
           {block()?.id || ""}
@@ -87,7 +90,7 @@ export const BlockControlls: React.FC = () => {
         {Object.keys(block()?.attrs || {}).map((key, index) => {
           return !replace ? (
             <>
-              <div key={index} className="py-1 flex items-center">
+              <div key={index} className="py-1 flex items-center mt-1">
                 {key}:
               </div>
 
@@ -98,7 +101,7 @@ export const BlockControlls: React.FC = () => {
                 <NumberField key={`nbr-${index}`} keyName={key} res={res} block={block()} />
               )}
 
-              {(key === "text" || key === "mutation") && (
+              {(key === "text" || key === "query" || key === "mutation") && (
                 <TextareaField key={`txa-${index}`} keyName={key} res={res} block={block()} resout={resout}/>
               )}
 
@@ -128,6 +131,7 @@ export const BlockControlls: React.FC = () => {
 
               {key !== "text" &&
                 key !== "mutation" &&
+                key !== "query" &&
                 key !== "columns" &&
                 key !== "border" &&
                 key !== "colspan" &&
@@ -176,8 +180,17 @@ export const BlockControlls: React.FC = () => {
             onClick={(e) => {
               useBlocks.setState({ panel: "mainPanel" });
               removeBlock();
-              // ---
-              // removeItemFromStorage(storageBlocks, setStorageBlocks, 'id', selectedBlockId)
+              deleteBlock({ 
+                variables: {
+                  id: selectedBlockId,
+                }
+              }).catch(error => {
+                // if (error.networkError) {
+                //   getNetworkErrors(error).then(console.log)
+                // } else {
+                  console.log(error.message)
+                //}
+              });
 
             }}
           >

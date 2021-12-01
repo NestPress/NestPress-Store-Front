@@ -1,7 +1,5 @@
 import { gql } from '@apollo/client';
 
-
-
 /* gql */
 export const CREATE_BLOCK = gql`
   mutation createBlock(
@@ -54,7 +52,16 @@ export const GET_BLOCKS = gql`
     }
   }
 `
-
+export const DELETE_BLOCK = gql`
+  mutation deleteBlock(
+    $id: String!
+  ){
+    deleteBlock(
+      id: $id
+    )
+  }
+`
+// --------------------------------------
 
 export const CREATE_POST = gql`
   mutation createPost(
@@ -70,7 +77,6 @@ export const CREATE_POST = gql`
     }
   }
 `
-
 export const FILTER_POSTS = gql`
   query getPosts(
       $query: String
@@ -92,4 +98,39 @@ export const FILTER_POSTS = gql`
     }
   }
 }
+`
+export const GET_POST_BY_SLUG = gql`
+  query getPostBySlug(
+      $slug:String!
+    ){
+    getPostBySlug(
+      slug: $slug
+    ){
+      id
+      createdAt
+      title
+    }
+  }
+`
+export const UPDATE_POST = gql`
+  mutation updatePost(
+      $id: ID!
+      $input: UpdatePostInput!
+    ){
+    updatePost(
+      id: $id,
+      input: $input
+    ){
+      id
+    }
+  }
+`
+export const DELETE_POST = gql`
+  mutation deletePost(
+    $id: ID!
+  ){
+    deletePost(
+      id: $id
+    )
+  }
 `

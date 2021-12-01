@@ -10,6 +10,7 @@ const useBlocks = create((set) => ({
   replace: false,
   components:{},
   blocks:[],
+  copiedBlocksIds:[],
   copiedBlocks:[],
   selectedBlockId: null,
   setComponent: (_in) =>

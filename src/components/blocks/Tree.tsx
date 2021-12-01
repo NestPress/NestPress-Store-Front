@@ -24,7 +24,7 @@ export const Tree: React.FC<Props> = memo(
 
     return (
       <>
-        {items.map((item) => {
+        {items.map((item, i) => {
           !components[item.block]
             ? setComponent({
                 key: item.block,
@@ -37,7 +37,7 @@ export const Tree: React.FC<Props> = memo(
           return (
             components[item.block] && (
               <div
-                style={{ minHeight: "30px" }}
+                style={!preview ? { minHeight: "30px" } : null}
                 className={`
             ${
               !preview
@@ -68,7 +68,7 @@ export const Tree: React.FC<Props> = memo(
                 }}
               >
                 <Block
-                  attrs={{ id: item.id, ...item.attrs }}
+                  attrs={{ id: item.id, i:i, ...item.attrs }}
                   key={item.id}
                   item={item}
                   level={level}

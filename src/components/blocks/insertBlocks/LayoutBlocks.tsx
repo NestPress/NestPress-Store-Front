@@ -20,7 +20,8 @@ export const LayoutBlocks: React.FC = ({type}) => {
   const addBlock = useBlocks((state) => state.addBlock);
   
   /* local consts */
-  const slugPath = useRouter().query?.slugPath || ["home"];
+  const router = useRouter()
+  const slugPath = router.query?.slugPath || ["Page", "home"];
   const prefix = {
     id: uuidv4(),
     parentId: type === "next" ? block()?.parentId : block()?.id,

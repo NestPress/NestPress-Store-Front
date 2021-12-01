@@ -14,7 +14,7 @@ export const NumberField: React.FC<Props> = ({ keyName, res, block }) => {
         })
       }
       }
-      className="col-span-3 border p-2 text-sm"
+      className="col-span-3 border p-2 text-sm w-full"
       value={block?.attrs[keyName]}
     />
   );

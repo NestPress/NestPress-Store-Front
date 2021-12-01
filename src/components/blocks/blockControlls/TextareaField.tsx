@@ -25,7 +25,7 @@ export const TextareaField: React.FC<Props> = ({ keyName, res, resout, block }) 
       /* TODO fix type */
       // @ts-ignore: Unreachable code error
       rows="3"
-      className="col-span-3 border p-1"
+      className="col-span-3 border p-1 w-full"
       value={block?.attrs[keyName]}
     />
   );

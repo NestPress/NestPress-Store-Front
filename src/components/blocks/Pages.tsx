@@ -6,7 +6,7 @@ import { FiFile, FiAnchor } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { useBlocks } from "store/blocksStore";
 import { slugify } from "components/blocks/helpers/blocks";
-import { gql, useQuery, useMutation} from '@apollo/client';
+import { useQuery, useMutation} from '@apollo/client';
 import { FILTER_POSTS , CREATE_POST, CREATE_BLOCK } from "components/blocks/gql/composer"
 import { v4 as uuidv4 } from 'uuid';
 
@@ -75,7 +75,7 @@ export const Pages: React.FC = () => {
     <div className="text-sm">
       <div className="flex items-center text-base p-2 bg-pink-600 text-white">
         <FiFile />
-        <span className="ml-2">Blog posts list</span>
+        <span className="ml-2">Blog posts list ({slugPath[0]} type)</span>
       </div>
 
       <label className="block p-1 border-b">
@@ -104,7 +104,7 @@ export const Pages: React.FC = () => {
               useBlocks.setState({composerTab:'page'})
               router.replace(`${el.postType}/${el.slug}`);
             }} 
-            className={`${el.slug===slugPath[1]?"bg-pink-100":"bg-white"} text-xs p-2 border-b grid grid-cols-5   hover:bg-blue-100 cursor-pointer`}>
+            className={`${el.slug===slugPath[1]?"bg-green-100":"bg-white"} text-xs p-2 border-b grid grid-cols-5   hover:bg-blue-100 cursor-pointer`}>
           <div className="col-span-2">{el.slug}</div>
           <div className="col-span-2">{el.title}</div>
           <div className="text-right">&nbsp;{el.layout}</div>
@@ -113,7 +113,7 @@ export const Pages: React.FC = () => {
       <div className="p-2 mt-1 border-t border-b">
         <div className="flex items-center text-base mb-2">
           <FiAnchor />
-          <span className="ml-2">Register new post</span>
+          <span className="ml-2">Register new {slugPath[0]}</span>
         </div>
         <input
           className="w-full p-2 border mb-1"
@@ -142,7 +142,7 @@ export const Pages: React.FC = () => {
           }}
           className={buttonClass}
         >
-          Register page
+          Register {slugPath[0]}
         </button>
       </div>
     </div>
