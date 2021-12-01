@@ -104,7 +104,7 @@ export const Pages: React.FC = () => {
               useBlocks.setState({composerTab:'page'})
               router.replace(`${el.postType}/${el.slug}`);
             }} 
-            className="text-xs p-2 border-b grid grid-cols-5 bg-white  hover:bg-blue-100 cursor-pointer">
+            className={`${el.slug===slugPath[1]?"bg-pink-100":"bg-white"} text-xs p-2 border-b grid grid-cols-5   hover:bg-blue-100 cursor-pointer`}>
           <div className="col-span-2">{el.slug}</div>
           <div className="col-span-2">{el.title}</div>
           <div className="text-right">&nbsp;{el.layout}</div>
@@ -129,7 +129,6 @@ export const Pages: React.FC = () => {
         />
         <button
           onClick={(e) => {
-            console.log(form)
             addNewPost({ variables: {input:form}}).catch(error => {
               if (error.networkError) {
                 getNetworkErrors(error).then(console.log)

@@ -54,7 +54,6 @@ const ComposerPage: React.FC = () => {
       }
     },
     onCompleted(data) {
-      console.log('first load blocks', data.getBlocks.list)
       data.getBlocks.list.length 
       ? useBlocks.setState({ 
           blocks: data.getBlocks.list.map(el => el.parentId === "0" ? {...el, parentId:0} : el) 

@@ -3,7 +3,7 @@ interface Props {
   res: any;
   block: any
 }
-export const NumberField: React.FC<Props> = ({ keyName, res, block }) => {
+export const InputField: React.FC<Props> = ({ keyName, res, block }) => {
   return (
     <input
       type="number"

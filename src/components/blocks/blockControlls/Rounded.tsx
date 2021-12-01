@@ -1,24 +1,24 @@
-import { useBlocks } from "store/blocksStore";
 interface Props {
   keyName: string;
+  res: any;
+  block: any
 }
-export const Rounded: React.FC<Props> = ({ keyName }) => {
-  const blocks = useBlocks((state) => state.blocks);
-  const setBlockAttrs = useBlocks((state) => state.setBlockAttrs);
-  const block:any = () => blocks.find((x:any) => x.id === selectedBlockId);
-  const selectedBlockId = useBlocks((state) => state.selectedBlockId);
+export const Rounded: React.FC<Props> = ({ keyName, res, block }) => {
   return (
     <select
       className="col-span-3 border bg-white py-3 px-1"
-      onChange={(e) =>
-        setBlockAttrs({ key: keyName, value: e.target.value })
-      }
+      onChange={(e) => {
+        res({ 
+          key: keyName, 
+          value: e.target.value
+        })
+      }}
     >
-      <option selected={block()?.attrs[keyName] === ""} value="">
+      <option selected={block?.attrs[keyName] === ""} value="">
         Empty definition
       </option>
       <option
-        selected={block()?.attrs[keyName] === "rounded"}
+        selected={block?.attrs[keyName] === "rounded"}
         value="rounded"
       >
         Rounded

@@ -5,16 +5,15 @@
 import { FiCornerRightDown, FiArrowDown, FiExternalLink } from "react-icons/fi";
 import { BlocksHeader } from "components/blocks";
 import { useBlocks } from "store/blocksStore";
-import { useStickyState , setItemToStorage, removeItemFromStorage } from "helpers/localMockupApi";
+
+import { useMutation} from '@apollo/client';
+import { UPDATE_BLOCK } from "components/blocks/gql/composer"
 
 import { getNestedChildren } from 'components/blocks/helpers/blocks'
-import { ImgObjectFit, TextareaField, BackgroundColor, NumberField, FontSize, TextColor, Border, Copypaste, GridFlow } from "components/blocks/blockControlls"
+import { InputField, ImgObjectFit, TextareaField, BackgroundColor, NumberField, FontSize, TextColor, Border, GridFlow } from "components/blocks/blockControlls"
 
 export const BlockControlls: React.FC = () => {
 
-  // ----
-  const [ storageBlocks, setStorageBlocks ] = useStickyState([], 'storageBlocks');
-  
   const blocks = useBlocks((state) => state.blocks);
   const block = () => blocks.find((x) => x.id === selectedBlockId);
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
@@ -22,19 +21,61 @@ export const BlockControlls: React.FC = () => {
   const replace = useBlocks((state) => state.replace);
   const removeBlock = useBlocks((state) => state.removeBlock);
 
+  const [updateBlock, { updateBlockData, updateBlockLoading, updateBlockError }] = useMutation(UPDATE_BLOCK, {
+    onCompleted(updateBlockData) {
+      console.log('update', updateBlockData)
+    }, 
+    // optimisticResponse(updateBlockData){
+
+    // }
+  });
 
   const buttonClass =
     "flex items-center bg-blue-400 w-full p-2 rounded  text-white hover:bg-blue-500";
   const buttonDel =
     "flex items-center bg-red-400 w-full p-2 rounded  text-white hover:bg-blue-500";
   
+  const res = (res) => {
+    setBlockAttrs(res)
+    if(res.key === "text" || res.key === "mutation"){}else{
+      saveData(res)
+    }
+  }
+  const resout = (res) => {
+    if(res.key === "text" || res.key === "mutation"){
+        saveData(res)
+    }
+  }
 
+  function saveData(res){
+      const refBlock = block();
+      const copy = Object.assign({}, refBlock.attrs)
+      copy[res.key] = res.value
+      updateBlock({ 
+        variables: {
+          id: refBlock.id,
+          input:{
+            id: refBlock.id,
+            post: refBlock.post,
+            parentId: refBlock.parentId === 0 ? "0" : refBlock.parentId,
+            block: refBlock.block,
+            attrs:copy
+          }
+        }
+      }).catch(error => {
+        // if (error.networkError) {
+        //   getNetworkErrors(error).then(console.log)
+        // } else {
+          console.log(error.message)
+        //}
+      });
+    }
   
 
   return (
     <>
       <BlocksHeader title={block()?.block || ""} />
-      <div className="grid grid-cols-4 text-xs gap-1 p-2">
+      <div className={`${updateBlockLoading ? 'pointer-events-none' : null} grid grid-cols-4 text-xs gap-1 p-2`}>
         <div className="py-1">ID:</div>
         <div className="col-span-3 bg-gray-100 p-1 border">
           {block()?.id || ""}
@@ -54,35 +95,35 @@ export const BlockControlls: React.FC = () => {
                 key === "colspan" ||
                 key === "rowspan" ||
                 key === "rows") && (
-                <NumberField key={`nbr-${index}`} keyName={key}/>
+                <NumberField key={`nbr-${index}`} keyName={key} res={res} block={block()} />
               )}
 
               {(key === "text" || key === "mutation") && (
-                <TextareaField key={`txa-${index}`} keyName={key}/>
+                <TextareaField key={`txa-${index}`} keyName={key} res={res} block={block()} resout={resout}/>
               )}
 
               {key === "background" && (
-                <BackgroundColor key={`bgc-${index}`} keyName={key}/>
+                <BackgroundColor key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
               )}
 
               {key === "fontsize" && (
-                <FontSize key={`fsz-${index}`} keyName={key}/>
+                <FontSize key={`fsz-${index}`} keyName={key} res={res} block={block()}/>
               )}
 
               {key === "textcolor" && (
-                <TextColor key={`txc-${index}`} keyName={key}/>
+                <TextColor key={`txc-${index}`} keyName={key} res={res} block={block()}/>
               )}
 
               {key === "border" && (
-                <Border key={`brd-${index}`} keyName={key}/>
+                <Border key={`brd-${index}`} keyName={key} res={res} block={block()}/>
               )}
 
                {key === "gridflow" && (
-                <GridFlow key={`brd-${index}`} keyName={key}/>
+                <GridFlow key={`brd-${index}`} keyName={key} res={res} block={block()}/>
               )}
 
               {key === "objectfit" && (
-                <ImgObjectFit key={`bgc-${index}`} keyName={key}/>
+                <ImgObjectFit key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
               )}
 
               {key !== "text" &&
@@ -97,16 +138,7 @@ export const BlockControlls: React.FC = () => {
                 key !== "textcolor" &&
                 key !== "objectfit" &&
                 key !== "background" && (
-                  <input
-                    onChange={(e) => {
-                        setBlockAttrs({ key: key, value: e.target.value })
-                        
-                      }
-                    }
-                    key={`inp-${index}`}
-                    className="col-span-3 border py-3 px-2 text-xs"
-                    value={block()?.attrs[key]}
-                  />
+                  <InputField key={`brd-${index}`} keyName={key} res={res} block={block()}/>
                 )}
             </>
           ) : null;
@@ -145,7 +177,7 @@ export const BlockControlls: React.FC = () => {
               useBlocks.setState({ panel: "mainPanel" });
               removeBlock();
               // ---
-              removeItemFromStorage(storageBlocks, setStorageBlocks, 'id', selectedBlockId)
+              // removeItemFromStorage(storageBlocks, setStorageBlocks, 'id', selectedBlockId)
 
             }}
           >

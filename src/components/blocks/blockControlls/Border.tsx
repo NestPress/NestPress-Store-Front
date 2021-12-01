@@ -1,58 +1,58 @@
-import { useBlocks } from "store/blocksStore";
 interface Props {
   keyName: string;
+  res: any;
+  block: any
 }
-export const Border: React.FC<Props> = ({ keyName }) => {
-  const blocks = useBlocks((state) => state.blocks);
-  const block:any = () => blocks.find((x:any) => x.id === selectedBlockId);
-  const setBlockAttrs = useBlocks((state) => state.setBlockAttrs);
-  const selectedBlockId = useBlocks((state) => state.selectedBlockId);
+export const Border: React.FC<Props> = ({ keyName, res, block }) => {
   return (
     <select
       className="col-span-3 border bg-white py-3 px-1"
-      onChange={(e) =>
-        setBlockAttrs({ key: keyName, value: e.target.value })
-      }
+      onChange={(e) => {
+        res({ 
+          key: keyName, 
+          value: e.target.value
+        })
+      }}
     >
-      <option selected={block()?.attrs[keyName] === ""} 
+      <option selected={block?.attrs[keyName] === ""} 
         value="main-text"
       >
         Empty definition
       </option>
 
       <option
-        selected={block()?.attrs[keyName] === "border"}
+        selected={block?.attrs[keyName] === "border"}
         value="border"
       >
         Border
       </option>
 
       <option
-        selected={block()?.attrs[keyName] === "border-r"}
+        selected={block?.attrs[keyName] === "border-r"}
         value="border-r"
       >
         Border right
       </option>
 
-      <option selected={block()?.attrs[keyName] === "border-b"} 
+      <option selected={block?.attrs[keyName] === "border-b"} 
         value="border-b"
       >
         Border bottom
       </option>
 
-      <option selected={block()?.attrs[keyName] === "border-l"} 
+      <option selected={block?.attrs[keyName] === "border-l"} 
         value="border-l"
       >
         Border left
       </option>
 
-      <option selected={block()?.attrs[keyName] === "border-r"} 
+      <option selected={block?.attrs[keyName] === "border-r"} 
         value="border-r"
       >
         Border right
       </option>
 
-      <option selected={block()?.attrs[keyName] === "border-t"} 
+      <option selected={block?.attrs[keyName] === "border-t"} 
         value="border-t"
       >
         Border top

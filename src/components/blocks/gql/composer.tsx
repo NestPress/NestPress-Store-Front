@@ -18,6 +18,19 @@ export const CREATE_BLOCK = gql`
     }
   }
 `
+export const UPDATE_BLOCK = gql`
+  mutation updateBlock(
+      $id: String!
+      $input: UpdateBlockInput!
+    ){
+    updateBlock(
+      id: $id,
+      input: $input
+    ){
+      id
+    }
+  }
+`
 export const GET_BLOCKS = gql`
   query getBlocks(
     $query: String
