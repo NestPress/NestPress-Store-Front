@@ -37,7 +37,7 @@ export const Tree: React.FC<Props> = memo(
           return (
             components[item.block] && (
               <div
-                style={!preview ? { minHeight: "30px" } : null}
+                style={!preview ? { minHeight: "30px", minWidth: "20px" } : null}
                 className={`
             ${
               !preview
@@ -73,6 +73,7 @@ export const Tree: React.FC<Props> = memo(
                   item={item}
                   level={level}
                 >
+                  {item.attrs.handler && <div className="bg-pink-400 rounded text-xs p-1 w-40 m-1 text-white">Handler {item.attrs.handler}</div>}
                   <Tree
                     blocks={blocks}
                     parentId={item.id}

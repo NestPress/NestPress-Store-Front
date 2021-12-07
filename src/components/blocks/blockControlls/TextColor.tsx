@@ -9,7 +9,7 @@ export const TextColor: React.FC<Props> = ({ keyName }) => {
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
   return (
     <select
-      className="col-span-3 border bg-white py-3 px-1"
+      className="col-span-3 border bg-white py-3 px-1 w-full"
       onChange={(e) =>
         setBlockAttrs({ key: keyName, value: e.target.value })
       }

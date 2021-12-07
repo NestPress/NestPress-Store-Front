@@ -87,6 +87,8 @@ export const Pages: React.FC = () => {
         >
           <option selected={slugPath[0]==="Post"} defautValue="Post">Post</option>
           <option selected={slugPath[0]==="Page"} defautValue="Page">Page</option>
+          <option selected={slugPath[0]==="Layout"} defautValue="Layout">Layout</option>
+          <option selected={slugPath[0]==="Panel"} defautValue="Panel">Panel</option>
           <option selected={slugPath[0]==="Comment"} defautValue="Comment">Comment</option>
           <option selected={slugPath[0]==="Event"} defautValue="Event">Event</option>
           <option selected={slugPath[0]==="Facet"} defautValue="Facet">Facet</option>

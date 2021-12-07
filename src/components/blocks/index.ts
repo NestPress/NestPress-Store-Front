@@ -4,6 +4,7 @@ export * from "./InsertBlock";
 export * from "./MainPanel";
 export * from "./Pages";
 export * from "./Page";
+export * from "./PureTree";
 export * from "./Composer";
 export * from "./Settings";
 export * from "./Tree";

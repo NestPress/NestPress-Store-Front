@@ -73,23 +73,42 @@ export const BlockControlls: React.FC = () => {
         //}
       });
     }
+
+
   
 
   return (
     <>
       <BlocksHeader title={block()?.block || ""} />
-      <div className={`${updateBlockLoading ? 'pointer-events-none' : null}  grid-cols-4 text-xs gap-1 p-2`}>
-        <div className="py-1">ID:</div>
-        <div className="col-span-3 bg-gray-100 p-1 border">
+      <div className='grid grid-cols-2 text-xs gap-1 p-2'>
+      <div className="py-1 col-span-2">ID:</div>
+        <div className="col-span-2 bg-gray-100 p-1 border">
           {block()?.id || ""}
         </div>
-        <div className="py-1">ParentID:</div>
-        <div className="col-span-3 bg-gray-100 p-1 border">
+        <div className="py-1 col-span-2">ParentID:</div>
+        <div className="col-span-2 bg-gray-100 p-1 border">
           {block()?.parentId || ""}
         </div>
+      </div>
+
+      <div className="col-span-2 p-2 mt-2 text-xs font-bold bg-gray-200">Attributes</div>
+
+      <div className={`${updateBlockLoading ? 'pointer-events-none' : null}  grid grid-cols-2 text-xs gap-1 px-2`}>
+        
         {Object.keys(block()?.attrs || {}).map((key, index) => {
           return !replace ? (
-            <>
+            <div className={` ${ 
+                key !== "columns" &&
+                key !== "border" &&
+                key !== "colspan" &&
+                key !== "rowspan" &&
+                key !== "gridflow" &&
+                key !== "rows" &&
+                key !== "fontsize" &&
+                key !== "textcolor" &&
+                key !== "objectfit" &&
+                key !== "background"  ? 'col-span-2' : '' }`}>
+
               <div key={index} className="py-1 flex items-center mt-1">
                 {key}:
               </div>
@@ -144,13 +163,13 @@ export const BlockControlls: React.FC = () => {
                 key !== "background" && (
                   <InputField key={`brd-${index}`} keyName={key} res={res} block={block()}/>
                 )}
-            </>
+            </div>
           ) : null;
         })}
       </div>
 
       {!replace ? (
-        <div className="px-2 border-t pt-2 grid grid-cols-2 gap-1 text-sm">
+        <div className="px-2 mt-2 border-t pt-2 grid grid-cols-2 gap-1 text-sm">
           <button
             className={buttonClass}
             onClick={(e) => useBlocks.setState({ panel: "insertChild" })}

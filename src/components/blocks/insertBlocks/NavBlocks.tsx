@@ -1,6 +1,7 @@
 /* TODO fix type */
 // @ts-ignore
 // @ts-nocheck
+import { useMutation } from '@apollo/client';
 import { FiLink, FiLogOut } from "react-icons/fi";
 import { v4 as uuidv4 } from 'uuid';
 import { useRouter } from "next/router";

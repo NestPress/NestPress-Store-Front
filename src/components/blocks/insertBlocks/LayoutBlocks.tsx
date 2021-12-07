@@ -58,6 +58,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
               background: "",
               border: "",
               rounded: "",
+              handler:""
             },
           })
         }
