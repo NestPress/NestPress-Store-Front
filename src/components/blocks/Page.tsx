@@ -66,7 +66,7 @@ export const Page: React.FC = () => {
   /* mutation */
   const [addNewBlock, { addNewBlockData, addNewBlockLoading, addNewBlockError }] = useMutation(CREATE_BLOCK, {
     onCompleted(addNewBlockData) {
-      
+
       const block = addNewBlockData.createBlock
       useBlocks.setState({ 
           blocks: [{...block, parentId:0}]
@@ -124,23 +124,24 @@ export const Page: React.FC = () => {
             }
             if(currentPage.submitType === 'update'){
               delete currentPage.submitType
-              // updatePost({ 
-              //   variables: {
-              //     id: currentPage.id,
-              //     input: {
-              //       title: currentPage.title,
-              //     }
-              //   }
-              // });
-            }
-            if(currentPage.submitType === 'delete'){
-              delete currentPage.submitType
-              deletePost({ 
+              updatePost({ 
                 variables: {
                   id: currentPage.id,
+                  input: {
+                    title: currentPage.title,
+                  }
                 }
               });
-              router.push(`/composer/${slugPath[0]}/${slugPath[1]}`)
+            }
+            if(currentPage.submitType === 'delete'){
+              alert('delelete action was closed! TODO: deleted blogPost have register slug in database and blocked create another on this same')
+              // delete currentPage.submitType
+              // deletePost({ 
+              //   variables: {
+              //     id: currentPage.id,
+              //   }
+              // });
+              // router.push(`/composer/${slugPath[0]}/${slugPath[1]}`)
             }
           }}
         >
