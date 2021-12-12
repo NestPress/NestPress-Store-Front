@@ -51,14 +51,8 @@ export const LayoutBlocks: React.FC = ({type}) => {
             block: "layout/Grid",
             post: slugPath[1],
             attrs: {
-              gridflow: "",
-              columns: 0,
-              colspan: 0,
-              rowspan: 0,
-              background: "",
-              border: "",
-              rounded: "",
-              handler:""
+              handler:"",
+              classes: ""
             },
           })
         }
@@ -75,10 +69,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
             post: slugPath[1],
             attrs: {
               text: "Example title",
-              colspan: 0,
-              rowspan: 0,
-              fontsize: '',
-              textcolor: '',
+              classes: ""
             },
           })
         }
@@ -95,10 +86,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
             post: slugPath[1],
             attrs: {
               text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-              colspan: 0,
-              rowspan: 0,
-              fontsize: '',
-              textcolor: '',
+              classes: ""
             },
           })
         }
@@ -114,13 +102,13 @@ export const LayoutBlocks: React.FC = ({type}) => {
             block: "layout/Img",
             post: slugPath[1],
             attrs: {
-              colspan: 0,
-              rowspan: 0,
-              border: "",
-              rounded: "",
               objectfit: "",
+              imglayout: "",
+              width:"",
+              height:"",
               image: "/empty-person-dark.svg",
-              alt:""
+              alt:"",
+              classes: ""
             },
           })
         }
@@ -137,7 +125,9 @@ export const LayoutBlocks: React.FC = ({type}) => {
             ...prefix,
             post: slugPath[1],
             block: "layout/Breakpoints",
-            attrs: {},
+            attrs: {
+              classes: ""
+            },
           })
         }
       >

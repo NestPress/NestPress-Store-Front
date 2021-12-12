@@ -55,7 +55,7 @@ export const DataBlocks: React.FC = ({type}) => {
             post: slugPath[1],
             attrs: {
               query: "",
-              cols: 1,
+              classes: ""
             },
           })
         }
@@ -72,7 +72,7 @@ export const DataBlocks: React.FC = ({type}) => {
             post: slugPath[1],
             attrs: {
               query: "",
-              cols: 1,
+              classes: ""
             },
           })
         }

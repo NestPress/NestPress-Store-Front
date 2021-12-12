@@ -54,6 +54,7 @@ export const NavBlocks: React.FC = ({type}) => {
               title: "Example link",
               to: "/",
               asButton: false,
+              classes: ""
             },
           })
         }
@@ -70,7 +71,7 @@ export const NavBlocks: React.FC = ({type}) => {
             post: slugPath[1],
             attrs: {
               text: "Example title",
-              color: "dark-text",
+              classes: ""
             },
           })
         }
@@ -88,7 +89,7 @@ export const NavBlocks: React.FC = ({type}) => {
             post: slugPath[1],
             attrs: {
               text: "Submit button",
-              color: "dark-text",
+              classes: ""
             },
           })
         }

@@ -10,7 +10,7 @@ import { useMutation} from '@apollo/client';
 import { UPDATE_BLOCK, DELETE_BLOCK } from "components/blocks/gql/composer"
 
 import { getNestedChildren } from 'components/blocks/helpers/blocks'
-import { InputField, ImgObjectFit, TextareaField, BackgroundColor, NumberField, FontSize, TextColor, Border, GridFlow } from "components/blocks/blockControlls"
+import { TagsField, InputField, ImgObjectFit, ImgLayout, TextareaField, NumberField } from "components/blocks/blockControlls"
 
 export const BlockControlls: React.FC = () => {
 
@@ -40,12 +40,14 @@ export const BlockControlls: React.FC = () => {
   
   const res = (res) => {
     setBlockAttrs(res)
-    if(res.key === "text" || res.key === "mutation"){}else{
+    if(res.key === "text" || res.key === "mutation" || res.key === "query" || res.key === "classes"){
+
+    }else{
       saveData(res)
     }
   }
   const resout = (res) => {
-    if(res.key === "text" || res.key === "mutation"){
+    if(res.key === "text" || res.key === "mutation" || res.key === "query" || res.key === "classes"){
         saveData(res)
     }
   }
@@ -74,11 +76,8 @@ export const BlockControlls: React.FC = () => {
       });
     }
 
-
-  
-
   return (
-    <>
+    <div>
       <BlocksHeader title={block()?.block || ""} />
       <div className='grid grid-cols-2 text-xs gap-1 p-2'>
       <div className="py-1 col-span-2">ID:</div>
@@ -97,26 +96,19 @@ export const BlockControlls: React.FC = () => {
         
         {Object.keys(block()?.attrs || {}).map((key, index) => {
           return !replace ? (
-            <div className={` ${ 
-                key !== "columns" &&
-                key !== "border" &&
-                key !== "colspan" &&
-                key !== "rowspan" &&
-                key !== "gridflow" &&
-                key !== "rows" &&
-                key !== "fontsize" &&
-                key !== "textcolor" &&
-                key !== "objectfit" &&
-                key !== "background"  ? 'col-span-2' : '' }`}>
+            <div key={index} className={` ${ 
+                key !== "width" &&
+                key !== "height" ? 'col-span-2' : ''
+              }`}>
 
               <div key={index} className="py-1 flex items-center mt-1">
                 {key}:
               </div>
 
-              {(key === "columns" ||
-                key === "colspan" ||
-                key === "rowspan" ||
-                key === "rows") && (
+              {(
+                key === "width" ||
+                key === "height" 
+                ) && (
                 <NumberField key={`nbr-${index}`} keyName={key} res={res} block={block()} />
               )}
 
@@ -124,43 +116,26 @@ export const BlockControlls: React.FC = () => {
                 <TextareaField key={`txa-${index}`} keyName={key} res={res} block={block()} resout={resout}/>
               )}
 
-              {key === "background" && (
-                <BackgroundColor key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
+              {key === "imglayout" && (
+                <ImgLayout key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
               )}
-
-              {key === "fontsize" && (
-                <FontSize key={`fsz-${index}`} keyName={key} res={res} block={block()}/>
-              )}
-
-              {key === "textcolor" && (
-                <TextColor key={`txc-${index}`} keyName={key} res={res} block={block()}/>
-              )}
-
-              {key === "border" && (
-                <Border key={`brd-${index}`} keyName={key} res={res} block={block()}/>
-              )}
-
-               {key === "gridflow" && (
-                <GridFlow key={`brd-${index}`} keyName={key} res={res} block={block()}/>
-              )}
-
               {key === "objectfit" && (
                 <ImgObjectFit key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
+              )}
+
+              {key === "classes" && (
+                <TagsField key={`bgc-${index}`} keyName={key} res={res} block={block()} resout={resout}/>
               )}
 
               {key !== "text" &&
                 key !== "mutation" &&
                 key !== "query" &&
-                key !== "columns" &&
-                key !== "border" &&
-                key !== "colspan" &&
-                key !== "rowspan" &&
-                key !== "gridflow" &&
-                key !== "rows" &&
-                key !== "fontsize" &&
-                key !== "textcolor" &&
+                key !== "imglayout" &&
                 key !== "objectfit" &&
-                key !== "background" && (
+                key !== "width" &&
+                key !== "height" &&
+                key !== "classes" &&
+               (
                   <InputField key={`brd-${index}`} keyName={key} res={res} block={block()}/>
                 )}
             </div>
@@ -222,6 +197,6 @@ export const BlockControlls: React.FC = () => {
           Select parent block to replace
         </div>
       )}
-    </>
+    </div>
   );
 };

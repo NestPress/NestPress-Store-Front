@@ -13,7 +13,7 @@ export const BlocksHeader: React.FC<Props> = ({title}) => {
       >
         <FiChevronLeft />
       </div>
-      <div className="p-2 flex-1">{title}</div>
+      <div className="p-2 flex-1">Block: {title}</div>
       <div
         onClick={(e) => useBlocks.setState({ preview: !preview })}
         className="border-l p-2 flex items-center cursor-pointer"

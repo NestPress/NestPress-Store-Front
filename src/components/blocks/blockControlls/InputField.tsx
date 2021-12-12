@@ -14,6 +14,13 @@ export const InputField: React.FC<Props> = ({ keyName, res, block }) => {
         })
       }
       }
+      onBlur={(e) => {
+        resout({ 
+          key: keyName, 
+          value: e.target.value
+        })
+      }
+      }
       className="col-span-3 border p-2 text-sm w-full"
       value={block?.attrs[keyName]}
     />

@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { useRouter } from "next/router";
 import { useBlocks } from "store/blocksStore";
 import { CREATE_BLOCK } from "components/blocks/gql/composer"
+
 interface Props {
   type: string;
 }
@@ -53,7 +54,8 @@ export const FormBlocks: React.FC = ({type}) => {
             attrs: {
               mutation: "",
               refname: "default_form",
-              consts:[]
+              consts:[],
+              classes: ""
             },
           })
         }
@@ -72,6 +74,7 @@ export const FormBlocks: React.FC = ({type}) => {
               label: "Example label",
               placeholder: "Example placeholder",
               outputValue: "data.input_value",
+              classes: ""
             },
           })
         }
@@ -91,6 +94,7 @@ export const FormBlocks: React.FC = ({type}) => {
               label: "Example label",
               placeholder: "Example placeholder",
               outputValue: "data.textarea_value",
+              classes: ""
             },
           })
         }
@@ -109,6 +113,7 @@ export const FormBlocks: React.FC = ({type}) => {
             attrs: {
               label: "Example label",
               outputValue: "data.select_value",
+              classes: ""
             },
           })
         }
@@ -129,6 +134,7 @@ export const FormBlocks: React.FC = ({type}) => {
               submit: "Insert",
               label: "Example label",
               outputValue: "data.keys_value",
+              classes: ""
             },
           })
         }
@@ -146,6 +152,7 @@ export const FormBlocks: React.FC = ({type}) => {
             attrs: {
               label: "Example label",
               outputValue: "data.swith_value",
+              classes: ""
             },
           })
         }
@@ -162,7 +169,7 @@ export const FormBlocks: React.FC = ({type}) => {
             post: slugPath[1],
             attrs: {
               title: "Submit button",
-              color: "dark-text",
+              classes: ""
             },
           })
         }

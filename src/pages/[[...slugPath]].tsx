@@ -12,7 +12,12 @@ const ComposerPage: React.FC = () => {
 
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
   const router = useRouter();
-  const slugPath = router.query?.slugPath || ["Page","home"];
+  const slugPath = ["Page","home"];
+  if(Object.entries(router.query).length !== 0){
+     router.query.slugPath[0] ? slugPath[1] = router.query.slugPath[0] : null
+     router.query.slugPath[1] ? slugPath[0] = router.query.slugPath[1] : null
+  }
+
   const blocks = useBlocks((state) => state.blocks) || [];
 
   const prepareBlocks = (list) => {
@@ -62,9 +67,10 @@ const ComposerPage: React.FC = () => {
       }
     },
     onCompleted(data) {
+      console.log('data',data)
       data.getBlocks.list.length 
       ? useBlocks.setState({ blocks: prepareBlocks(data.getBlocks.list) })
-      : null
+      : null    
     }
   });
   return (

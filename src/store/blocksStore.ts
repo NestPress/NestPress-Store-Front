@@ -13,6 +13,9 @@ const useBlocks = create((set) => ({
   copiedBlocksIds:[],
   copiedBlocks:[],
   selectedBlockId: null,
+  blocksPocket: false,
+  message:'',
+  messageType:'success',
   setComponent: (_in) =>
     set(
       produce((_) => {

@@ -33,8 +33,10 @@ const Img: React.FC<Props> = memo(({ attrs }) => {
 	      ${attrs.rounded ? attrs.rounded : null} 
 	    `}
       
-    	layout="fill" 
+    	layout={attrs.imglayout ? attrs.imglayout : "fill"}
     	objectFit={attrs.objectfit}
+      width={attrs.width ? attrs.width : 0}
+      height={attrs.height ? attrs.height : 0}
     	src={ attrs.image || '/empty-person.svg' } 
     	alt={ attrs.alt } />
   );

@@ -8,7 +8,7 @@ const NavLink: React.FC<Props> = ({ attrs, children }) => {
     : "hover:underline ";
   return (
     <Link href={attrs.to}>
-      <a className={`${classString} items-center`}>
+      <a className={`${classString} ${attrs.fontsize} items-center`}>
         {attrs.title ? <span>{attrs.title}</span> : null}
         {children}
       </a>

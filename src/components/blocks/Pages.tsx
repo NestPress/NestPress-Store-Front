@@ -20,6 +20,9 @@ export const Pages: React.FC = () => {
   
   const router = useRouter();
   const slugPath = router.query?.slugPath || ["Page","home"];
+  const message = useBlocks((state) => state.message);
+  const messageType = useBlocks((state) => state.messageType);
+
   const { loading, error, data, refetch } = useQuery(FILTER_POSTS,{
     variables: { 
       filter:{
@@ -64,12 +67,13 @@ export const Pages: React.FC = () => {
 
   const form = {
     slug: "",
-    title: "",
     postType:slugPath[0]
   };
 
   const buttonClass =
     " bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500";
+  const messagClass = (messageType === 'success') ? 'bg-green-100' : 'bg-yellow-100'
+
 
   return (
     <div className="text-sm">
@@ -77,6 +81,10 @@ export const Pages: React.FC = () => {
         <FiFile />
         <span className="ml-2">Blog posts list ({slugPath[0]} type)</span>
       </div>
+
+       { message && <div className={`text-xs px-4 py-2 border-b ${messagClass}`}>
+          {message}
+        </div> }
 
       <label className="block p-1 border-b">
         <select 
@@ -123,28 +131,35 @@ export const Pages: React.FC = () => {
           defaultValue={form.slug}
           onChange={(e) => (form.slug = slugify(e.target.value))}
         />
-        <input
-          className="w-full p-2 border"
-          placeholder="Insert title"
-          defaultValue={form.title}
-          onChange={(e) => (form.title = e.target.value)}
-        />
         <button
           onClick={(e) => {
-            addNewPost({ variables: {input:form}}).catch(error => {
-              if (error.networkError) {
-                getNetworkErrors(error).then(console.log)
-              } else {
-                console.log(error.message)
-              }
-            });
-            refetch()
+
+
+            if(!form.slug){
+                useBlocks.setState({ message: 'Created object should have slug!'})
+                useBlocks.setState({ messageType: 'Error'})
+                return false
+            }
+
+
+            useBlocks.setState({ message: ''})
+            router.replace(`${form.postType}/${form.slug}`);
+            useBlocks.setState({ composerTab: "page" });
+
+            // addNewPost({ variables: {input:form}}).catch(error => {
+            //   if (error.networkError) {
+            //     getNetworkErrors(error).then(console.log)
+            //   } else {
+            //     console.log(error.message)
+            //   }
+            // });
+            // refetch()
             // router.replace(slugify(form.target));
             // useBlocks.setState({ composerTab: "page" });
           }}
           className={buttonClass}
         >
-          Register {slugPath[0]}
+          Register new {slugPath[0]}
         </button>
       </div>
     </div>

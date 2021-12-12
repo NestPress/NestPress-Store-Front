@@ -46,6 +46,7 @@ export const Tree: React.FC<Props> = memo(
             } 
             ${item?.attrs?.colspan && "col-span-" + item.attrs.colspan} 
             ${item?.attrs?.rowspan && "row-span-" + item.attrs.rowspan} 
+            ${item?.attrs?.gridflow && item.attrs.gridflow} 
             ${selectedBlockId == item.id && "border-blue-800"} 
             relative hover:border hover:border-pink-500 hover:border-opacity-50`}
                 key={`block-${item.id}`}

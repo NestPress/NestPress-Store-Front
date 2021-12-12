@@ -31,8 +31,6 @@ const QueryList: React.FC<Props> = memo(({ attrs, children }) => {
   //   'row-span-4',
   // ]
 
-
-
   return (
     <div
       className={`
@@ -46,6 +44,7 @@ const QueryList: React.FC<Props> = memo(({ attrs, children }) => {
      
     `}
     >
+      <div>Query this</div>
       <div className={`absolute ${attrs.background} inset-0 z-0`}></div>
       {children}
     </div>

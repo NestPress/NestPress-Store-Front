@@ -6,7 +6,7 @@ interface Props {
 export const ImgObjectFit: React.FC<Props> = ({ keyName, res, block }) => {
   return (
     <select
-      className="col-span-3 border bg-white py-3 px-1"
+      className="col-span-3 border bg-white py-3 px-1 w-full"
       onChange={(e) => {
         res({ 
           key: keyName, 

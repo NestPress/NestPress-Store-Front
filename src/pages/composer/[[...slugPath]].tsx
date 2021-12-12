@@ -1,19 +1,20 @@
 /* TODO fix type */
 // @ts-ignore
 // @ts-nocheck
-import { FiFile } from "react-icons/fi";
-import { Composer, Tree } from "components/blocks";
+import { FiFile, FiGitPullRequest, FiChevronLeft } from "react-icons/fi";
+import { Composer, Tree, BlocksPocket } from "components/blocks";
 import { useBlocks } from "store/blocksStore";
 import { useRouter } from "next/router";
 import { useEffect , useRef } from "react";
 import { getNestedChildren } from 'components/blocks/helpers/blocks'
 import { gql, useQuery, useMutation} from '@apollo/client';
-import { GET_BLOCKS, CREATE_BLOCK } from "components/blocks/gql/composer"
-import { v4 as uuidv4 } from 'uuid';
+import { GET_BLOCKS } from "components/blocks/gql/composer"
+
 
 const ComposerPage: React.FC = () => {
 
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
+  const blocksPocket = useBlocks((state) => state.blocksPocket);
   const copiedBlocks = useBlocks((state) => state.copiedBlocks);
   const router = useRouter();
   const slugPath = router.query?.slugPath || ["Page","home"];
@@ -42,7 +43,6 @@ const ComposerPage: React.FC = () => {
     }
   }
 
-
   const { loading, error, data, refetch } = useQuery(GET_BLOCKS,{
     variables: { 
       filter:{
@@ -56,58 +56,34 @@ const ComposerPage: React.FC = () => {
       ? useBlocks.setState({ 
           blocks: data.getBlocks.list.map(el => el.parentId === "0" ? {...el, parentId:0} : el) 
         })
-      : addNewBlock({ 
-        variables: { 
-          input:{
-            "id": uuidv4(),
-            "parentId": "0",
-            "block": "layout/Grid",
-            "post": slugPath[1],
-            "attrs": {
-                "columns": "",
-                "colspan": "",  
-                "rowspan": "",
-                "background": "",
-                "border": ""
-            }
-          }
-        }
-      }).catch(error => {
-         console.log(error.message)
-          // if (error.networkError) {
-          //   getNetworkErrors(error).then(console.log)
-          // } else {
-          //   console.log(error.message)
-          // }
-        })
+      : console.log('create content with pagepanel')
     }
   });
 
-  /* mutation */
-  const [addNewBlock, { addNewBlockData, addNewBlockLoading, addNewBlockError }] = useMutation(CREATE_BLOCK, {
-    onCompleted(addNewBlockData) {
-      addNewBlockData.createBlock.parentId = 0
-      useBlocks.setState({ blocks: [addNewBlockData.createBlock] })
-    }, 
-  });
-      
+ 
   const currentPage = {}
   
   return (
-    blocks.length > 0 ? (
+    (
       <div tabIndex="0" onKeyDown={keysHandler}>
-
-        <div style={{ marginRight: "20rem" }}>
-          <div className="font-bold text-gray-500 border-b border-gray-400 p-2 bg-blue-100 mb-0.5 flex items-center">
-            <FiFile/><span key={router.asPath} className="ml-1">{currentPage?.title || slugPath[1]}</span>
+        {blocksPocket && <BlocksPocket />}
+        <div style={{ marginRight: "20rem", marginLeft: blocksPocket ? "15rem" : null }}>
+          <div className="font-bold text-base text-gray-500 border-b border-gray-300 bg-white mb-0.5 flex items-center">
+            <div
+              onClick={e=>useBlocks.setState({ blocksPocket: !blocksPocket })} 
+              className="border-r p-3.5 mr-3 hover:bg-gray-100 cursor-pointer">
+              {blocksPocket ? <FiChevronLeft/> : <FiGitPullRequest/>}
+            </div>
+            <FiFile/>
+            <span key={router.asPath} className="ml-1">{currentPage?.title || slugPath[1]}</span>
           </div>
           <div className="pr-px">
-            { <Tree blocks={blocks} /> }
+            { blocks.length > 0 ? <Tree blocks={blocks} /> : null }
           </div>
         </div>
         <Composer />
       </div>
-    ) : null
+    ) 
   );
 };
 export default ComposerPage;

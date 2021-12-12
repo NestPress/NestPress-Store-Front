@@ -1,21 +1,24 @@
 /* TODO fix type */
 // @ts-ignore
 // @ts-nocheck
-import { FiAnchor } from "react-icons/fi";
+import { FiAnchor, FiType, FiMessageSquare } from "react-icons/fi";
 import { useRouter, useHistory } from "next/router";
 import { useBlocks } from "store/blocksStore";
+import { v4 as uuidv4 } from 'uuid';
 
 import { useQuery, useMutation } from '@apollo/client';
-import { GET_POST_BY_SLUG, UPDATE_POST, DELETE_POST } from "components/blocks/gql/composer"
+import { GET_POST_BY_SLUG, CREATE_POST, UPDATE_POST, DELETE_POST, CREATE_BLOCK } from "components/blocks/gql/composer"
 
 export const Page: React.FC = () => {
   const router = useRouter()
   const slugPath = router.query?.slugPath || ["Page", "home"];
-  // const composerTab = useBlocks((state) => state.composerTab);
+  const message = useBlocks((state) => state.message);
+  const messageType = useBlocks((state) => state.messageType);
   const buttonClass =
     " bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500";
   const buttonDeleteClass =
     " bg-red-400 w-full p-2 rounded mt-1 text-white hover:bg-red-500";
+  const messagClass = (messageType === 'success') ? 'bg-green-100' : 'bg-yellow-100'
 
   /* Data loader localstorage */
   const { queryLoading, queryError, data, refetch } = useQuery(GET_POST_BY_SLUG, {
@@ -25,13 +28,31 @@ export const Page: React.FC = () => {
   });
 
   /* mutation */
+  const [addNewPost, { addNewPostData, addNewPostLoading, addNewPostError }] = useMutation(CREATE_POST, {
+    onCompleted(addNewPostData) {
+      addNewBlock({ variables: {
+        input:{
+          id: uuidv4(),
+          parentId: "0",
+          block: "layout/Grid",
+          post: addNewPostData.createPost.slug,
+          order: (parseInt(addNewPostData.createPost.id) * 100),
+          attrs: {
+              classes:"",
+              handler:""
+          }
+        }
+      }});
+    }, 
+  });
+  /* mutation */
   const [updatePost, { updatePostData, updatePostLoading, updatePostError }] = useMutation(UPDATE_POST, {
     onCompleted(updatePost) {
         console.log('update post', updatePost)
         refetch()
     }, 
   });
-
+  /* mutation */
   const [deletePost, { deletePostData, deletePostLoading, deletePostError }] = useMutation(DELETE_POST, {
     onCompleted(deletePost) {
         console.log('delete post', deletePost)
@@ -42,11 +63,25 @@ export const Page: React.FC = () => {
       cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
     }, 
   });
+  /* mutation */
+  const [addNewBlock, { addNewBlockData, addNewBlockLoading, addNewBlockError }] = useMutation(CREATE_BLOCK, {
+    onCompleted(addNewBlockData) {
+      
+      const block = addNewBlockData.createBlock
+      useBlocks.setState({ 
+          blocks: [{...block, parentId:0}]
+      })
 
-  const currentPage = Object.assign({}, data?.getPostBySlug || {});
+      useBlocks.setState({ message: `Page ${slugPath[1]} with block created complete!`})
+      useBlocks.setState({ messageType: 'success'})
+    }, 
+  });
+
+  const currentPage = Object.assign({slug:slugPath[1]}, data?.getPostBySlug || {});
+
+
 
   return (
-    currentPage && (
       <div>
         <div className="p-2 flex items-center bg-pink-600 text-white">
           <FiAnchor />
@@ -56,27 +91,47 @@ export const Page: React.FC = () => {
           </span>
         </div>
 
-        {currentPage.new && (
-          <div className="text-xs px-4 py-2 border-b bg-yellow-100">
-            Slug ./{slugPath[1]} dont have created as blog page yet. To finished create page '{slugPath[0]}' insert page title and run 'Save page' action
-          </div>
-        )}
+        { message && <div className={`text-xs px-4 py-2 border-b flex items-top gap-1 ${messagClass}`}>
+          <div className="w-3 mt-0.5">
+            <FiMessageSquare/>
+          </div> <span>{message}</span>
+        </div> }
 
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            console.log(currentPage)
-            delete currentPage.new;
-            if(currentPage.submitType === 'update'){
+            if(currentPage.submitType === 'create'){
               delete currentPage.submitType
-              updatePost({ 
-                variables: {
-                  id: currentPage.id,
-                  input: {
-                    title: currentPage.title,
-                  }
+
+              if(!currentPage.title){
+                useBlocks.setState({ message: 'Created object should have title!'})
+                useBlocks.setState({ messageType: 'Error'})
+                return false
+              }
+
+              useBlocks.setState({ message: `Page ${slugPath[1]} created!`})
+              useBlocks.setState({ messageType: 'success'})
+              
+              addNewPost({ variables: {input:currentPage}}).catch(error => {
+                if (error.networkError) {
+                  getNetworkErrors(error).then(console.log)
+                } else {
+                  useBlocks.setState({ message: error.message})
+                  useBlocks.setState({ messageType: 'error'})
                 }
               });
+              refetch()
+            }
+            if(currentPage.submitType === 'update'){
+              delete currentPage.submitType
+              // updatePost({ 
+              //   variables: {
+              //     id: currentPage.id,
+              //     input: {
+              //       title: currentPage.title,
+              //     }
+              //   }
+              // });
             }
             if(currentPage.submitType === 'delete'){
               delete currentPage.submitType
@@ -90,7 +145,15 @@ export const Page: React.FC = () => {
           }}
         >
           <fieldset className="p-2">
-            <div className="w-full p-2 text-sm">{slugPath[0]} title</div>
+            <div className="w-full p-2 text-sm flex items-center gap-1"><FiAnchor/><div>{slugPath[0]} slug</div></div>
+            <input
+              disabled={!currentPage.id}
+              key={currentPage?.slug}
+              className="w-full p-2 border"
+              defaultValue={currentPage?.slug}
+              onChange={(e) => (currentPage?.slug = e.target.value)}
+            />
+           <div className="w-full p-2 text-sm flex items-center gap-1"><FiType/><div>{slugPath[0]} title</div></div>
             <input
               key={currentPage?.title}
               className="w-full p-2 border"
@@ -98,41 +161,23 @@ export const Page: React.FC = () => {
               onChange={(e) => (currentPage?.title = e.target.value)}
             />
           </fieldset>
-          <div className="w-full p-2 flex border-t text-sm">
-           <div className="p-2 text-sm">{slugPath[0]} slug:</div>
-           <div className="p-2 flex-1 text-sm border">{slugPath[1]}</div>
-          </div>
-          {!currentPage.new && (
-            <fieldset className="p-2 border-t">
-              <label className="w-full px-2 text-sm">Layout</label>
-              <div className="px-2 text-xs pb-2">
-                Warning! Change layout dont unlink current {slugPath[0]} content. You
-                should link it manually
-              </div>
-              <select
-                // ref={ node => { currentPage.layout = node?.value }}
-                className="w-full p-2 text-xs"
-              >
-                <option>Self contained template</option>
-                <option>Main</option>
-              </select>
-            </fieldset>
-          )}
          
-          {!currentPage.new && (
+         
+         
+          {currentPage.id && (
             <fieldset className="p-2 border-t grid grid-cols-2 gap-1">
               <button onClick={(e)=>{currentPage.submitType="update"}} className={buttonClass}>Update {slugPath[0]}</button>
               <button onClick={(e)=>{currentPage.submitType="delete"}}  className={buttonDeleteClass}>Delete {slugPath[0]}</button>
             </fieldset>
           )}
-          {currentPage.new && (
+          {!currentPage.id && (
             <fieldset className="p-2 border-t">
-              <button className={buttonClass}>Save {slugPath[0]}</button>
+              <button onClick={(e)=>{currentPage.submitType="create"}} className={buttonClass}>Submit titled {slugPath[1]} {slugPath[0]}</button>
             </fieldset>
           )}
     
         </form>
       </div>
-    )
+    
   );
 };
