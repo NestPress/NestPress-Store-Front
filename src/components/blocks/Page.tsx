@@ -1,7 +1,7 @@
 /* TODO fix type */
 // @ts-ignore
 // @ts-nocheck
-import { FiAnchor, FiType, FiMessageSquare } from "react-icons/fi";
+import { FiAnchor, FiType, FiMessageSquare, FiFile } from "react-icons/fi";
 import { useRouter, useHistory } from "next/router";
 import { useBlocks } from "store/blocksStore";
 import { v4 as uuidv4 } from 'uuid';
@@ -14,6 +14,8 @@ export const Page: React.FC = () => {
   const slugPath = router.query?.slugPath || ["Page", "home"];
   const message = useBlocks((state) => state.message);
   const messageType = useBlocks((state) => state.messageType);
+  const storedPage = useBlocks((state) => state.currentPage);
+  
   const buttonClass =
     " bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500";
   const buttonDeleteClass =
@@ -25,6 +27,9 @@ export const Page: React.FC = () => {
     variables: { 
       slug: slugPath[1]
     },
+    onCompleted(loadedPost) {
+      useBlocks.setState({ currentPage: loadedPost.getPostBySlug})
+    }
   });
 
   /* mutation */
@@ -43,14 +48,23 @@ export const Page: React.FC = () => {
           }
         }
       }});
+      refetch()
     }, 
+    update: (cache) => {
+      cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
+    },
   });
   /* mutation */
   const [updatePost, { updatePostData, updatePostLoading, updatePostError }] = useMutation(UPDATE_POST, {
     onCompleted(updatePost) {
         console.log('update post', updatePost)
+        useBlocks.setState({ message: `Object updated!`})
+        useBlocks.setState({ messageType: 'success'})
         refetch()
     }, 
+    update: (cache) => {
+      cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
+    },
   });
   /* mutation */
   const [deletePost, { deletePostData, deletePostLoading, deletePostError }] = useMutation(DELETE_POST, {
@@ -74,10 +88,16 @@ export const Page: React.FC = () => {
 
       useBlocks.setState({ message: `Page ${slugPath[1]} with block created complete!`})
       useBlocks.setState({ messageType: 'success'})
+
+      refetch()
     }, 
   });
 
-  const currentPage = Object.assign({slug:slugPath[1]}, data?.getPostBySlug || {});
+  const currentPage = Object.assign({
+    slug:slugPath[1],
+    postType:slugPath[0],
+    title: slugPath[0] === 'Layout' ? `${slugPath[1]}` : ''
+  }, data?.getPostBySlug || {});
 
 
 
@@ -90,6 +110,10 @@ export const Page: React.FC = () => {
             {currentPage?.createdAt && new Date(currentPage?.createdAt).toDateString()}
           </span>
         </div>
+
+        {!currentPage.id && <div className="text-xs px-4 py-2 border-b flex items-top gap-1 border-t border-b bg-yellow-100">
+          <div className="w-3 mt-0.5"><FiFile/></div> <span>Page is now on predraft mode, and not submitted yet.</span>     
+        </div> }
 
         { message && <div className={`text-xs px-4 py-2 border-b flex items-top gap-1 ${messagClass}`}>
           <div className="w-3 mt-0.5">
@@ -111,6 +135,8 @@ export const Page: React.FC = () => {
 
               useBlocks.setState({ message: `Page ${slugPath[1]} created!`})
               useBlocks.setState({ messageType: 'success'})
+
+              currentPage.slug = currentPage.slug.toLowerCase()
               
               addNewPost({ variables: {input:currentPage}}).catch(error => {
                 if (error.networkError) {
@@ -150,20 +176,19 @@ export const Page: React.FC = () => {
             <input
               disabled={!currentPage.id}
               key={currentPage?.slug}
-              className="w-full p-2 border"
+              className="w-full p-2 border text-indigo-900"
               defaultValue={currentPage?.slug}
               onChange={(e) => (currentPage?.slug = e.target.value)}
             />
            <div className="w-full p-2 text-sm flex items-center gap-1"><FiType/><div>{slugPath[0]} title</div></div>
             <input
               key={currentPage?.title}
-              className="w-full p-2 border"
+              className="w-full p-2 border text-indigo-900"
+              placeholder="Insert title"
               defaultValue={currentPage?.title}
               onChange={(e) => (currentPage?.title = e.target.value)}
             />
           </fieldset>
-         
-         
          
           {currentPage.id && (
             <fieldset className="p-2 border-t grid grid-cols-2 gap-1">
@@ -176,6 +201,17 @@ export const Page: React.FC = () => {
               <button onClick={(e)=>{currentPage.submitType="create"}} className={buttonClass}>Submit titled {slugPath[1]} {slugPath[0]}</button>
             </fieldset>
           )}
+
+          { currentPage.id && slugPath[0] !== "Layout" && <div className="text-xs px-4 py-2 border-t border-b bg-yellow-100">
+            This page dont have main layout. <span 
+            onClick={e=>{
+              router.replace(`Layout/${slugPath[0].toLowerCase()}-layout`)
+              useBlocks.setState({ messageType: 'error'})
+            }}
+            className="text-blue-800 cursor-pointer hover:underline">
+            Create main layout
+            </span> 
+          </div>}
     
         </form>
       </div>

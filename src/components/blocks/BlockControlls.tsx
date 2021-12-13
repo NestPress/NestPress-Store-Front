@@ -3,7 +3,7 @@
 // @ts-nocheck
 
 import { FiCornerRightDown, FiArrowDown, FiExternalLink } from "react-icons/fi";
-import { BlocksHeader } from "components/blocks";
+import { BlocksHeader, MainTabs } from "components/blocks";
 import { useBlocks } from "store/blocksStore";
 
 import { useMutation} from '@apollo/client';
@@ -40,14 +40,14 @@ export const BlockControlls: React.FC = () => {
   
   const res = (res) => {
     setBlockAttrs(res)
-    if(res.key === "text" || res.key === "mutation" || res.key === "query" || res.key === "classes"){
+    if(res.key === "text" || res.key === "mutation" || res.key === "query" || res.key === "classes" || res.key === "handler"){
 
     }else{
       saveData(res)
     }
   }
   const resout = (res) => {
-    if(res.key === "text" || res.key === "mutation" || res.key === "query" || res.key === "classes"){
+    if(res.key === "text" || res.key === "mutation" || res.key === "query" || res.key === "classes" || res.key === "handler"){
         saveData(res)
     }
   }
@@ -78,6 +78,7 @@ export const BlockControlls: React.FC = () => {
 
   return (
     <div>
+      <MainTabs/>
       <BlocksHeader title={block()?.block || ""} />
       <div className='grid grid-cols-2 text-xs gap-1 p-2'>
       <div className="py-1 col-span-2">ID:</div>
@@ -136,7 +137,7 @@ export const BlockControlls: React.FC = () => {
                 key !== "height" &&
                 key !== "classes" &&
                (
-                  <InputField key={`brd-${index}`} keyName={key} res={res} block={block()}/>
+                  <InputField key={`brd-${index}`} keyName={key} res={res} resout={resout} block={block()}/>
                 )}
             </div>
           ) : null;

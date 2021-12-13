@@ -1,9 +1,10 @@
 interface Props {
   keyName: string;
   res: any;
-  block: any
+  block: any,
+  resout: any
 }
-export const InputField: React.FC<Props> = ({ keyName, res, block }) => {
+export const InputField: React.FC<Props> = ({ keyName, res, resout, block }) => {
   return (
     <input
       type="text"

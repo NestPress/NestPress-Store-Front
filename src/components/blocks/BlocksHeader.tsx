@@ -5,6 +5,7 @@ interface Props {
 }
 export const BlocksHeader: React.FC<Props> = ({title}) => {
   const preview = useBlocks((state) => state.preview);
+  
   return (
     <div className="flex justify-between bg-pink-600 text-white">
       <div

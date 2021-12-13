@@ -3,6 +3,7 @@ export * from "./BlockControlls";
 export * from "./BlocksPocket";
 export * from "./InsertBlock";
 export * from "./MainPanel";
+export * from "./MainTabs";
 export * from "./Layouts";
 export * from "./Pages";
 export * from "./Page";

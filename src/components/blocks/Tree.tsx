@@ -54,12 +54,12 @@ export const Tree: React.FC<Props> = memo(
                   e.stopPropagation();
                   if (!replace) {
                     setBlock(item.id);
-                    useBlocks.setState({ panel: "block" });
+                    useBlocks.setState({ panel: "block", composerTab: null });
                   } else {
                     if (selectedBlockId === item.id) {
                       alert("You set this same block, select another");
                     } else {
-                      useBlocks.setState({ panel: "block" });
+                      useBlocks.setState({ panel: "block", composerTab: null });
                       setBlockParentId({
                         parent: item.id,
                         current: selectedBlockId,

@@ -13,10 +13,13 @@ const ComposerPage: React.FC = () => {
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
   const router = useRouter();
   const slugPath = ["Page","home"];
-  if(Object.entries(router.query).length !== 0){
-     router.query.slugPath[0] ? slugPath[1] = router.query.slugPath[0] : null
-     router.query.slugPath[1] ? slugPath[0] = router.query.slugPath[1] : null
-  }
+  
+  // if(Object.entries(router.query).length !== 0){
+
+    // console.log('fucking mishmash')
+     // router.query.slugPath[0] ? slugPath[1] = router.query.slugPath[1] : null
+     // router.query.slugPath[1] ? slugPath[0] = router.query.slugPath[0] : null
+  // }
 
   const blocks = useBlocks((state) => state.blocks) || [];
 
@@ -67,7 +70,7 @@ const ComposerPage: React.FC = () => {
       }
     },
     onCompleted(data) {
-      console.log('data',data)
+      console.log('data',slugPath[1], data)
       data.getBlocks.list.length 
       ? useBlocks.setState({ blocks: prepareBlocks(data.getBlocks.list) })
       : null    

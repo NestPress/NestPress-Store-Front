@@ -59,9 +59,6 @@ const ComposerPage: React.FC = () => {
       : console.log('create content with pagepanel')
     }
   });
-
- 
-  const currentPage = {}
   
   return (
     (
@@ -75,10 +72,10 @@ const ComposerPage: React.FC = () => {
               {blocksPocket ? <FiChevronLeft/> : <FiGitPullRequest/>}
             </div>
             <FiFile/>
-            <span key={router.asPath} className="ml-1">{currentPage?.title || slugPath[1]}</span>
+            <span key={router.asPath} className="ml-1">{slugPath[1]}</span>
           </div>
           <div className="pr-px">
-            { blocks.length > 0 ? <Tree blocks={blocks} /> : null }
+            { blocks.length > 0 && slugPath[1] ? <Tree blocks={blocks} /> : null }
           </div>
         </div>
         <Composer />

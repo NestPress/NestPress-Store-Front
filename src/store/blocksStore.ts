@@ -16,6 +16,7 @@ const useBlocks = create((set) => ({
   blocksPocket: false,
   message:'',
   messageType:'success',
+  currentPage:{},
   setComponent: (_in) =>
     set(
       produce((_) => {
