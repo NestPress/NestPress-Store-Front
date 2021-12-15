@@ -3,7 +3,7 @@
 // @ts-nocheck
 import { FiFile, FiGitPullRequest, FiChevronLeft } from "react-icons/fi";
 import { Composer, Tree, BlocksPocket } from "components/blocks";
-import { useBlocks } from "store/blocksStore";
+import { useBlocks, useForms } from "store";
 import { useRouter } from "next/router";
 import { useEffect , useRef } from "react";
 import { getNestedChildren } from 'components/blocks/helpers/blocks'
@@ -20,6 +20,12 @@ const ComposerPage: React.FC = () => {
   const slugPath = router.query?.slugPath || ["Page","home"];
   const blocks = useBlocks((state) => state.blocks) || [];
   const addBlock = useBlocks((state) => state.addBlock);
+  
+  /* workaround sollution to indexing childrens with queryList blocks */
+  /* TODO - better method is copying blocks  */
+  const queryIndex = []
+
+  useForms.setState({ pageData: {slugPath : slugPath} })
 
 
   const keysHandler = (e) => { 
@@ -27,15 +33,15 @@ const ComposerPage: React.FC = () => {
       const key = e.which || e.keyCode, ctrl = e.ctrlKey ? e.ctrlKey : ((key === 17)
           ? true : false);
       if (key == 86 && ctrl) { // V
-          if(selectedBlockId){
-            const text = JSON.stringify(copiedBlocks)
-            copiedBlocks.map(el=>{
-              text = text.replaceAll(el.id, uuidv4())
-            })
-            const toPaste = JSON.parse(text);
-            toPaste[0].parentId = selectedBlockId;
-            toPaste.map( (el) => { addBlock(el) } )
-          }
+          // if(selectedBlockId){
+          //   const text = JSON.stringify(copiedBlocks)
+          //   copiedBlocks.map(el=>{
+          //     text = text.replaceAll(el.id, uuidv4())
+          //   })
+          //   const toPaste = JSON.parse(text);
+          //   toPaste[0].parentId = selectedBlockId;
+          //   toPaste.map( (el) => { addBlock(el) } )
+          // }
       }
       else if (key == 67 && ctrl) { // C
         const parsedEls = getNestedChildren(blocks, selectedBlockId, true) 
@@ -68,14 +74,16 @@ const ComposerPage: React.FC = () => {
           <div className="font-bold text-base text-gray-500 border-b border-gray-300 bg-white mb-0.5 flex items-center">
             <div
               onClick={e=>useBlocks.setState({ blocksPocket: !blocksPocket })} 
-              className="border-r p-3.5 mr-3 hover:bg-gray-100 cursor-pointer">
+              className="border-r p-3.5  hover:bg-gray-100 cursor-pointer">
               {blocksPocket ? <FiChevronLeft/> : <FiGitPullRequest/>}
             </div>
-            <FiFile/>
-            <span key={router.asPath} className="ml-1">{slugPath[1]}</span>
+            <div onClick={e=>router.push(`/${slugPath[0]}/${slugPath[1]}`)} className="flex flex-1 items-center hover:bg-gray-100 p-2.5 cursor-pointer ">
+              <FiFile/>
+              <div key={router.asPath} className="ml-1 flex-1">{slugPath[1]}</div>
+            </div>
           </div>
           <div className="pr-px">
-            { blocks.length > 0 && slugPath[1] ? <Tree blocks={blocks} /> : null }
+            { blocks.length > 0 && slugPath.length > 1 ? <Tree blocks={blocks} queryIndex={queryIndex} /> : null }
           </div>
         </div>
         <Composer />

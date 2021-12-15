@@ -126,7 +126,7 @@ export const Pages: React.FC = () => {
           <span className="ml-2">Register new {slugPath[0]}</span>
         </div>
         <input
-          className="w-full p-2 border mb-1"
+          className="w-full p-2 border text-indigo-900 mb-1"
           placeholder="Insert unique slug name"
           defaultValue={form.slug}
           onChange={(e) => (form.slug = slugify(e.target.value))}

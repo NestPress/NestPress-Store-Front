@@ -3,13 +3,12 @@
 // @ts-nocheck
 
 import dynamic from "next/dynamic";
-import { memo } from "react";
 import { useBlocks } from "store/blocksStore";
 
 /* TODO fix type */
 // @ts-ignore: Unreachable code error
-export const Tree: React.FC<Props> = memo(
-  ({ blocks, parentId = 0, level = 0 }: TreeProps) => {
+export const Tree: React.FC<Props> = 
+  ({ blocks, queryIndex, parentId = 0, level = 0 }: TreeProps) => {
     const items = blocks.filter((item) => item.parentId === parentId);
     // .sort((a, b) => (a.text > b.text ? 1 : -1)); - change sort
     if (!items.length) return null;
@@ -25,30 +24,38 @@ export const Tree: React.FC<Props> = memo(
     return (
       <>
         {items.map((item, i) => {
-          !components[item.block]
-            ? setComponent({
+          
+          if(!components[item.block]){
+              setComponent({
                 key: item.block,
                 value: dynamic(() => import(`components/${item.block}`)),
               })
-            : null;
-
-          const Block: string =
-            components[item.block] && components[item.block];
+          }else{
+            const Block: string =
+              components[item.block] && components[item.block];
+            
+            /* workaround sollution to indexing childrens with queryList blocks */
+            /* TODO - better method is copying blocks  */
+            queryIndex.push(item.id);
+            var count = 0;
+            queryIndex.forEach((v) => (v === item.id && count++));
+          }
+            
           return (
             components[item.block] && (
               <div
                 style={!preview ? { minHeight: "30px", minWidth: "20px" } : null}
                 className={`
-            ${
-              !preview
-                ? "border border-white p-px border-l-gray-300 border-gray-200 cursor-pointer border-l-8 m-px border-opacity-50"
-                : ""
-            } 
-            ${item?.attrs?.colspan && "col-span-" + item.attrs.colspan} 
-            ${item?.attrs?.rowspan && "row-span-" + item.attrs.rowspan} 
-            ${item?.attrs?.gridflow && item.attrs.gridflow} 
-            ${selectedBlockId == item.id && "border-blue-800"} 
-            relative hover:border hover:border-pink-500 hover:border-opacity-50`}
+                  ${
+                    !preview
+                      ? "border-white p-px border-l-gray-300 border-gray-200 cursor-pointer border-l-8 m-px border-opacity-50"
+                      : ""
+                  } 
+                  ${item?.attrs?.colspan && "col-span-" + item.attrs.colspan} 
+                  ${item?.attrs?.rowspan && "row-span-" + item.attrs.rowspan} 
+                  ${item?.attrs?.gridflow && item.attrs.gridflow} 
+                  ${selectedBlockId == item.id && "border-blue-800"} 
+                  relative hover:border hover:border-pink-500 hover:border-opacity-50`}
                 key={`block-${item.id}`}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -69,7 +76,7 @@ export const Tree: React.FC<Props> = memo(
                 }}
               >
                 <Block
-                  attrs={{ id: item.id, i:i, ...item.attrs }}
+                  attrs={{ id: item.id, i:i, queryIndex:count-1, ...item.attrs }}
                   key={item.id}
                   item={item}
                   level={level}
@@ -80,6 +87,7 @@ export const Tree: React.FC<Props> = memo(
                     parentId={item.id}
                     level={level + 1}
                     item={item}
+                    queryIndex={queryIndex}
                   />
                 </Block>
                 <div
@@ -97,4 +105,4 @@ export const Tree: React.FC<Props> = memo(
       </>
     );
   }
-);
+;

@@ -12,6 +12,7 @@ export const CREATE_BLOCK = gql`
       block
       parentId
       attrs
+      order
       post
     }
   }
@@ -48,6 +49,7 @@ export const GET_BLOCKS = gql`
         block
         attrs
         post
+        order
       }
     }
   }
@@ -62,7 +64,9 @@ export const DELETE_BLOCK = gql`
   }
 `
 // --------------------------------------
-
+// input.slug
+// input.postType
+// input.title
 export const CREATE_POST = gql`
   mutation createPost(
     $input: CreatePostInput!
@@ -134,3 +138,5 @@ export const DELETE_POST = gql`
     )
   }
 `
+
+// --------------------------------------

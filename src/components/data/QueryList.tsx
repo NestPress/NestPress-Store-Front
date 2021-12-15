@@ -1,53 +1,29 @@
-import { memo } from "react";
-import { columns, colspan, rowspan } from "blogData/blockClasses";
+import { useQuery, gql } from '@apollo/client';
+import { get } from "helpers/io"
+import { useQueries } from "store";
 interface Props {
   attrs: any;
 }
-const QueryList: React.FC<Props> = memo(({ attrs, children }) => {
-  // Tailwind compile hack
-  // const columns = [
-  //   '',
-  //   'grid-cols-1',
-  //   'grid-cols-2',
-  //   'grid-cols-3',
-  //   'grid-cols-4',
-  //   'grid-cols-5',
-  //   'grid-cols-6'
-  // ]
-
-  // const colspan = [
-  //   '',
-  //   'col-span-1',
-  //   'col-span-2',
-  //   'col-span-3',
-  //   'col-span-4',
-  // ]
-
-  // const rowspan = [
-  //   '',
-  //   'row-span-1',
-  //   'row-span-2',
-  //   'row-span-3',
-  //   'row-span-4',
-  // ]
-
+const QueryList: React.FC<Props> = ({ attrs, children }) => {
+  const addQuery = useQueries((state) => state.addQuery);
+  /* Query */
+  try {
+    if(attrs.query){
+      const QUERY = attrs.query ? gql`${attrs.query}` : ``;
+      const { queryLoading, queryError, data, refetch } = useQuery(QUERY, {
+        // variables: {},
+        onCompleted(resData) {
+          // setBlockAttrs({key:"resData",value:resData, id:attrs.id})
+          addQuery({ref:attrs.refName || attrs.id, data:resData})
+        }
+      });
+    }
+  } catch (error) { console.error('Form custom mutation:',error) }
+  const queryList = attrs?.dataTarget ? get(data, attrs.dataTarget) : data 
   return (
-    <div
-      className={`
-      ${attrs.query ? attrs.query : null} 
-      ${attrs.gridflow ? attrs.gridflow : 'grid '} 
-      ${attrs.columns ? columns[attrs.columns] : null}  
-      ${attrs.colspan ? colspan[attrs.colspan] : null} 
-      ${attrs.rowspan ? rowspan[attrs.rowspan] : null} 
-      ${attrs.border ? attrs.border : null} 
-      ${attrs.rounded ? attrs.rounded : null} 
-     
-    `}
-    >
-      <div>Query this</div>
-      <div className={`absolute ${attrs.background} inset-0 z-0`}></div>
-      {children}
+    <div className={attrs.classes}>
+      {queryList?.length ? queryList.map((el,i)=><>{children}</>):children}
     </div>
   );
-});
+};
 export default QueryList;

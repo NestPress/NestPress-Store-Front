@@ -50,6 +50,7 @@ export const NavBlocks: React.FC = ({type}) => {
             ...prefix,
             block: "nav/NavLink",
             post: slugPath[1],
+            order: blocks[blocks.length - 1].order + 1,
             attrs: {
               title: "Example link",
               to: "/",
@@ -57,6 +58,7 @@ export const NavBlocks: React.FC = ({type}) => {
               classes: ""
             },
           })
+
         }
       >
         <FiLink/><span className="ml-2">Navigation link</span>
@@ -69,6 +71,7 @@ export const NavBlocks: React.FC = ({type}) => {
             ...prefix,
             block: "form/InputField",
             post: slugPath[1],
+            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               text: "Example title",
               classes: ""
@@ -87,6 +90,7 @@ export const NavBlocks: React.FC = ({type}) => {
             ...prefix,
             block: "form/SubmitButton",
             post: slugPath[1],
+            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               text: "Submit button",
               classes: ""

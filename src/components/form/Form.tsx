@@ -2,7 +2,7 @@
 // @ts-ignore
 // @ts-nocheck
 import { gql, useMutation } from "@apollo/client";
-import { useBlocks, useForms, getForm } from "store";
+import { useBlocks, useForms, getForm, useActions } from "store";
 import { getNestedChildren, buildFormOutput } from "components/blocks/helpers/blocks"
 interface Props {
   attrs: any;
@@ -10,9 +10,7 @@ interface Props {
 const Form: React.FC<Props> = ({ attrs, children }) => {
   const blocks = useBlocks((state) => state.blocks);
   const addForm = useForms((state) => state.addForm);
-
-  console.log('mutation', attrs.mutation)
-  const MUTATION = attrs.mutation ? gql`${attrs.mutation}` : ``;
+  const addAction = useActions((state) => state.addAction);
 
   const form = getNestedChildren(blocks, attrs.id)
   getForm({ref:attrs.refname}) 
@@ -20,22 +18,33 @@ const Form: React.FC<Props> = ({ attrs, children }) => {
     : addForm({ref:attrs.refname, data:buildFormOutput(form)})
 
   /* mutation */
-  if(attrs.mutation){
-    const [addNewBlock, { data, loading, error }] = useMutation(MUTATION, {
-      onCompleted(data) {
-          console.log('mutate form complete', data)
-          // addBlock(data.createBlock);
-      }, 
-    });
+  try {
+    if(attrs.mutation){
+      const MUTATION = attrs.mutation ? gql`${attrs.mutation}` : ``;
+      const [formMutation, { data, loading, error }] = useMutation(MUTATION, {
+          onCompleted(data) {
+            addAction({type:'success', key:"submitFormCompleted", value:data})
+          }, 
+          update: (cache) => {
+            cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
+          },
+        });
+    }
+  } catch (error) { 
+    addAction({type:'error', key:"submitForm", value:error})
   }
-  
-  
+
   return (
     <form
+      className={attrs.classes}
       onSubmit={(e) => {
         e.preventDefault();
-        // console.log(getForm({ref:attrs.refname}), attrs);
-        addNewBlock({ variables: getForm({ref:attrs.refname})});
+        addAction({type:'success', key:"submitFormStart", value:{ref:attrs.refname, data: getForm({ref:attrs.refname}) }})
+        if(attrs.mutation){
+          formMutation({ variables: getForm({ref:attrs.refname})}).catch(error => {
+            addAction({type:'error', key:"submitForm", value:error.message})
+          });
+        }
       }}
     >
       {children}

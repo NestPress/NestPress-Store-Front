@@ -11,9 +11,6 @@ interface Props {
   type: string;
 }
 
-interface Props {
-  type: string;
-}
 export const DataBlocks: React.FC = ({type}) => {
 
   /* Zustand states */
@@ -53,8 +50,11 @@ export const DataBlocks: React.FC = ({type}) => {
             ...prefix,
             block: "data/QueryList",
             post: slugPath[1],
+            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               query: "",
+              dataTarget: "",
+              refName:"",
               classes: ""
             },
           })
@@ -70,6 +70,7 @@ export const DataBlocks: React.FC = ({type}) => {
             ...prefix,
             block: "data/QueryElement",
             post: slugPath[1],
+            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               query: "",
               classes: ""

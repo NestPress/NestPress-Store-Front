@@ -4,7 +4,7 @@
 import { FiSettings, FiSave, FiLogIn, FiLogOut } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { usePage } from "store/pageStore";
-import { useStickyState, downloadObjectAsJson } from "helpers/localMockupApi"
+import { useStickyState, downloadObjectAsJson } from "helpers/io"
 import { Upload } from "components/blocks"
 
 export const Settings: React.FC = () => {
@@ -15,7 +15,7 @@ export const Settings: React.FC = () => {
     " bg-red-400 w-full p-2 rounded mt-1 text-white hover:bg-red-500";
 
   /* Data loader localstorage */
-  const [ storagePosts, setStoragePosts ] = useStickyState([], 'storagePosts');
+  // const [ storagePosts, setStoragePosts ] = useStickyState([], 'storagePosts');
  
   return (
     

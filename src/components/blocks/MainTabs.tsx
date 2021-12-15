@@ -1,4 +1,4 @@
-import { FiFileText, FiList, FiLayout, FiSettings, FiUsers } from "react-icons/fi";
+import { FiFileText, FiList, FiLayout, FiSettings, FiUsers, FiDatabase } from "react-icons/fi";
 import { useBlocks } from "store/blocksStore";
 
 
@@ -42,6 +42,15 @@ export const MainTabs: React.FC = () => {
             ${composerTab === "users" ? "bg-gray-100 text-gray-800" : "cursor-pointer"}`}
         >
           <FiUsers/> <div className="hidden">Users</div>
+        </div>
+        <div
+          onClick={(e) => {
+            useBlocks.setState({ composerTab: "data", selectedBlockId: null, message: '', blocksPocket:false, panel:'mainPanel' }) 
+          }}
+          className={`p-3 flex-1 border-r text-center 
+            ${composerTab === "data" ? "bg-gray-100 text-gray-800" : "cursor-pointer"}`}
+        >
+          <FiDatabase/> <div className="hidden">Data</div>
         </div>
         <div
           onClick={(e) => {

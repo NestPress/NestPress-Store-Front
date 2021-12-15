@@ -44,19 +44,19 @@ export const Users: React.FC = () => {
           <span className="ml-2">Register new user</span>
         </div>
         <input
-          className="w-full p-2 border mb-1"
+          className="w-full p-2 border text-indigo-900 mb-1"
           placeholder="Insert user email"
           // defaultValue={form.slug}
           // onChange={(e) => (form.slug = slugify(e.target.value))}
         />
         <input
-          className="w-full p-2 border mb-1"
+          className="w-full p-2 border text-indigo-900 mb-1"
           placeholder="Insert user password"
           // defaultValue={form.title}
           // onChange={(e) => (form.title = e.target.value)}
         />
         <input
-          className="w-full p-2 border"
+          className="w-full p-2 border text-indigo-900 mb-1"
           placeholder="Insert user first name"
           // defaultValue={form.title}
           // onChange={(e) => (form.title = e.target.value)}

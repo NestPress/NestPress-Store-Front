@@ -1,12 +1,10 @@
-// ./apollo-client.js
-
 import {
   ApolloClient,
   InMemoryCache,
   ApolloLink,
   createHttpLink,
 } from "@apollo/client";
-import { UserState, useUser } from "store/userStore";
+// import { UserState, useUser } from "store/userStore";
 import { setContext } from "@apollo/client/link/context";
 
 const authLink = setContext((_, { headers }) => {
@@ -27,8 +25,8 @@ const afterwareLink = new ApolloLink((operation, forward) => {
       response: { headers },
     } = context;
     if (headers) {
-      const token = headers.get("vendure-auth-token");
-      token && UserState.setToken(token);
+      // const token = headers.get("vendure-auth-token");
+      // token && UserState.setToken(token);
     }
     return response;
   });

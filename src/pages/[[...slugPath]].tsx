@@ -2,7 +2,7 @@
 // @ts-ignore
 // @ts-nocheck
 import { FiFile } from "react-icons/fi";
-import { PureTree } from "components/blocks";
+import { PureTree, BottomBar } from "components/blocks";
 import { useBlocks } from "store/blocksStore";
 import { useRouter } from "next/router";
 import { useQuery } from '@apollo/client';
@@ -78,7 +78,10 @@ const ComposerPage: React.FC = () => {
   });
   return (
     blocks.length > 0 ? (
-      <PureTree blocks={blocks} />
+      <>
+        <PureTree blocks={blocks} />
+        <BottomBar/>
+      </>
     ) : null
   );
 };

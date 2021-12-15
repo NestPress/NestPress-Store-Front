@@ -39,7 +39,7 @@ export const BlockControlls: React.FC = () => {
     "flex items-center bg-red-400 w-full p-2 rounded  text-white hover:bg-blue-500";
   
   const res = (res) => {
-    setBlockAttrs(res)
+    setBlockAttrs({...res,id:selectedBlockId})
     if(res.key === "text" || res.key === "mutation" || res.key === "query" || res.key === "classes" || res.key === "handler"){
 
     }else{

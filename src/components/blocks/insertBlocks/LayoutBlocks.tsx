@@ -50,6 +50,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
             ...prefix,
             block: "layout/Grid",
             post: slugPath[1],
+            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               handler:"",
               classes: ""
@@ -67,6 +68,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
             ...prefix,
             block: "layout/Title",
             post: slugPath[1],
+            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               text: "Example title",
               classes: ""
@@ -84,6 +86,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
             ...prefix,
             block: "layout/Paragraph",
             post: slugPath[1],
+            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
               classes: ""
@@ -101,6 +104,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
             ...prefix,
             block: "layout/Img",
             post: slugPath[1],
+            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               objectfit: "",
               imglayout: "",

@@ -35,7 +35,7 @@ const useBlocks = create((set) => ({
   setBlockAttrs: (_in) =>
     set(
       produce((_) => {
-        const block = _.blocks.find(el => el.id === _.selectedBlockId)
+        const block = _.blocks.find(el => el.id === _in.id)
         block.attrs[_in.key] = _in.value
 
       })
@@ -48,13 +48,22 @@ const useBlocks = create((set) => ({
         _.replace = false
       })
     ),
-  removeBlock: () =>
+  removeBlock: (_in) =>
     set(
       produce((_) => {
-        const i = _.blocks.findIndex(el => el.id === _.selectedBlockId);
+        const i = _.blocks.findIndex(el => el.id === _in);
         _.blocks.splice(i, 1);
       })
     ),
+  addQueryIndex: (_in) =>
+    set(
+      produce((_) => {
+        _.queryIndexes[_in.id] = parseInt(_.queryIndexes[_in.id] || 0) + 1;
+      })
+    ),  
 }));
+
+
+
 
 export { useBlocks };

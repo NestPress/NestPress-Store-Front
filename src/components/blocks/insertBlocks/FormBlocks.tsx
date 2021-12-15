@@ -51,6 +51,7 @@ export const FormBlocks: React.FC = ({type}) => {
             ...prefix,
             block: "form/Form",
             post: slugPath[1],
+            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               mutation: "",
               refname: "default_form",
@@ -70,6 +71,7 @@ export const FormBlocks: React.FC = ({type}) => {
             ...prefix,
             block: "form/InputField",
             post: slugPath[1],
+            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               label: "Example label",
               placeholder: "Example placeholder",
@@ -89,6 +91,7 @@ export const FormBlocks: React.FC = ({type}) => {
             ...prefix,
             block: "form/TextareaField",
             post: slugPath[1],
+            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               rows: 6,
               label: "Example label",
