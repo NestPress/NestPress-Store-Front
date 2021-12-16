@@ -43,9 +43,7 @@ export const Tree: React.FC<Props> =
               item = {...item, kutsama: parentItem.childrenSlots.length}
             }
           }
-
-
-            
+        
           return (
             components[item.block] && (
               <div
