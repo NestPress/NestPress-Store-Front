@@ -14,12 +14,10 @@ const ComposerPage: React.FC = () => {
   const router = useRouter();
   const slugPath = ["Page","home"];
   
-  // if(Object.entries(router.query).length !== 0){
-
-    // console.log('fucking mishmash')
-     // router.query.slugPath[0] ? slugPath[1] = router.query.slugPath[1] : null
-     // router.query.slugPath[1] ? slugPath[0] = router.query.slugPath[0] : null
-  // }
+  if(Object.entries(router.query).length !== 0){
+     router.query.slugPath[0] ? slugPath[1] = router.query.slugPath[1] : null
+     router.query.slugPath[1] ? slugPath[0] = router.query.slugPath[0] : null
+  }
 
   const blocks = useBlocks((state) => state.blocks) || [];
 

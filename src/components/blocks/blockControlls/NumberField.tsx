@@ -7,13 +7,8 @@ export const NumberField: React.FC<Props> = ({ keyName, res, block }) => {
   return (
     <input
       type="number"
-      onChange={(e) => {
-        res({ 
-          key: keyName, 
-          value: e.target.value
-        })
-      }
-      }
+      onChange={e => res({ key: keyName, value: e.target.value, mutation: false })}
+      onBlur={e => res({ key: keyName, value: e.target.value, mutation: true })}
       className="col-span-3 border p-2 text-sm w-full"
       value={block?.attrs[keyName]}
     />

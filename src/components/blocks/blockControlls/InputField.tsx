@@ -2,26 +2,13 @@ interface Props {
   keyName: string;
   res: any;
   block: any,
-  resout: any
 }
-export const InputField: React.FC<Props> = ({ keyName, res, resout, block }) => {
+export const InputField: React.FC<Props> = ({ keyName, res, block }) => {
   return (
     <input
       type="text"
-      onChange={(e) => {
-        res({ 
-          key: keyName, 
-          value: e.target.value
-        })
-      }
-      }
-      onBlur={(e) => {
-        resout({ 
-          key: keyName, 
-          value: e.target.value
-        })
-      }
-      }
+      onChange={e => res({ key: keyName, value: e.target.value, mutation: false, })}
+      onBlur={e => res({ key: keyName, value: e.target.value, mutation: true, })}
       className="col-span-3 border p-2 text-sm w-full"
       value={block?.attrs[keyName]}
     />

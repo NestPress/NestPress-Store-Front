@@ -10,7 +10,7 @@ import { useMutation} from '@apollo/client';
 import { UPDATE_BLOCK, DELETE_BLOCK } from "components/blocks/gql/composer"
 
 import { getNestedChildren } from 'components/blocks/helpers/blocks'
-import { TagsField, InputField, ImgObjectFit, ImgLayout, TextareaField, NumberField } from "components/blocks/blockControlls"
+import { TagsField, InputField, ImgObjectFit, ImgLayout, TextareaField, KeyValueField, NumberField } from "components/blocks/blockControlls"
 
 export const BlockControlls: React.FC = () => {
 
@@ -39,17 +39,7 @@ export const BlockControlls: React.FC = () => {
     "flex items-center bg-red-400 w-full p-2 rounded  text-white hover:bg-blue-500";
   
   const res = (res) => {
-    setBlockAttrs({...res,id:selectedBlockId})
-    if(res.key === "text" || res.key === "mutation" || res.key === "query" || res.key === "classes" || res.key === "handler"){
-
-    }else{
-      saveData(res)
-    }
-  }
-  const resout = (res) => {
-    if(res.key === "text" || res.key === "mutation" || res.key === "query" || res.key === "classes" || res.key === "handler"){
-        saveData(res)
-    }
+    res.mutation ? saveData(res) : setBlockAttrs({...res,id:selectedBlockId})
   }
 
   function saveData(res){
@@ -114,7 +104,7 @@ export const BlockControlls: React.FC = () => {
               )}
 
               {(key === "text" || key === "query" || key === "mutation") && (
-                <TextareaField key={`txa-${index}`} keyName={key} res={res} block={block()} resout={resout}/>
+                <TextareaField key={`txa-${index}`} keyName={key} res={res} block={block()}/>
               )}
 
               {key === "imglayout" && (
@@ -124,8 +114,12 @@ export const BlockControlls: React.FC = () => {
                 <ImgObjectFit key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
               )}
 
+              {key === "variables" && (
+                <KeyValueField key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
+              )}
+
               {key === "classes" && (
-                <TagsField key={`bgc-${index}`} keyName={key} res={res} block={block()} resout={resout}/>
+                <TagsField key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
               )}
 
               {key !== "text" &&
@@ -136,8 +130,9 @@ export const BlockControlls: React.FC = () => {
                 key !== "width" &&
                 key !== "height" &&
                 key !== "classes" &&
+                key !== "variables" &&
                (
-                  <InputField key={`brd-${index}`} keyName={key} res={res} resout={resout} block={block()}/>
+                  <InputField key={`brd-${index}`} keyName={key} res={res}  block={block()}/>
                 )}
             </div>
           ) : null;

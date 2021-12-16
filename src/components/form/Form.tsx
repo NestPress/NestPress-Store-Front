@@ -40,11 +40,13 @@ const Form: React.FC<Props> = ({ attrs, children }) => {
       onSubmit={(e) => {
         e.preventDefault();
         addAction({type:'success', key:"submitFormStart", value:{ref:attrs.refname, data: getForm({ref:attrs.refname}) }})
-        if(attrs.mutation){
-          formMutation({ variables: getForm({ref:attrs.refname})}).catch(error => {
-            addAction({type:'error', key:"submitForm", value:error.message})
-          });
-        }
+        try {
+          if(attrs.mutation){
+            formMutation({ variables: getForm({ref:attrs.refname})}).catch(error => {
+              addAction({type:'error', key:"submitForm", value:error.message})
+            });
+          }
+        } catch (error) {}
       }}
     >
       {children}

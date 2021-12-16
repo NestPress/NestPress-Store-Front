@@ -52,9 +52,10 @@ export const DataBlocks: React.FC = ({type}) => {
             post: slugPath[1],
             order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
-              query: "",
-              dataTarget: "",
               refName:"",
+              query: "",
+              variables: {},
+              dataTarget: "",
               classes: ""
             },
           })

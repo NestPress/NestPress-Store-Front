@@ -2,20 +2,13 @@ import { useState } from 'react';
 interface Props {
   keyName: string;
   res: any;
-  resout: any
   block: any
 }
-export const TagsField: React.FC<Props> = ({ keyName, res, resout, block }) => {
+export const TagsField: React.FC<Props> = ({ keyName, res, block }) => {
   const [input, setInput] = useState('');
   const update = (value) => {
-    res({ 
-      key: keyName, 
-      value: value
-    })
-    resout({ 
-      key: keyName, 
-      value: value
-    })
+    res({ key: keyName, value: e.target.value, mutation: false});
+    res({ key: keyName, value: e.target.value, mutation: true});
   }
 
   return (

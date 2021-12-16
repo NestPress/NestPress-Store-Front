@@ -1,27 +1,14 @@
 interface Props {
   keyName: string;
   res: any;
-  resout:any;
   block: any
 }
-export const TextareaField: React.FC<Props> = ({ keyName, res, resout, block }) => {
+export const TextareaField: React.FC<Props> = ({ keyName, res, block }) => {
   let timeout = null;
   return (
     <textarea
-      onChange={(e) => {
-        res({ 
-          key: keyName, 
-          value: e.target.value
-        })
-      }
-      }
-      onBlur={(e) => {
-        resout({ 
-          key: keyName, 
-          value: e.target.value
-        })
-      }
-      }
+      onChange={e => res({ key: keyName, value: e.target.value, mutation: false })}
+      onBlur={e => res({ key: keyName, value: e.target.value, mutation: true })}
       /* TODO fix type */
       // @ts-ignore: Unreachable code error
       rows="3"
