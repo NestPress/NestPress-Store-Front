@@ -54,3 +54,51 @@ const QueryList: React.FC<Props> = ({ attrs, children }) => {
   );
 };
 export default QueryList;
+
+
+
+
+
+// import { useQuery, gql } from '@apollo/client';
+// import { get, set } from "helpers/io"
+// import { useQueries } from "store";
+// interface Props {
+//   attrs: any;
+// }
+// const QueryList: React.FC<Props> = ({ attrs, children }) => {
+//   const addQuery = useQueries((state) => state.addQuery);
+  
+//   /* Build variables */
+//   const buildVariables = (variables) => {
+//     const out = {}
+//     for (const [key, value] of Object.entries(variables)) {
+//       set(out, value, key)
+//     }
+//     return out
+//   }
+
+//   /* Query */
+
+//   try {
+//     if(attrs.query){
+
+//       const QUERY = gql `${attrs.query}`
+//       const res = {
+//         onCompleted(resData) {
+//           /* stated query result */
+//           addQuery({ref:attrs.refName || attrs.id, data:resData})
+//         }
+//       }
+//       attrs.variables ? res.variables = buildVariables(attrs.variables) : null
+//       const { queryLoading, queryError, data, refetch } = useQuery(QUERY, res);
+
+//     }
+//   } catch (error) { console.error('query:',error) }
+//   const queryList = attrs?.dataTarget ? get(data, attrs.dataTarget) : data 
+//   return (
+//     <div className={attrs.classes}>
+//       {queryList?.length ? queryList.map((el,i)=><>{children}</>):children}
+//     </div>
+//   );
+// };
+// export default QueryList;

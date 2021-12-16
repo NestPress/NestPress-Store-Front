@@ -22,6 +22,8 @@ const Form: React.FC<Props> = ({ attrs, children }) => {
     if(attrs.mutation){
       const MUTATION = attrs.mutation ? gql`${attrs.mutation}` : ``;
       const [formMutation, { data, loading, error }] = useMutation(MUTATION, {
+          // awaitRefetchQueries: true,
+          // refetchQueries: [{ query: 'getPosts'}],
           onCompleted(data) {
             addAction({type:'success', key:"submitFormCompleted", value:data})
           }, 
@@ -39,6 +41,7 @@ const Form: React.FC<Props> = ({ attrs, children }) => {
       className={attrs.classes}
       onSubmit={(e) => {
         e.preventDefault();
+        console.log('dd')
         addAction({type:'success', key:"submitFormStart", value:{ref:attrs.refname, data: getForm({ref:attrs.refname}) }})
         try {
           if(attrs.mutation){

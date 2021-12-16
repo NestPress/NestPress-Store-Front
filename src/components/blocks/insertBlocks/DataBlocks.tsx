@@ -56,6 +56,7 @@ export const DataBlocks: React.FC = ({type}) => {
               query: "",
               variables: {},
               dataTarget: "",
+              childrenSlots: [],
               classes: ""
             },
           })

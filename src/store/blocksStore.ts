@@ -32,6 +32,22 @@ const useBlocks = create((set) => ({
         _.blocks.push(_in);
       })
     ),
+  addBlocks: (_in) =>
+    set(
+      produce((_) => {
+        _.blocks = [..._.blocks, ..._in]
+      })
+    ),
+  addUBlock: (_in) =>
+    set(
+      produce((_) => {
+        const block = _.blocks.find(el => el.id === _in.id)
+        if(!block){
+          _.blocks.push(_in);
+        }
+      })
+  ),
+    
   setBlockAttrs: (_in) =>
     set(
       produce((_) => {
@@ -63,7 +79,9 @@ const useBlocks = create((set) => ({
     ),  
 }));
 
+const getBlocks = () => {
+  return useBlocks.getState()['blocks'];
+}
 
 
-
-export { useBlocks };
+export { useBlocks , getBlocks};

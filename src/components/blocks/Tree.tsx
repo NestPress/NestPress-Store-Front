@@ -8,7 +8,7 @@ import { useBlocks } from "store/blocksStore";
 /* TODO fix type */
 // @ts-ignore: Unreachable code error
 export const Tree: React.FC<Props> = 
-  ({ blocks, queryIndex, parentId = 0, level = 0 }: TreeProps) => {
+  ({ blocks, parentId = 0, level = 0, parentItem }: TreeProps) => {
     const items = blocks.filter((item) => item.parentId === parentId);
     // .sort((a, b) => (a.text > b.text ? 1 : -1)); - change sort
     if (!items.length) return null;
@@ -33,13 +33,18 @@ export const Tree: React.FC<Props> =
           }else{
             const Block: string =
               components[item.block] && components[item.block];
-            
-            /* workaround sollution to indexing childrens with queryList blocks */
-            /* TODO - better method is copying blocks  */
-            queryIndex.push(item.id);
-            var count = 0;
-            queryIndex.forEach((v) => (v === item.id && count++));
+
+            /*/ indexing blinded copy of children blocks /*/
+            if(item.block === 'data/QueryList'){
+              item = {...item, childrenSlots:[]}
+            }
+            if(parentItem?.block === 'data/QueryList'){
+              parentItem.childrenSlots.push(parentItem.childrenSlots.length)
+              item = {...item, kutsama: parentItem.childrenSlots.length}
+            }
           }
+
+
             
           return (
             components[item.block] && (
@@ -59,24 +64,30 @@ export const Tree: React.FC<Props> =
                 key={`block-${item.id}`}
                 onClick={(e) => {
                   e.stopPropagation();
-                  if (!replace) {
-                    setBlock(item.id);
-                    useBlocks.setState({ panel: "block", composerTab: null });
-                  } else {
-                    if (selectedBlockId === item.id) {
-                      alert("You set this same block, select another");
-                    } else {
+                  console.log(item)
+                  if(!item.cloneIndex){
+                    if (!replace) {
+                      setBlock(item.id);
                       useBlocks.setState({ panel: "block", composerTab: null });
-                      setBlockParentId({
-                        parent: item.id,
-                        current: selectedBlockId,
-                      });
+                    } else {
+                      if (selectedBlockId === item.id) {
+                        alert("You set this same block, select another");
+                      } else {
+                        useBlocks.setState({ panel: "block", composerTab: null });
+                        setBlockParentId({
+                          parent: item.id,
+                          current: selectedBlockId,
+                        });
+                      }
                     }
+                  }else{
+                    alert('Clone element is not editable')
                   }
+                  
                 }}
               >
                 <Block
-                  attrs={{ id: item.id, i:i, queryIndex:count-1, ...item.attrs }}
+                  attrs={{ id: item.id, i:i,  ...item.attrs }}
                   key={item.id}
                   item={item}
                   level={level}
@@ -87,7 +98,7 @@ export const Tree: React.FC<Props> =
                     parentId={item.id}
                     level={level + 1}
                     item={item}
-                    queryIndex={queryIndex}
+                    parentItem={item}
                   />
                 </Block>
                 <div

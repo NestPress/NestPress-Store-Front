@@ -7,8 +7,8 @@ interface Props {
 export const TagsField: React.FC<Props> = ({ keyName, res, block }) => {
   const [input, setInput] = useState('');
   const update = (value) => {
-    res({ key: keyName, value: e.target.value, mutation: false});
-    res({ key: keyName, value: e.target.value, mutation: true});
+    res({ key: keyName, value: value, mutation: false});
+    res({ key: keyName, value: value, mutation: true});
   }
 
   return (
