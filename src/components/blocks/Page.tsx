@@ -111,8 +111,8 @@ export const Page: React.FC = () => {
           </span>
         </div>
 
-        {!currentPage.id && <div className="text-xs px-4 py-2 border-b flex items-top gap-1 border-t border-b bg-yellow-100">
-          <div className="w-3 mt-0.5"><FiFile/></div> <span>Page is now on predraft mode, and not submitted yet.</span>     
+        {!currentPage.id && slugPath[1] && <div className="text-xs px-4 py-2 border-b flex items-top gap-1 border-t border-b bg-yellow-100">
+          <div className="w-3 mt-0.5"><FiFile/></div> <span>Page {slugPath[1]} is now on predraft mode, and not submitted yet.</span>     
         </div> }
 
         { message && <div className={`text-xs px-4 py-2 border-b flex items-top gap-1 ${messagClass}`}>
@@ -129,6 +129,12 @@ export const Page: React.FC = () => {
 
               if(!currentPage.title){
                 useBlocks.setState({ message: 'Created object should have title!'})
+                useBlocks.setState({ messageType: 'Error'})
+                return false
+              }
+
+              if(!currentPage.slug){
+                useBlocks.setState({ message: 'Created object should have slug!'})
                 useBlocks.setState({ messageType: 'Error'})
                 return false
               }

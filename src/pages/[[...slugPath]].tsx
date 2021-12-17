@@ -53,6 +53,7 @@ const ComposerPage: React.FC = () => {
 
   const { loading, error, data, refetch } = useQuery(GET_BLOCKS,{
     variables: { 
+      sort:{order:"asc"},
       filter:{
         post:{
           // TODO - add system to controll loaded layouts
@@ -75,12 +76,12 @@ const ComposerPage: React.FC = () => {
     }
   });
   return (
-    blocks.length > 0 ? (
       <>
-        <PureTree blocks={blocks} />
+        {
+           blocks.length > 0 ? ( <PureTree blocks={blocks} />   ) : null
+        }
         <BottomBar/>
       </>
-    ) : null
   );
 };
 export default ComposerPage;

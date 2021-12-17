@@ -16,6 +16,8 @@ const ComposerPage: React.FC = () => {
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
   const blocksPocket = useBlocks((state) => state.blocksPocket);
   const copiedBlocks = useBlocks((state) => state.copiedBlocks);
+  const composerTab = useBlocks((state) => state.composerTab);
+  
   const router = useRouter();
   const slugPath = router.query?.slugPath || ["Page","home"];
   const blocks = useBlocks((state) => state.blocks) || [];
@@ -51,6 +53,7 @@ const ComposerPage: React.FC = () => {
 
   const { loading, error, data, refetch } = useQuery(GET_BLOCKS,{
     variables: { 
+      sort:{order:"asc"},
       filter:{
         post:{
           eq:slugPath[1]
@@ -87,6 +90,23 @@ const ComposerPage: React.FC = () => {
           </div>
         </div>
         <Composer />
+
+        {!slugPath[1] && 
+          <div className="fixed border shadow" style={{left:'20%', top:'20%', width:'calc(70% - 420px)'}}>
+            <div className="border-b p-2 bg-pink-500 text-white">
+              {!slugPath[1] && `Post (${slugPath[0]}) is not selected`}
+            </div>
+            <div className="p-2 pb-3">
+             {!slugPath[1] && 
+              <>
+                <span>Select {slugPath[0]} post</span>  
+                {composerTab !== 'pages' && <span> on <span onClick={e=>useBlocks.setState({ composerTab: "pages", panel:'mainPanel'})} className="text-blue-600 cursor-pointer hover:underline">posts list menu</span></span> } 
+                <span> or registered new</span>
+              </>
+            }
+            </div>
+          </div>
+        }
       </div>
     ) 
   );

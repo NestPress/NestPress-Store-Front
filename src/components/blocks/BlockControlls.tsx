@@ -10,7 +10,7 @@ import { useMutation} from '@apollo/client';
 import { UPDATE_BLOCK, DELETE_BLOCK } from "components/blocks/gql/composer"
 
 import { getNestedChildren } from 'components/blocks/helpers/blocks'
-import { TagsField, InputField, ImgObjectFit, ImgLayout, TextareaField, KeyValueField, NumberField } from "components/blocks/blockControlls"
+import { QueryField, TagsField, InputField, ImgObjectFit, ImgLayout, TextareaField, KeyValueField, NumberField } from "components/blocks/blockControlls"
 
 export const BlockControlls: React.FC = () => {
 
@@ -103,7 +103,7 @@ export const BlockControlls: React.FC = () => {
                 <NumberField key={`nbr-${index}`} keyName={key} res={res} block={block()} />
               )}
 
-              {(key === "text" || key === "query" || key === "mutation") && (
+              {(key === "text" ||  key === "mutation") && (
                 <TextareaField key={`txa-${index}`} keyName={key} res={res} block={block()}/>
               )}
 
@@ -122,14 +122,18 @@ export const BlockControlls: React.FC = () => {
                 <TagsField key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
               )}
 
+              {key === "query" && (
+                <QueryField key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
+              )}
+
               {key !== "text" &&
                 key !== "mutation" &&
-                key !== "query" &&
                 key !== "imglayout" &&
                 key !== "objectfit" &&
                 key !== "width" &&
                 key !== "height" &&
                 key !== "classes" &&
+                key !== "query" &&
                 key !== "variables" &&
                (
                   <InputField key={`brd-${index}`} keyName={key} res={res}  block={block()}/>

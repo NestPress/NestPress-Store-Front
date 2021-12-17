@@ -36,9 +36,11 @@ export const GET_BLOCKS = gql`
     $limit: Int
     $offset: Int
     $filter: BlocksFilter
+    $sort: JSON,
   ){
     getBlocks(
       filter:$filter,
+      sort:$sort,
       query:$query,
       offset:$offset,
       limit:$limit

@@ -3,7 +3,8 @@
 // @ts-nocheck
 
 import dynamic from "next/dynamic";
-import { useBlocks } from "store/blocksStore";
+import { useBlocks, useQueries } from "store/blocksStore";
+
 
 /* TODO fix type */
 // @ts-ignore: Unreachable code error
@@ -40,8 +41,12 @@ export const Tree: React.FC<Props> =
             }
             if(parentItem?.block === 'data/QueryList'){
               parentItem.childrenSlots.push(parentItem.childrenSlots.length)
-              item = {...item, kutsama: parentItem.childrenSlots.length}
+              item = {...item, queryIndex: parentItem.childrenSlots.length}
             }
+            if(parentItem?.queryIndex){
+              item = {...item, queryIndex: parentItem?.queryIndex}
+            }
+
           }
         
           return (
@@ -62,7 +67,6 @@ export const Tree: React.FC<Props> =
                 key={`block-${item.id}`}
                 onClick={(e) => {
                   e.stopPropagation();
-                  console.log(item)
                   if(!item.cloneIndex){
                     if (!replace) {
                       setBlock(item.id);
@@ -100,13 +104,37 @@ export const Tree: React.FC<Props> =
                   />
                 </Block>
                 <div
-                  style={{ bottom: "-20px", right: "-1px", zIndex: 1000 }}
+                  style={{ top: "-20px", left: "-1px", zIndex: 1000 }}
                   className={`absolute text-xs text-white bg-blue-800 bg-opacity-50 p-0.5 ${
                     selectedBlockId == item.id ? "visible" : "invisible"
                   }`}
                 >
                   {item.block}
                 </div>
+                <div
+                  style={{ top: "0", left: "-1px", zIndex: 1000, borderTop:"1px dashed #8e9fd7", width:"100%" }}
+                  className={`absolute ${
+                    selectedBlockId == item.id ? "visible" : "invisible"
+                  }`}
+                ></div>
+                <div
+                  style={{ bottom: "0", left: "-1px", zIndex: 1000, borderBottom:"1px dashed #8e9fd7", width:"100%" }}
+                  className={`absolute ${
+                    selectedBlockId == item.id ? "visible" : "invisible"
+                  }`}
+                ></div>
+                <div
+                  style={{ top: "0", right: "0", zIndex: 1000, borderRight:"1px dashed #8e9fd7", height:"100%" }}
+                  className={`absolute ${
+                    selectedBlockId == item.id ? "visible" : "invisible"
+                  }`}
+                ></div>
+                <div
+                  style={{ top: "0", left: "0", zIndex: 1000, borderRight:"1px dashed #8e9fd7", height:"100%" }}
+                  className={`absolute ${
+                    selectedBlockId == item.id ? "visible" : "invisible"
+                  }`}
+                ></div>
               </div>
             )
           );

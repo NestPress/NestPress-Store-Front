@@ -10,7 +10,7 @@ export const BottomBar: React.FC = () => {
       <div
         onClick={e=>router.push(['composer',...slugPath].join('/'))} 
         className="p-3 border-r underline text-xs cursor-pointer flex items-center gap-1">
-        <FiEdit/>Open composer
+        <FiEdit/>Open {slugPath[1]} {slugPath[0]} with composer
       </div>    
     </div>
   );
