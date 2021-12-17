@@ -15,6 +15,7 @@ export const Page: React.FC = () => {
   const message = useBlocks((state) => state.message);
   const messageType = useBlocks((state) => state.messageType);
   const storedPage = useBlocks((state) => state.currentPage);
+  const blocks = useBlocks((state) => state.blocks) || [];
   
   const buttonClass =
     " bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500";
@@ -35,20 +36,9 @@ export const Page: React.FC = () => {
   /* mutation */
   const [addNewPost, { addNewPostData, addNewPostLoading, addNewPostError }] = useMutation(CREATE_POST, {
     onCompleted(addNewPostData) {
-      addNewBlock({ variables: {
-        input:{
-          id: uuidv4(),
-          parentId: "0",
-          block: "layout/Grid",
-          post: addNewPostData.createPost.slug,
-          order: (parseInt(addNewPostData.createPost.id) * 100),
-          attrs: {
-              classes:"",
-              handler:""
-          }
-        }
-      }});
-      refetch()
+      useBlocks.setState({ 
+          blocks: []
+      })
     }, 
     update: (cache) => {
       cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
@@ -85,11 +75,12 @@ export const Page: React.FC = () => {
       useBlocks.setState({ 
           blocks: [{...block, parentId:0}]
       })
-
       useBlocks.setState({ message: `Page ${slugPath[1]} with block created complete!`})
       useBlocks.setState({ messageType: 'success'})
+    },
 
-      refetch()
+    update: (cache) => {
+      cache.evict({ id: "ROOT_QUERY", fieldName: "getBlocks" });
     }, 
   });
 
@@ -98,6 +89,8 @@ export const Page: React.FC = () => {
     postType:slugPath[0],
     title: slugPath[0] === 'Layout' ? `${slugPath[1]}` : ''
   }, data?.getPostBySlug || {});
+
+
 
 
 
@@ -120,6 +113,27 @@ export const Page: React.FC = () => {
             <FiMessageSquare/>
           </div> <span>{message}</span>
         </div> }
+
+        {blocks.length === 0 && currentPage.id && <div className="text-xs px-4 py-2 border-b flex items-top gap-1 border-t border-b bg-yellow-100">
+          <div className="w-3 mt-0.5"><FiFile/></div> <span>Page dont have blocks! <span onClick={e=>{
+             addNewBlock({ variables: {
+              input:{
+                id: uuidv4(),
+                parentId: "0",
+                block: "layout/Grid",
+                post: currentPage.slug,
+                order: (parseInt(currentPage.id) * 100),
+                attrs: {
+                    classes:"",
+                    handler:""
+                }
+              }
+            }});
+            refetch()
+          }} className="text-blue-600 cursor-pointer hover:underline">Create first</span></span>     
+        </div> }
+
+        
 
         <form
           onSubmit={(e) => {

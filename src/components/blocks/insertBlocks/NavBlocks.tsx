@@ -35,6 +35,10 @@ export const NavBlocks: React.FC = ({type}) => {
         console.log('insert block', data.createBlock)
         addBlock(data.createBlock);
     }, 
+    update: (cache) => {
+      cache.evict({ id: "ROOT_QUERY", fieldName: "getBlocks" });
+    }, 
+    
   });
   const teachSetBlock = (block) => {
     /* Set to zustand state */
