@@ -45,15 +45,15 @@ const useBlocks = create((set) => ({
         _.blocks = [..._.blocks, ..._in]
       })
     ),
-  addUBlock: (_in) =>
-    set(
-      produce((_) => {
-        const block = _.blocks.find(el => el.id === _in.id)
-        if(!block){
-          _.blocks.push(_in);
-        }
-      })
-  ),
+  // addUBlock: (_in) =>
+  //   set(
+  //     produce((_) => {
+  //       const block = _.blocks.find(el => el.id === _in.id)
+  //       if(!block){
+  //         _.blocks.push(_in);
+  //       }
+  //     })
+  // ),
     
   setBlockAttrs: (_in) =>
     set(

@@ -30,6 +30,9 @@ export const BlockControlls: React.FC = () => {
   const [deleteBlock, { deleteBlockData, deleteBlockLoading, deleteBlockError }] = useMutation(DELETE_BLOCK, {
     onCompleted(deleteBlockData) {
       console.log('delete', deleteBlockData)
+      removeBlock(deleteBlockData.deleteBlock);
+      useBlocks.setState({ panel: "mainPanel" })
+      
     }
   });
 
@@ -200,7 +203,6 @@ export const BlockControlls: React.FC = () => {
             className={buttonDel}
             onClick={(e) => {
               useBlocks.setState({ panel: "mainPanel" });
-              removeBlock();
               deleteBlock({ 
                 variables: {
                   id: selectedBlockId,
