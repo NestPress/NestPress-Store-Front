@@ -1,13 +1,16 @@
 /*
 	actions:
 
-	key					| 	value
+	key								| 	value
 	-----------------------------------------------------------
-	block[id].addClass	| 	this (all form fields)
-						|   this.name (specyfic target by path)
+	block[id].addClass				| 	this (all form fields)
+									|   this.name (specyfic target by path)
+	-----------------------------------------------------------
+	block[id].changeAttrs.path		| 	this (all form fields)
+	(path is changing attr target)	|   this.name (specyfic target by path)
 
 */
-// import { useBlocks } from "store/blocksStore";
+
 import { get, set } from "helpers/io"
 
 export const actionsParser = (actions, data, blocks, setBlockAttrs) => {
