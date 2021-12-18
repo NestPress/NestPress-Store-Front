@@ -27,7 +27,7 @@ const Form: React.FC<Props> = ({ attrs, children }) => {
       const MUTATION = attrs.mutation ? gql`${attrs.mutation}` : ``;
       const [formMutation, { data, loading, error }] = useMutation(MUTATION, {
           onCompleted(data) {
-            actionsParser(attrs.successActions, getForm({ref:attrs.refName}), blocks, setBlockAttrs)
+            attrs.successActions ? actionsParser(attrs.successActions, getForm({ref:attrs.refName}), blocks, setBlockAttrs) : null
             
             // set results to actions store (this is unless)
             addAction({type:'success', key:"submitFormCompleted", value:data})

@@ -23,13 +23,13 @@ export const BlockControlls: React.FC = () => {
 
   const [updateBlock, { updateBlockData, updateBlockLoading, updateBlockError }] = useMutation(UPDATE_BLOCK, {
     onCompleted(updateBlockData) {
-      console.log('update', updateBlockData)
+      // console.log('update', updateBlockData)
     }
   });
 
   const [deleteBlock, { deleteBlockData, deleteBlockLoading, deleteBlockError }] = useMutation(DELETE_BLOCK, {
     onCompleted(deleteBlockData) {
-      console.log('delete', deleteBlockData)
+      // console.log('delete', deleteBlockData)
       removeBlock(deleteBlockData.deleteBlock);
       useBlocks.setState({ panel: "mainPanel" })
       
@@ -47,8 +47,28 @@ export const BlockControlls: React.FC = () => {
 
   function saveData(res){
       const refBlock = block();
-      const copy = Object.assign({}, refBlock.attrs)
+      const copy = JSON.parse(JSON.stringify(refBlock.attrs))
       copy[res.key] = res.value
+      
+      /* -------------------------- */
+      /* build paths to shortcodes */
+      if(typeof res.value === 'string'){
+        const matches = res.value.match(/(?<=\$\{).+?(?=\})/g);
+        if(matches?.length > 0){
+          console.log('start update string with match', res.key, copy)
+          copy['shortcodes'].indexOf(res.key) === -1 ? copy['shortcodes'].push(res.key) : null
+        }else{
+          console.log('start update string without match', res.key, copy)
+          var index = copy['shortcodes'].indexOf(res.key)
+          copy['shortcodes'].splice(index, 1);
+        }
+      }
+      /* TODO - for queries variables */
+      if(typeof res.value === 'object'){
+        console.log('start update object', res.key, res.value, copy)
+      }
+      /* -------------------------- */
+
       updateBlock({ 
         variables: {
           id: refBlock.id,

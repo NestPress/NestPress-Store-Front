@@ -56,7 +56,9 @@ export const LayoutBlocks: React.FC = ({type}) => {
             order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               handler:"",
-              classes: ""
+              classes: "",
+              /* tech attr to storege avilable ${} codes */ 
+              shortcodes: []
             },
           })
         }
@@ -74,7 +76,9 @@ export const LayoutBlocks: React.FC = ({type}) => {
             order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               text: "Example title",
-              classes: ""
+              classes: "",
+              /* tech attr to storege avilable ${} codes */ 
+              shortcodes: []
             },
           })
         }
@@ -92,7 +96,9 @@ export const LayoutBlocks: React.FC = ({type}) => {
             order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-              classes: ""
+              classes: "",
+              /* tech attr to storege avilable ${} codes */ 
+              shortcodes: []
             },
           })
         }
@@ -115,7 +121,9 @@ export const LayoutBlocks: React.FC = ({type}) => {
               height:"",
               image: "/empty-person-dark.svg",
               alt:"",
-              classes: ""
+              classes: "",
+              /* tech attr to storege avilable ${} codes */ 
+              shortcodes: []
             },
           })
         }

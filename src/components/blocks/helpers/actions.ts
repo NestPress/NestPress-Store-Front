@@ -3,11 +3,12 @@
 
 	key								| 	value
 	-----------------------------------------------------------
-	block[id].addClass				| 	this (all form fields)
+	block.~id.addClass				| 	this (all form fields)
 									|   this.name (specyfic target by path)
 	-----------------------------------------------------------
-	block[id].changeAttrs.path		| 	this (all form fields)
+	block.~id.changeAttrs.~path		| 	this (all form fields)
 	(path is changing attr target)	|   this.name (specyfic target by path)
+									|	else (set as const)
 
 */
 
@@ -18,7 +19,7 @@ export const actionsParser = (actions, data, blocks, setBlockAttrs) => {
 	for (const [key, value] of Object.entries(actions)) {
 		// console.log(key, value)
 		const setter = key.split('.')
-		
+
 		if(setter[0]==='block'){
 			const blockId = setter[1]
 			const action = setter[2]
@@ -41,6 +42,10 @@ export const actionsParser = (actions, data, blocks, setBlockAttrs) => {
 					setBlockAttrs(
 						{id:blockId, key:setter[0], value:get(data, value.substring(5))
 					})
+				}else{
+					setBlockAttrs(
+						{id:blockId, key:setter[0], value:value}
+					)
 				}
 			}
 
