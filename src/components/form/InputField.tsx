@@ -7,7 +7,7 @@ interface Props {
 const InputField: React.FC<Props> = ({ attrs }) => {
   const blocks = useBlocks((state) => state.blocks);
   const updateForm = useForms((state) => state.updateForm);
-  const ref = findOutByBlock(blocks, attrs.id, 'form/Form').attrs.refname
+  const ref = findOutByBlock(blocks, attrs.id, 'form/Form').attrs.refName
 
   return (
     <div className="">

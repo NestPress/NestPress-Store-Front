@@ -23,9 +23,16 @@ const useBlocks = create((set) => ({
         _.components[_in.key] = _in.value
       })
     ),
-  setBlock: (id) => set((state) => {
-    if(id) state.selectedBlockId = id 
-  }),
+  // setBlock: (id) => set((state) => {
+  //   if(id) state.selectedBlockId = id 
+  // }),
+  setBlock: (id) => 
+    set(
+      produce((_) => {
+        _.selectedBlockId = id;
+      })
+    ),
+
   addBlock: (_in) =>
     set(
       produce((_) => {
@@ -51,9 +58,9 @@ const useBlocks = create((set) => ({
   setBlockAttrs: (_in) =>
     set(
       produce((_) => {
-        const block = _.blocks.find(el => el.id === _in.id)
-        block.attrs[_in.key] = _in.value
-
+       _in.block 
+        ? _in.block.attrs[_in.key] = _in.value 
+        : _.blocks.find(el => el.id === _in.id).attrs[_in.key] = _in.value
       })
     ),
   setBlockParentId: (_in) =>

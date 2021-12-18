@@ -1,21 +1,14 @@
 import { useQuery, gql } from '@apollo/client';
 import { get, set } from "helpers/io"
 import { useQueries } from "store";
+import { buildVariables } from "components/blocks/helpers/blocks"
+
 interface Props {
   attrs: any;
 }
 const QueryList: React.FC<Props> = ({ attrs, children }) => {
   const addQuery = useQueries((state) => state.addQuery);
   
-  /* Build variables */
-  const buildVariables = (variables) => {
-    const out = {}
-    for (const [key, value] of Object.entries(variables)) {
-      set(out, value, key)
-    }
-    return out
-  }
-
   /* Query */
 
   try {

@@ -2,7 +2,7 @@
 // @ts-ignore
 // @ts-nocheck
 
-import { FiCornerRightDown, FiArrowDown, FiExternalLink } from "react-icons/fi";
+import { FiCornerRightDown, FiArrowDown, FiArrowUp, FiExternalLink, FiArrowRight } from "react-icons/fi";
 import { BlocksHeader, MainTabs } from "components/blocks";
 import { useBlocks } from "store/blocksStore";
 
@@ -67,7 +67,7 @@ export const BlockControlls: React.FC = () => {
     }
 
   return (
-    <div>
+    <div style={{height:"100vh", overflowX:"scroll"}}>
       <MainTabs/>
       <BlocksHeader title={block()?.block || ""} />
       <div className='grid grid-cols-2 text-xs gap-1 p-2'>
@@ -92,18 +92,24 @@ export const BlockControlls: React.FC = () => {
                 key !== "height" ? 'col-span-2' : ''
               }`}>
 
-              <div key={index} className="py-1 flex items-center mt-1">
-                {key}:
-              </div>
 
-              {(
+              { 
+                /* Print key */
+                key !== "childrenSlots" && <div key={index} className="py-1 flex items-center mt-1">
+                {key}:
+              </div>}
+
+              {
+                /* Print number controll */ (
                 key === "width" ||
                 key === "height" 
                 ) && (
                 <NumberField key={`nbr-${index}`} keyName={key} res={res} block={block()} />
               )}
 
-              {(key === "text" ||  key === "mutation") && (
+              {
+                /* Print textarea controll */ 
+                (key === "text" ||  key === "mutation") && (
                 <TextareaField key={`txa-${index}`} keyName={key} res={res} block={block()}/>
               )}
 
@@ -114,7 +120,7 @@ export const BlockControlls: React.FC = () => {
                 <ImgObjectFit key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
               )}
 
-              {key === "variables" && (
+              {(key === "variables" || key === "consts" || key === "errorActions" || key === "successActions") && (
                 <KeyValueField key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
               )}
 
@@ -135,6 +141,11 @@ export const BlockControlls: React.FC = () => {
                 key !== "classes" &&
                 key !== "query" &&
                 key !== "variables" &&
+                key !== "consts" &&
+                key !== "errorActions" &&
+                key !== "successActions" &&
+                key !== "childrenSlots" &&
+                
                (
                   <InputField key={`brd-${index}`} keyName={key} res={res}  block={block()}/>
                 )}
@@ -144,7 +155,7 @@ export const BlockControlls: React.FC = () => {
       </div>
 
       {!replace ? (
-        <div className="px-2 mt-2 border-t pt-2 grid grid-cols-2 gap-1 text-sm">
+        <div style={{position: "sticky", bottom: 0}} className="bg-white px-2 mt-2 border-t pt-2 grid grid-cols-2 gap-1 text-sm">
           <button
             className={buttonClass}
             onClick={(e) => useBlocks.setState({ panel: "insertChild" })}
@@ -157,8 +168,24 @@ export const BlockControlls: React.FC = () => {
             className={buttonClass}
             onClick={(e) => useBlocks.setState({ panel: "insertNext" })}
           >
-            <FiArrowDown />
+            <FiArrowRight />
             <span className="ml-2">Insert next</span>
+          </button>
+
+          <button
+            className={buttonClass}
+            // onClick={(e) => useBlocks.setState({ panel: "insertNext" })}
+          >
+            <FiArrowUp />
+            <span className="ml-2">Move up</span>
+          </button>
+
+          <button
+            className={buttonClass}
+            // onClick={(e) => useBlocks.setState({ panel: "insertNext" })}
+          >
+            <FiArrowDown />
+            <span className="ml-2">Move down</span>
           </button>
           
           <button
@@ -166,7 +193,7 @@ export const BlockControlls: React.FC = () => {
             onClick={(e) => useBlocks.setState({ replace: true })}
           >
             <FiExternalLink />
-            <span className="ml-2">Replace deep</span>
+            <span className="ml-2">Click and drop</span>
           </button>
           
           <button

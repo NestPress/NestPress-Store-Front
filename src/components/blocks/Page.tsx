@@ -180,7 +180,11 @@ export const Page: React.FC = () => {
               });
             }
             if(currentPage.submitType === 'delete'){
-              alert('delelete action was closed! TODO: deleted blogPost have register slug in database and blocked create another on this same')
+              
+              blocks.length == 0 ? alert('OK man') : alert('delete all blocks first')
+              // alert('delelete action was closed! TODO: deleted blogPost have register slug in database and blocked create another on this same')
+              
+
               // delete currentPage.submitType
               // deletePost({ 
               //   variables: {

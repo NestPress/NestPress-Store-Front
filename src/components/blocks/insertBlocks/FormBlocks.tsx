@@ -57,8 +57,10 @@ export const FormBlocks: React.FC = ({type}) => {
             order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               mutation: "",
-              refname: "default_form",
-              consts:[],
+              refName: prefix.id,
+              consts:{},
+              successActions:{},
+              errorActions:{},
               classes: ""
             },
           })
@@ -116,6 +118,7 @@ export const FormBlocks: React.FC = ({type}) => {
             ...prefix,
             block: "form/SelectField",
             post: slugPath[1],
+            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               label: "Example label",
               outputValue: "data.select_value",
@@ -134,6 +137,7 @@ export const FormBlocks: React.FC = ({type}) => {
             ...prefix,
             block: "form/KeyValueField",
             post: slugPath[1],
+            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               placeholder1: "Insert key",
               placeholder2: "Insert value",
@@ -155,6 +159,7 @@ export const FormBlocks: React.FC = ({type}) => {
             ...prefix,
             block: "form/SwithField",
             post: slugPath[1],
+            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               label: "Example label",
               outputValue: "data.swith_value",
@@ -172,6 +177,7 @@ export const FormBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "form/SubmitButton",
+            order: parseInt(blocks[blocks.length - 1].order) + 1,
             post: slugPath[1],
             attrs: {
               title: "Submit button",

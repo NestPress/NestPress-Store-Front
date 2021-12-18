@@ -3,28 +3,33 @@
 // @ts-nocheck
 import { gql, useMutation } from "@apollo/client";
 import { useBlocks, useForms, getForm, useActions } from "store";
-import { getNestedChildren, buildFormOutput } from "components/blocks/helpers/blocks"
+import { getNestedChildren, buildFormOutput, buildVariables } from "components/blocks/helpers/blocks"
+import { actionsParser } from "components/blocks/helpers/actions"
+
 interface Props {
   attrs: any;
 }
 const Form: React.FC<Props> = ({ attrs, children }) => {
   const blocks = useBlocks((state) => state.blocks);
+  const setBlockAttrs = useBlocks((state) => state.setBlockAttrs);
   const addForm = useForms((state) => state.addForm);
   const addAction = useActions((state) => state.addAction);
-
   const form = getNestedChildren(blocks, attrs.id)
-  getForm({ref:attrs.refname}) 
+
+
+  getForm({ref:attrs.refName}) 
     ? null 
-    : addForm({ref:attrs.refname, data:buildFormOutput(form)})
+    : addForm({ref:attrs.refName, data:{...buildFormOutput(form), ...buildVariables(attrs.consts)}})
 
   /* mutation */
   try {
     if(attrs.mutation){
       const MUTATION = attrs.mutation ? gql`${attrs.mutation}` : ``;
       const [formMutation, { data, loading, error }] = useMutation(MUTATION, {
-          // awaitRefetchQueries: true,
-          // refetchQueries: [{ query: 'getPosts'}],
           onCompleted(data) {
+            actionsParser(attrs.successActions, getForm({ref:attrs.refName}), blocks, setBlockAttrs)
+            
+            // set results to actions store (this is unless)
             addAction({type:'success', key:"submitFormCompleted", value:data})
           }, 
           update: (cache) => {
@@ -41,11 +46,16 @@ const Form: React.FC<Props> = ({ attrs, children }) => {
       className={attrs.classes}
       onSubmit={(e) => {
         e.preventDefault();
-        console.log('dd')
-        addAction({type:'success', key:"submitFormStart", value:{ref:attrs.refname, data: getForm({ref:attrs.refname}) }})
+        
+        // set results to actions store (this is unless)
+        addAction({type:'success', key:"submitFormStart", value:{ref:attrs.refName, data: getForm({ref:attrs.refName}) }})
+        
+        // always success if mutation is undefined
+        !attrs.mutation && attrs.successActions ? actionsParser(attrs.successActions, getForm({ref:attrs.refName}), blocks, setBlockAttrs) : null
+        
         try {
           if(attrs.mutation){
-            formMutation({ variables: getForm({ref:attrs.refname})}).catch(error => {
+            formMutation({ variables: getForm({ref:attrs.refName})}).catch(error => {
               addAction({type:'error', key:"submitForm", value:error.message})
             });
           }

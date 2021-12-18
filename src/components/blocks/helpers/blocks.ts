@@ -48,15 +48,15 @@ export const findOutByBlock:any = (regBlocks:any, currentId:number, blockName:st
 /* 
   set value from object by path 
 */
-export const  setByPath = (obj, path, value) => {
-  var a = path.split('.')
-  var o = obj
-  while (a.length - 1) {
-    var n = a.shift()
-    if (!(n in o)) o[n] = {}
-    o = o[n]
+export const  setByPath = (ob, path, value) => {
+  path = path.split(".");
+  for (let i = 0; i < path.length - 1; i++) {
+    ob?.[path[i]] ? null : (ob[path[i]] = {});
+    ob = ob?.[path[i]];
   }
-  o[a[0]] = value
+  // TODO The left-hand side of an assignment expression may not be an optional property access
+  // @ts-ignore: Unreachable code error
+  typeof ob === 'object' ? ob?.[path[i]] = value : null;
 }
 
 /* 
@@ -81,5 +81,11 @@ export const buildFormOutput = (blocks) => {
   return out
 }
 
-
-
+/* Build variables */
+export const buildVariables = (variables) => {
+  const out = {}
+  for (const [key, value] of Object.entries(variables)) {
+    setByPath(out, key, value)
+  }
+  return out
+}
