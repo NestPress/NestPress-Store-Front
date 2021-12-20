@@ -181,17 +181,21 @@ export const Page: React.FC = () => {
             }
             if(currentPage.submitType === 'delete'){
               
-              blocks.length == 0 ? alert('OK man') : alert('delete all blocks first')
-              // alert('delelete action was closed! TODO: deleted blogPost have register slug in database and blocked create another on this same')
               
+            
+              const techDeletePost = () => {
+                delete currentPage.submitType
+                deletePost({ 
+                  variables: {
+                    id: currentPage.id,
+                  }
+                });
+                router.push(`/composer/${slugPath[0]}/${slugPath[1]}`)
+              }
 
-              // delete currentPage.submitType
-              // deletePost({ 
-              //   variables: {
-              //     id: currentPage.id,
-              //   }
-              // });
-              // router.push(`/composer/${slugPath[0]}/${slugPath[1]}`)
+              blocks.length == 0 ? techDeletePost() : alert('delete all blocks first')
+              
+              
             }
           }}
         >

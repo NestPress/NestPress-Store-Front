@@ -41,10 +41,10 @@ export const Tree: React.FC<Props> =
             }
             if(parentItem?.block === 'data/QueryList'){
               parentItem.childrenSlots.push(parentItem.childrenSlots.length)
-              item = {...item, queryIndex: parentItem.childrenSlots.length}
+              item = {...item, queryRef: parentItem.attrs.refName, queryIndex: parentItem.childrenSlots.length}
             }
             if(parentItem?.queryIndex){
-              item = {...item, queryIndex: parentItem?.queryIndex}
+              item = {...item, queryIndex: parentItem?.queryIndex, queryRef:parentItem?.queryRef}
             }
 
           }
@@ -89,7 +89,13 @@ export const Tree: React.FC<Props> =
                 }}
               >
                 <Block
-                  attrs={{ id: item.id, i:i,  ...item.attrs }}
+                  attrs={{ 
+                    id: item.id,
+                    i:i, 
+                    queryIndex: item.queryIndex ? item.queryIndex : null,  
+                    queryRef: item.queryRef ? item.queryRef : null,  
+                    ...item.attrs 
+                  }}
                   key={item.id}
                   item={item}
                   level={level}

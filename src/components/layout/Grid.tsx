@@ -2,7 +2,7 @@ import { memo } from "react";
 interface Props {
   attrs: any;
 }
-const Grid: React.FC<Props> = ({ attrs, children }) => {
+const Grid: React.FC<Props> = memo(({ attrs, children }) => {
   return (
     <div className={attrs.classes}>
 
@@ -10,5 +10,5 @@ const Grid: React.FC<Props> = ({ attrs, children }) => {
       
     </div>
   );
-};
+});
 export default Grid;

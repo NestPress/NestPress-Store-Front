@@ -1,13 +1,17 @@
+import { memo } from "react";
 import { useQuery, gql } from '@apollo/client';
 import { get, set } from "helpers/io"
 import { useQueries } from "store";
 import { buildVariables } from "components/blocks/helpers/blocks"
+import { useRouter, useHistory } from "next/router";
 
 interface Props {
   attrs: any;
 }
-const QueryList: React.FC<Props> = ({ attrs, children }) => {
+const QueryList: React.FC<Props> = memo(({ attrs, children }) => {
   const addQuery = useQueries((state) => state.addQuery);
+  const router = useRouter()
+  const slugPath = router.query?.slugPath || ["Page", "home"];
   
   /* Query */
 
@@ -19,6 +23,8 @@ const QueryList: React.FC<Props> = ({ attrs, children }) => {
         onCompleted(resData) {
           /* stated query result */
           addQuery({ref:attrs.refName || attrs.id, data:queryList})
+          /* hack to rerender after first loading */
+          router.push(`${slugPath[0]}/${slugPath[1]}/${Math.floor(Math.random() * 9999)}`)
         }
       }
       attrs.variables ? res.variables = buildVariables(attrs.variables) : null
@@ -29,8 +35,8 @@ const QueryList: React.FC<Props> = ({ attrs, children }) => {
   
   return (
     <div className={attrs.classes}>
-      {queryList?.length ? queryList.map((el,i)=><>{children}</>):children}
+      {queryList?.length ? queryList.map((el,i)=><div key={i}>{children}</div>):children}
     </div>
   );
-};
+});
 export default QueryList;

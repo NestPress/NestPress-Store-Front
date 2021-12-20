@@ -1,6 +1,7 @@
 /* TODO fix type */
 // @ts-ignore
 // @ts-nocheck
+import { memo } from "react";
 import { gql, useMutation } from "@apollo/client";
 import { useBlocks, useForms, getForm, useActions } from "store";
 import { getNestedChildren, buildFormOutput, buildVariables } from "components/blocks/helpers/blocks"
@@ -9,7 +10,7 @@ import { actionsParser } from "components/blocks/helpers/actions"
 interface Props {
   attrs: any;
 }
-const Form: React.FC<Props> = ({ attrs, children }) => {
+const Form: React.FC<Props> = memo(({ attrs, children }) => {
   const blocks = useBlocks((state) => state.blocks);
   const setBlockAttrs = useBlocks((state) => state.setBlockAttrs);
   const addForm = useForms((state) => state.addForm);
@@ -65,5 +66,5 @@ const Form: React.FC<Props> = ({ attrs, children }) => {
       {children}
     </form>
   );
-};
+});
 export default Form;

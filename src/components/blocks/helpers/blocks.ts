@@ -89,3 +89,14 @@ export const buildVariables = (variables) => {
   }
   return out
 }
+
+export const shortcode = (key, attrs, dataPart) => {
+    const map = (attr) => {
+      for (const i in attrs?.shortcodes[key]) {
+        attr = attr.replaceAll('${'+attrs?.shortcodes[key][i]+'}', get(dataPart, attrs?.shortcodes[key][i]))
+      }
+      return attr
+    }
+    return (attrs?.shortcodes?.[key] && attrs.queryIndex) 
+      ? map(attrs[key]) : attrs[key]
+  }

@@ -54,7 +54,7 @@ const useBlocks = create((set) => ({
   //       }
   //     })
   // ),
-    
+
   setBlockAttrs: (_in) =>
     set(
       produce((_) => {
@@ -76,6 +76,31 @@ const useBlocks = create((set) => ({
       produce((_) => {
         const i = _.blocks.findIndex(el => el.id === _in);
         _.blocks.splice(i, 1);
+      })
+    ),
+  /* _in mode:up, mode:down, parentId, from */
+  swapBlocks:(_in) =>
+    set(
+      produce((_) => {
+        const direction = _in.mode === 'up' ? -1 : 1;
+        const block = _.blocks.find((x) => x.id === _.selectedBlockId);
+        const sliblings = _.blocks.filter(el => el.parentId === block.parentId)
+        for (const i in sliblings) {
+          if(sliblings[i].id === _.selectedBlockId){
+            if(_in.mode === 'up'){
+              if(parseInt(i) > 0){
+                const j = _.blocks.findIndex((x) => x.id === _.selectedBlockId);
+                _.blocks[j] = _.blocks.splice(j+direction, 1, _.blocks[j])[0];
+              }
+            } 
+            if(_in.mode === 'down'){
+              if(parseInt(i) < sliblings.length-1){
+                const j = _.blocks.findIndex((x) => x.id === _.selectedBlockId);
+                _.blocks[j] = _.blocks.splice(j+direction, 1, _.blocks[j])[0];
+              }
+            } 
+          }
+        }
       })
     ),
   addQueryIndex: (_in) =>

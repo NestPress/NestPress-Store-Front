@@ -17,6 +17,7 @@ export const BlockControlls: React.FC = () => {
   const blocks = useBlocks((state) => state.blocks);
   const block = () => blocks.find((x) => x.id === selectedBlockId);
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
+  const swapBlocks = useBlocks((state) => state.swapBlocks)
   const setBlockAttrs = useBlocks((state) => state.setBlockAttrs);
   const replace = useBlocks((state) => state.replace);
   const removeBlock = useBlocks((state) => state.removeBlock);
@@ -52,15 +53,13 @@ export const BlockControlls: React.FC = () => {
       
       /* -------------------------- */
       /* build paths to shortcodes */
+
       if(typeof res.value === 'string'){
         const matches = res.value.match(/(?<=\$\{).+?(?=\})/g);
         if(matches?.length > 0){
-          console.log('start update string with match', res.key, copy)
-          copy['shortcodes'].indexOf(res.key) === -1 ? copy['shortcodes'].push(res.key) : null
+          copy['shortcodes'][res.key] = matches
         }else{
-          console.log('start update string without match', res.key, copy)
-          var index = copy['shortcodes'].indexOf(res.key)
-          copy['shortcodes'].splice(index, 1);
+          copy['shortcodes']?.[res.key] ? delete copy['shortcodes'][res.key] : null
         }
       }
       /* TODO - for queries variables */
@@ -68,7 +67,6 @@ export const BlockControlls: React.FC = () => {
         console.log('start update object', res.key, res.value, copy)
       }
       /* -------------------------- */
-
       updateBlock({ 
         variables: {
           id: refBlock.id,
@@ -88,6 +86,8 @@ export const BlockControlls: React.FC = () => {
         //}
       });
     }
+
+
 
   return (
     <div style={{height:"100vh", overflowX:"scroll"}}>
@@ -197,7 +197,7 @@ export const BlockControlls: React.FC = () => {
 
           <button
             className={buttonClass}
-            // onClick={(e) => useBlocks.setState({ panel: "insertNext" })}
+            onClick={(e) => swapBlocks({mode:'up'})}
           >
             <FiArrowUp />
             <span className="ml-2">Move up</span>
@@ -205,7 +205,7 @@ export const BlockControlls: React.FC = () => {
 
           <button
             className={buttonClass}
-            // onClick={(e) => useBlocks.setState({ panel: "insertNext" })}
+           onClick={(e) => swapBlocks({mode:'down'})}
           >
             <FiArrowDown />
             <span className="ml-2">Move down</span>

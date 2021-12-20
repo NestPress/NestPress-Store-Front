@@ -69,7 +69,6 @@ const ComposerPage: React.FC = () => {
       }
     },
     onCompleted(data) {
-      console.log('data',slugPath[1], data)
       data.getBlocks.list.length 
       ? useBlocks.setState({ blocks: prepareBlocks(data.getBlocks.list) })
       : null    

@@ -58,7 +58,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
               handler:"",
               classes: "",
               /* tech attr to storege avilable ${} codes */ 
-              shortcodes: []
+              shortcodes: {}
             },
           })
         }
@@ -78,7 +78,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
               text: "Example title",
               classes: "",
               /* tech attr to storege avilable ${} codes */ 
-              shortcodes: []
+              shortcodes: {}
             },
           })
         }
@@ -98,7 +98,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
               text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
               classes: "",
               /* tech attr to storege avilable ${} codes */ 
-              shortcodes: []
+              shortcodes: {}
             },
           })
         }
@@ -123,7 +123,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
               alt:"",
               classes: "",
               /* tech attr to storege avilable ${} codes */ 
-              shortcodes: []
+              shortcodes: {}
             },
           })
         }
