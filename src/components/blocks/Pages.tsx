@@ -23,6 +23,12 @@ export const Pages: React.FC = () => {
   const message = useBlocks((state) => state.message);
   const messageType = useBlocks((state) => state.messageType);
 
+   const form = {
+    title: "",
+    slug: "",
+    postType:slugPath[0]
+  };
+
   const { loading, error, data, refetch } = useQuery(FILTER_POSTS,{
     variables: { 
       filter:{
@@ -39,36 +45,29 @@ export const Pages: React.FC = () => {
   /* mutation */
   const [addNewPost, { addNewPostData, addNewPostLoading, addNewPostError }] = useMutation(CREATE_POST, {
     onCompleted(addNewPostData) {
-      addNewBlock({ variables: {
-        input:{
-          id: uuidv4(),
-          parentId: 0,
-          block: "layout/Grid",
-          post: addNewPostData.createPost.slug,
-          attrs: {
-              columns: "",
-              colspan: "",
-              rowspan: "",
-              background: "",
-              border: ""
-          }
-        }
-      }});
-      console.log(addNewPostData.createPost.slug)
+
+      useBlocks.setState({ message: ''})
+      useBlocks.setState({ composerTab: "page" });
+      refetch()
+      router.replace(`${addNewPostData.createPost.postType}/${addNewPostData.createPost.slug}`);
+      
     }, 
+    update: (cache) => {
+      cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
+    },
   });
   const [addNewBlock, { addNewBlockData, addNewBlockLoading, addNewBlockError }] = useMutation(CREATE_BLOCK, {
     onCompleted(addNewBlockData) {
       console.log('created', addNewBlockData)
     }, 
+    update: (cache) => {
+      cache.evict({ id: "ROOT_QUERY", fieldName: "getBlocks" });
+    },
   });
 
 
 
-  const form = {
-    slug: "",
-    postType:slugPath[0]
-  };
+ 
 
   const buttonClass =
     " bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500";
@@ -101,6 +100,7 @@ export const Pages: React.FC = () => {
           <option selected={slugPath[0]==="Event"} defautValue="Event">Event</option>
           <option selected={slugPath[0]==="Facet"} defautValue="Facet">Facet</option>
           <option selected={slugPath[0]==="Meta"} defautValue="Meta">Meta</option>
+          <option selected={slugPath[0]==="Reusable"} defautValue="Reusable">Reusable</option>
         </select>
       </label>
 
@@ -129,7 +129,10 @@ export const Pages: React.FC = () => {
           className="w-full p-2 border text-indigo-900 mb-1"
           placeholder="Insert unique slug name"
           defaultValue={form.slug}
-          onChange={(e) => (form.slug = slugify(e.target.value))}
+          onChange={(e) => {
+            form.title = e.target.value;
+            form.slug = slugify(e.target.value)
+          }}
         />
         <button
           onClick={(e) => {
@@ -141,21 +144,25 @@ export const Pages: React.FC = () => {
                 return false
             }
 
+            if(!form.title){
+                useBlocks.setState({ message: 'Created object should have title!'})
+                useBlocks.setState({ messageType: 'Error'})
+                return false
+            }
 
-            useBlocks.setState({ message: ''})
-            router.replace(`${form.postType}/${form.slug}`);
-            useBlocks.setState({ composerTab: "page" });
 
-            // addNewPost({ variables: {input:form}}).catch(error => {
-            //   if (error.networkError) {
-            //     getNetworkErrors(error).then(console.log)
-            //   } else {
-            //     console.log(error.message)
-            //   }
-            // });
-            // refetch()
-            // router.replace(slugify(form.target));
-            // useBlocks.setState({ composerTab: "page" });
+            
+    
+
+            addNewPost({ variables: {input:form}}).catch(error => {
+              if (error.networkError) {
+                getNetworkErrors(error).then(console.log)
+              } else {
+                console.log(error.message)
+              }
+            });
+            
+            
           }}
           className={buttonClass}
         >

@@ -2,7 +2,7 @@
 // @ts-ignore
 // @ts-nocheck
 // export const uid = () => (Math.floor(Math.random() * 9999) * 100000000 + new Date().getTime()).toString(36);
-
+import { v4 as uuidv4 } from 'uuid';
 export const slugify = (string: string) => {
   return string
     .toString()
@@ -100,3 +100,11 @@ export const shortcode = (key, attrs, dataPart) => {
     return (attrs?.shortcodes?.[key] && attrs.queryIndex) 
       ? map(attrs[key]) : attrs[key]
   }
+
+export const prepareBlocksToClone = (blocks) => {
+  var text = JSON.stringify(blocks)
+  blocks.map(el=>{
+    text = text.replaceAll(el.id, uuidv4())
+  })
+  return JSON.parse(text);
+} 

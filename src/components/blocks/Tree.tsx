@@ -4,7 +4,8 @@
 
 import dynamic from "next/dynamic";
 import { useBlocks, useQueries } from "store/blocksStore";
-
+import { UPDATE_BLOCK } from "components/blocks/gql/composer"
+import { useMutation } from '@apollo/client';
 
 /* TODO fix type */
 // @ts-ignore: Unreachable code error
@@ -21,6 +22,18 @@ export const Tree: React.FC<Props> =
     const setBlockParentId = useBlocks((state) => state.setBlockParentId);
     const components = useBlocks((state) => state.components);
     const setComponent = useBlocks((state) => state.setComponent);
+    const block = () => blocks.find((x) => x.id === selectedBlockId);
+
+    /* mutation */
+    const [updateBlock, { data, loading, error }] = useMutation(UPDATE_BLOCK, {
+      onCompleted(data) {
+          // console.log('insert block', data.createBlock)
+          // addBlock(data.createBlock);
+      }, 
+      update: (cache) => {
+        cache.evict({ id: "ROOT_QUERY", fieldName: "getBlocks" });
+      },
+    });
 
     return (
       <>
@@ -68,13 +81,34 @@ export const Tree: React.FC<Props> =
                 onClick={(e) => {
                   e.stopPropagation();
                   if(!item.cloneIndex){
+                    
                     if (!replace) {
                       setBlock(item.id);
                       useBlocks.setState({ panel: "block", composerTab: null });
                     } else {
+                      
+                      // Replace block/s after selected
                       if (selectedBlockId === item.id) {
                         alert("You set this same block, select another");
                       } else {
+                        console.log('item', item, block())
+
+                        updateBlock({ 
+                          variables: {
+                            id: block().id,
+                            input:{
+                              id: block().id,
+                              post: block().post,
+                              parentId: item.id,
+                              order:block().order,
+                              block: block().block,
+                              attrs:block().attrs
+                            }
+                          }
+                        }).catch(error => {
+                            console.log(error.message)
+                        });
+
                         useBlocks.setState({ panel: "block", composerTab: null });
                         setBlockParentId({
                           parent: item.id,

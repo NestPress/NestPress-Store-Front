@@ -17,6 +17,19 @@ export const CREATE_BLOCK = gql`
     }
   }
 `
+export const CREATE_BLOCKS = gql`
+  mutation createBlocks(
+    $input: CreateBlocksInput!
+  ){
+    createBlocks(
+      input: $input
+    ){
+      id
+    }
+  }
+`
+
+
 export const UPDATE_BLOCK = gql`
   mutation updateBlock(
       $id: String!

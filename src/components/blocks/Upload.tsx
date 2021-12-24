@@ -3,13 +3,16 @@
 // @ts-nocheck
 import { useState } from 'react';
 
-export const Upload: React.FC = () => {
+interface Props {
+  res: any
+}
+
+export const Upload: React.FC = ({ res }) => {
   const [selectedFile, setSelectedFile] = useState();
   const [isFilePicked, setIsFilePicked] = useState(false);
 
   const handleFileLoad = (event) => {
-    console.log(event);
-   
+    setIsFilePicked(event.target.result);
   }
 
   const changeHandler = (event) => {
@@ -17,11 +20,11 @@ export const Upload: React.FC = () => {
     const reader = new FileReader()
     reader.onload = handleFileLoad;
     reader.readAsText(event.target.files[0])
-    // setIsFilePicked(true);
   };
 
   const handleSubmission = () => {
-    console.log('jo', isFilePicked, selectedFile)
+    // console.log('jo upload', isFilePicked, selectedFile)
+    res(isFilePicked, selectedFile)
   };
 
   const buttonClass =

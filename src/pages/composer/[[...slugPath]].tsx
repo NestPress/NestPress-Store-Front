@@ -6,9 +6,9 @@ import { Composer, Tree, BlocksPocket } from "components/blocks";
 import { useBlocks, useForms } from "store";
 import { useRouter } from "next/router";
 import { useEffect , useRef } from "react";
-import { getNestedChildren } from 'components/blocks/helpers/blocks'
+import { getNestedChildren, prepareBlocksToClone } from 'components/blocks/helpers/blocks'
 import { gql, useQuery, useMutation} from '@apollo/client';
-import { GET_BLOCKS } from "components/blocks/gql/composer"
+import { GET_BLOCKS, CREATE_BLOCKS } from "components/blocks/gql/composer"
 
 
 const ComposerPage: React.FC = () => {
@@ -29,27 +29,45 @@ const ComposerPage: React.FC = () => {
 
   useForms.setState({ pageData: {slugPath : slugPath} })
 
-
   const keysHandler = (e) => { 
-      
+    if(document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA"){
       const key = e.which || e.keyCode, ctrl = e.ctrlKey ? e.ctrlKey : ((key === 17)
-          ? true : false);
-      if (key == 86 && ctrl) { // V
-          // if(selectedBlockId){
-          //   const text = JSON.stringify(copiedBlocks)
-          //   copiedBlocks.map(el=>{
-          //     text = text.replaceAll(el.id, uuidv4())
-          //   })
-          //   const toPaste = JSON.parse(text);
-          //   toPaste[0].parentId = selectedBlockId;
-          //   toPaste.map( (el) => { addBlock(el) } )
-          // }
+        ? true : false);
+      if (key == 86 && ctrl) { // CTRL + V
+        if(selectedBlockId){
+          const toPaste = prepareBlocksToClone(copiedBlocks)
+          toPaste[0].parentId = selectedBlockId;
+          toPaste.map( (el) => { addBlock(el) } )
+
+          const order = toPaste[0].order;
+          const blocksToSave = toPaste.map(el=>{return{
+            id: el.id,
+            parentId: el.parentId,
+            attrs: el.attrs,
+            block: el.block,
+            post: slugPath[1],
+            order:order++
+          }})
+          addNewBlocks({variables:{input:{blocks:blocksToSave}}})
+
+        }
       }
-      else if (key == 67 && ctrl) { // C
+      else if (key == 67 && ctrl) { // CTRL + C
         const parsedEls = getNestedChildren(blocks, selectedBlockId, true) 
         useBlocks.setState({ copiedBlocks: parsedEls })
+      }
     }
   }
+
+  /* mutation */
+  const [addNewBlocks, { addNewBlocksData, addNewBlocksLoading, addNewBlocksError }] = useMutation(CREATE_BLOCKS, {
+    onCompleted(addNewPostData) { 
+      
+    }, 
+    update: (cache) => {
+      cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
+    },
+  });
 
   const { loading, error, data, refetch } = useQuery(GET_BLOCKS,{
     variables: { 
