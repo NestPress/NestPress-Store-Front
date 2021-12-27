@@ -58,7 +58,6 @@ export const NavBlocks: React.FC = ({type}) => {
             attrs: {
               title: "Example link",
               to: "/",
-              asButton: false,
               classes: ""
             },
           })
@@ -73,11 +72,12 @@ export const NavBlocks: React.FC = ({type}) => {
         onClick={(e) =>
           teachSetBlock({
             ...prefix,
-            block: "form/InputField",
+            block: "nav/NavButton",
             post: slugPath[1],
             order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
-              text: "Example title",
+              title: "Example button",
+              to: "/",
               classes: ""
             },
           })

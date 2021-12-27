@@ -1,3 +1,6 @@
+/* TODO fix type */
+// @ts-ignore
+// @ts-nocheck
 // import { useBlocks } from "store/blocksStore";
 // import { BlockControlls, InsertBlock, MainPanel } from "components/blocks";
 import { useBlocks } from "store/blocksStore";
@@ -10,8 +13,13 @@ export const BlocksPocket: React.FC = () => {
   const itemClass = 'text-xs p-1.5 border-b hover:bg-gray-100 grid grid-cols-10 gap-1'
 
   return (
-    <div className="fixed h-screen shadow border-r border-gray-300 top-0 left-0 w-60 bg-white cursor-pointer">
+    <div className="fixed overflow-y-scroll h-screen shadow border-r border-gray-300 top-0 left-0 w-72 bg-white cursor-pointer">
+
       <div className="p-2.5 text-gray-500 border-b">Flatten blocks list</div>
+      <div className="text-gray-500 border-b flex text-xs">
+        <div className="flex-1 text-center p-2.5 border-r border-t bg-gray-50">Blocks</div>
+        <div className="flex-1 text-center p-2.5">Pages</div>
+      </div>
       {blocks.map(el => <div 
         onClick={e=>{
           useBlocks.setState({ selectedBlockId: el.id });

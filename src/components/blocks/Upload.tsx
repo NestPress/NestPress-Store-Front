@@ -10,6 +10,7 @@ interface Props {
 export const Upload: React.FC = ({ res }) => {
   const [selectedFile, setSelectedFile] = useState();
   const [isFilePicked, setIsFilePicked] = useState(false);
+  const [fileLocalUrl, setFileLocalUrl] = useState(null);
 
   const handleFileLoad = (event) => {
     setIsFilePicked(event.target.result);
@@ -20,10 +21,12 @@ export const Upload: React.FC = ({ res }) => {
     const reader = new FileReader()
     reader.onload = handleFileLoad;
     reader.readAsText(event.target.files[0])
+
+    setFileLocalUrl(URL.createObjectURL(event.target.files[0]));
+
   };
 
   const handleSubmission = () => {
-    // console.log('jo upload', isFilePicked, selectedFile)
     res(isFilePicked, selectedFile)
   };
 
@@ -32,7 +35,8 @@ export const Upload: React.FC = ({ res }) => {
   const buttonDeleteClass =
     " bg-red-400 w-full p-2 rounded mt-1 text-white hover:bg-red-500 flex items-center";
 
-  const fileInput={}
+  const fileInput = {}
+
   return(
    <div>
       <input ref={ref=> fileInput = ref} className="text-xs p-2 w-full" type="file" name="file" onChange={changeHandler} />
@@ -48,12 +52,17 @@ export const Upload: React.FC = ({ res }) => {
             </p>
             <p>Select a file to show details</p>
           </div>
-          
+          { (fileLocalUrl && selectedFile?.type === 'image/png') && <img src={fileLocalUrl} style={{width:'100%', height:"auto"}}/>}
         </>
       }
       <div className="border-b px-2 pb-2 grid grid-cols-2 gap-1">
         <button className={buttonClass} onClick={handleSubmission}>Submit file</button>
-        <button className={buttonDeleteClass} onClick={()=>{fileInput.value = ""; setSelectedFile(false) }}>Clear</button>
+        <button className={buttonDeleteClass} onClick={()=>{
+          fileInput.value = ""; 
+          setSelectedFile(false) 
+          setIsFilePicked(false)
+          setFileLocalUrl(null)
+        }}>Clear</button>
       </div>
     </div>
   )

@@ -122,6 +122,8 @@ export const FormBlocks: React.FC = ({type}) => {
             attrs: {
               label: "Example label",
               outputValue: "data.select_value",
+              placeholder: "Example placeholder",
+              options:[],
               classes: ""
             },
           })

@@ -23,6 +23,9 @@ export const Page: React.FC = () => {
     " bg-red-400 w-full p-2 rounded mt-1 text-white hover:bg-red-500";
   const messagClass = (messageType === 'success') ? 'bg-green-100' : 'bg-yellow-100'
 
+
+  
+
   /* Data loader localstorage */
   const { queryLoading, queryError, data, refetch } = useQuery(GET_POST_BY_SLUG, {
     variables: { 
@@ -33,12 +36,25 @@ export const Page: React.FC = () => {
     }
   });
 
+
+  const currentPage = Object.assign({
+    slug:slugPath[1],
+    postType:slugPath[0],
+    title: slugPath[0] === 'Layout' ? `${slugPath[1]}` : ''
+  }, data?.getPostBySlug || {});
+
+
   /* mutation */
   const [addNewPost, { addNewPostData, addNewPostLoading, addNewPostError }] = useMutation(CREATE_POST, {
     onCompleted(addNewPostData) {
       useBlocks.setState({ 
           blocks: []
       })
+      currentPage.id = addNewPostData.createPost.id
+      currentPage.slug = addNewPostData.createPost.slug
+      currentPage.postType = addNewPostData.createPost.postType
+      currentPage.title = addNewPostData.createPost.title
+      router.push(`${slugPath[0]}/${slugPath[1]}/${Math.floor(Math.random() * 9999)}`)
     }, 
     update: (cache) => {
       cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
@@ -50,7 +66,7 @@ export const Page: React.FC = () => {
         console.log('update post', updatePost)
         useBlocks.setState({ message: `Object updated!`})
         useBlocks.setState({ messageType: 'success'})
-        refetch()
+        router.push(`${slugPath[0]}/${slugPath[1]}/${Math.floor(Math.random() * 9999)}`)
     }, 
     update: (cache) => {
       cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
@@ -84,11 +100,7 @@ export const Page: React.FC = () => {
     }, 
   });
 
-  const currentPage = Object.assign({
-    slug:slugPath[1],
-    postType:slugPath[0],
-    title: slugPath[0] === 'Layout' ? `${slugPath[1]}` : ''
-  }, data?.getPostBySlug || {});
+  
 
 
 
@@ -105,7 +117,8 @@ export const Page: React.FC = () => {
         </div>
 
         {!currentPage.id && slugPath[1] && <div className="text-xs px-4 py-2 border-b flex items-top gap-1 border-t border-b bg-yellow-100">
-          <div className="w-3 mt-0.5"><FiFile/></div> <span>Page {slugPath[1]} is now on predraft mode, and not submitted yet.</span>     
+          <div className="w-3 mt-0.5"><FiFile/></div> 
+          <span>Page {slugPath[1]} is now on predraft mode, and not submitted yet. Insert page title and submit to finished page creation</span>     
         </div> }
 
         { message && <div className={`text-xs px-4 py-2 border-b flex items-top gap-1 ${messagClass}`}>

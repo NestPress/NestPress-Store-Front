@@ -46,9 +46,13 @@ export const Settings: React.FC = () => {
         </div>
 
         <Upload res={(content,file)=>{
-          const res = JSON.parse(content);
-          router.push(`/composer/${res['postType']}/${res['slug']}`)
-          // console.log(JSON.parse(content),file)
+          if(content){
+            const res = JSON.parse(content);
+            router.push(`/composer/${res['postType']}/${res['slug']}`)
+            console.log(JSON.parse(content),file)
+          }else{
+            alert('select file')
+          }
         }}/>
 
       </div>

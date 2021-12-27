@@ -19,7 +19,7 @@ interface Props {
   // value?: string;
   // options?: any;
 
-const SelectField: React.FC<Props> = ({attrs}) => {
+const SelectField: React.FC<Props> = ({attrs, children}) => {
   const blocks = useBlocks((state) => state.blocks);
   const updateForm = useForms((state) => state.updateForm);
   const ref = findOutByBlock(blocks, attrs.id, 'form/Form').attrs.refName
@@ -27,7 +27,7 @@ const SelectField: React.FC<Props> = ({attrs}) => {
   const [active, setActive] = useState(false);
   const [activeValue, setActiveValue] = useState(attrs.value);
   return (
-    <>
+    <div className="block">
       {active ? (
         <div
           onClick={() => {
@@ -62,7 +62,7 @@ const SelectField: React.FC<Props> = ({attrs}) => {
         {/* options*/}
         {active ? (
           <ul className="w-full md:w-auto absolute text-left bg-white mt-1 rounded-sm flex flex-col right-0 cursor-pointer z-10">
-            {attrs.options &&
+            {attrs.options.length &&
               attrs.options.map((el: categoryType) => {
                 return (
                   <li
@@ -80,7 +80,8 @@ const SelectField: React.FC<Props> = ({attrs}) => {
           </ul>
         ) : null}
       </div>
-    </>
+      {children}
+    </div>
   );
 };
 export default SelectField;

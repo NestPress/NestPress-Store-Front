@@ -6,11 +6,14 @@ import { gql, useMutation } from "@apollo/client";
 import { useBlocks, useForms, getForm, useActions } from "store";
 import { getNestedChildren, buildFormOutput, buildVariables } from "components/blocks/helpers/blocks"
 import { actionsParser } from "components/blocks/helpers/actions"
+import { useRouter } from 'next/router'
 
 interface Props {
   attrs: any;
 }
 const Form: React.FC<Props> = memo(({ attrs, children }) => {
+  
+  const router = useRouter()
   const blocks = useBlocks((state) => state.blocks);
   const setBlockAttrs = useBlocks((state) => state.setBlockAttrs);
   const addForm = useForms((state) => state.addForm);
@@ -28,7 +31,7 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
       const MUTATION = attrs.mutation ? gql`${attrs.mutation}` : ``;
       const [formMutation, { data, loading, error }] = useMutation(MUTATION, {
           onCompleted(data) {
-            attrs.successActions ? actionsParser(attrs.successActions, getForm({ref:attrs.refName}), blocks, setBlockAttrs) : null
+            attrs.successActions ? actionsParser(attrs.successActions, getForm({ref:attrs.refName}), blocks, setBlockAttrs, router) : null
             
             // set results to actions store (this is unless)
             addAction({type:'success', key:"submitFormCompleted", value:data})
@@ -44,7 +47,7 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
 
   return (
     <form
-      className={attrs.classes}
+      className={`block ${attrs.classes}`}
       onSubmit={(e) => {
         e.preventDefault();
         
@@ -52,7 +55,7 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
         addAction({type:'success', key:"submitFormStart", value:{ref:attrs.refName, data: getForm({ref:attrs.refName}) }})
         
         // always success if mutation is undefined
-        !attrs.mutation && attrs.successActions ? actionsParser(attrs.successActions, getForm({ref:attrs.refName}), blocks, setBlockAttrs) : null
+        !attrs.mutation && attrs.successActions ? actionsParser(attrs.successActions, getForm({ref:attrs.refName}), blocks, setBlockAttrs, router) : null
         
         try {
           if(attrs.mutation){

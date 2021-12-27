@@ -78,15 +78,11 @@ const ComposerPage: React.FC = () => {
         }
       }
     },
-    onCompleted(data) {
-      console.log('ONCOMPLETE BLOCKS LOADING',data.getBlocks.list)
-      
+    onCompleted(data) {      
         useBlocks.setState({blocks: []});
         useBlocks.setState({ 
           blocks: data.getBlocks.list.map(el => el.parentId === "0" ? {...el, parentId:0} : el) 
         })}
-      
-    
   });
 
 
@@ -96,9 +92,15 @@ const ComposerPage: React.FC = () => {
     (
       <div tabIndex="0" onKeyDown={keysHandler}>
         {blocksPocket && <BlocksPocket />}
-        <div style={{ marginRight: "20rem", marginLeft: blocksPocket ? "15rem" : null }}>
+        <div style={{ 
 
-         
+          minHeight: '100vh',
+          background:`url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAK0lEQVQoU2NkYGCQYmBgeMaAACh8RiQJrEzqKEB3gzEDA8NZmH3UsQKvRwDfzgQJzDH7IgAAAABJRU5ErkJggg==) repeat`,
+          marginRight: "20rem", 
+          marginLeft: blocksPocket ? "18rem" : null }}>
+
+
+
 
           <div className="font-bold text-base text-gray-500 border-b border-gray-300 bg-white mb-0.5 flex items-center">
             <div
@@ -109,12 +111,13 @@ const ComposerPage: React.FC = () => {
             <div onClick={e=>router.push(`/${slugPath[0]}/${slugPath[1]}`)} className="flex flex-1 items-center hover:bg-gray-100 p-2.5 cursor-pointer ">
               <FiFile/>
               <div key={router.asPath} className="ml-1 flex-1">{slugPath[1]}</div>
+              <div className="flex items-center text-xs font-normal text-blue-400"><FiChevronLeft/><span>Back to page view</span></div>
             </div>
           </div>
 
           
           
-          <div className="pr-px">
+          <div className="p-2">
             { blocks.length > 0 && slugPath.length > 1 ? <Tree blocks={blocks} queryIndex={queryIndex} /> : null }
           </div>
         </div>

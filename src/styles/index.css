@@ -30,3 +30,23 @@ html {
   @apply text-gray-700;
 }
 
+.block{
+  position: relative;
+  min-height: 20px;
+  min-width: 20px;
+  outline: 1px dotted #00000010;
+ /* border-left: 22px solid #ffffff11;*/
+}
+.block:hover{
+  outline: 1px solid #00000040;
+}
+.block-edit-handler{
+  visibility: hidden;
+}
+.block:hover > .block-edit-handler{
+  visibility: visible;
+}
+
+
+
+

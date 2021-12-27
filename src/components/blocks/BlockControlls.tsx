@@ -143,7 +143,12 @@ export const BlockControlls: React.FC = () => {
                 <ImgObjectFit key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
               )}
 
-              {(key === "variables" || key === "consts" || key === "errorActions" || key === "successActions") && (
+              {(
+                key === "variables" || 
+                key === "options" || 
+                key === "consts" || 
+                key === "errorActions" || 
+                key === "successActions") && (
                 <KeyValueField key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
               )}
 
@@ -163,6 +168,7 @@ export const BlockControlls: React.FC = () => {
                 key !== "height" &&
                 key !== "classes" &&
                 key !== "query" &&
+                key !== "options" &&
                 key !== "variables" &&
                 key !== "consts" &&
                 key !== "errorActions" &&

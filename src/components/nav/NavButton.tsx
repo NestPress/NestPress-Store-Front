@@ -2,14 +2,14 @@ import Link from "next/link";
 interface Props {
   attrs: any;
 }
-const NavLink: React.FC<Props> = ({ attrs, children }) => {
+const NavButton: React.FC<Props> = ({ attrs, children }) => {
   return (
     <Link href={attrs.to}>
-      <a className={`block items-center hover:underline ${attrs.classes}`}>
+      <a className={`block border px-4 py-2 rounded items-center bg-white hover:underline ${attrs.classes}`}>
         {attrs.title ? <span>{attrs.title}</span> : null}
         {children}
       </a>
     </Link>
   );
 };
-export default NavLink;
+export default NavButton;

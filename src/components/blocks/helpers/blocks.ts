@@ -38,11 +38,12 @@ export const getNestedChildren = (arr: any, parent: string, withFirst: boolean) 
 */
 export const findOutByBlock:any = (regBlocks:any, currentId:number, blockName:string) => {
     const block:any = regBlocks.find(el => el.id === currentId)
-    if(block.block === blockName){
-      return block 
+    if(block.parentId == 0){
+      return false
     }else{
-      return findOutByBlock(regBlocks, block.parentId, blockName)
+      return block.block === blockName ? block : findOutByBlock(regBlocks, block.parentId, blockName) 
     }
+    
   }
 
 /* 
@@ -71,7 +72,7 @@ export const get = (obj, path) => {
 };
 
 /* 
-  build form output object
+  Build form output object
 */
 export const buildFormOutput = (blocks) => {
   const out = {}
@@ -81,7 +82,9 @@ export const buildFormOutput = (blocks) => {
   return out
 }
 
-/* Build variables */
+/* 
+  Build variables 
+*/
 export const buildVariables = (variables) => {
   const out = {}
   for (const [key, value] of Object.entries(variables)) {
@@ -90,6 +93,13 @@ export const buildVariables = (variables) => {
   return out
 }
 
+
+
+/* 
+  Parse component attrs with shortcodes
+  required defined attrs?.shortcodes schema
+  example: shortcode('text', attrs, queries) 
+*/
 export const shortcode = (key, attrs, dataPart) => {
     const map = (attr) => {
       for (const i in attrs?.shortcodes[key]) {
@@ -101,6 +111,10 @@ export const shortcode = (key, attrs, dataPart) => {
       ? map(attrs[key]) : attrs[key]
   }
 
+
+/* 
+  Get blocks and change ids to unique
+*/
 export const prepareBlocksToClone = (blocks) => {
   var text = JSON.stringify(blocks)
   blocks.map(el=>{

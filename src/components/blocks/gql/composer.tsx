@@ -78,6 +78,17 @@ export const DELETE_BLOCK = gql`
     )
   }
 `
+export const DELETE_BLOCKS = gql`
+  mutation deleteBlocks(
+    $input: DeleteBlocksInput!
+  ){
+    deleteBlocks(
+      input: $input
+    ){
+      id
+    }
+  }
+`
 // --------------------------------------
 // input.slug
 // input.postType

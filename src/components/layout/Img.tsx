@@ -25,20 +25,22 @@ const Img: React.FC<Props> = memo(({ attrs }) => {
 
 
   return (
-    <Image 
-	    className={`
-	      ${attrs.colspan ? colspan[attrs.colspan] : null} 
-	      ${attrs.rowspan ? rowspan[attrs.rowspan] : null} 
-	      ${attrs.border ? attrs.border : null} 
-	      ${attrs.rounded ? attrs.rounded : null} 
-	    `}
-      
-    	layout={attrs.imglayout ? attrs.imglayout : "fill"}
-    	objectFit={attrs.objectfit}
-      width={attrs.width ? attrs.width : 0}
-      height={attrs.height ? attrs.height : 0}
-    	src={ attrs.image || '/empty-person.svg' } 
-    	alt={ attrs.alt } />
+    <div>
+      <Image 
+  	    className={`
+  	      ${attrs.colspan ? colspan[attrs.colspan] : null} 
+  	      ${attrs.rowspan ? rowspan[attrs.rowspan] : null} 
+  	      ${attrs.border ? attrs.border : null} 
+  	      ${attrs.rounded ? attrs.rounded : null} 
+  	    `}
+        
+      	layout={attrs.imglayout ? attrs.imglayout : "fill"}
+      	objectFit={attrs.objectfit}
+        width={attrs.width ? attrs.width : 0}
+        height={attrs.height ? attrs.height : 0}
+      	src={ attrs.image || '/empty-person.svg' } 
+      	alt={ attrs.alt } />
+    </div>
   );
 });
 export default Img;

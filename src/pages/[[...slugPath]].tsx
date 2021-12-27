@@ -38,13 +38,12 @@ const ComposerPage: React.FC = () => {
       } 
       i++
     }
-
     // Second iterator
     const j = 0, len_j = list.length;
     while (j < len_j) {
       if(list[j]?.attrs?.handler){
         const blockIndex = handlersBlocks[slugPath[1]].i
-        outBlocks[blockIndex].parentId =  list[j].id
+        outBlocks[blockIndex].parentId = list[j].id
       }
       j++
     }

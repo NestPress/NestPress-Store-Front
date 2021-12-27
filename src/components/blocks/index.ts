@@ -13,6 +13,7 @@ export * from "./Page";
 export * from "./PureTree";
 export * from "./Composer";
 export * from "./Settings";
+export * from "./Targeter";
 export * from "./Tree";
 export * from "./Upload";
 export * from "./Users";
