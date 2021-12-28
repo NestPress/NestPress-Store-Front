@@ -13,19 +13,17 @@ const ComposerPage: React.FC = () => {
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
   const router = useRouter();
   const slugPath = ["Page","home"];
-  
   if(Object.entries(router.query).length !== 0){
      router.query.slugPath[0] ? slugPath[1] = router.query.slugPath[1] : null
      router.query.slugPath[1] ? slugPath[0] = router.query.slugPath[0] : null
   }
-
+  const layout = `${slugPath[0].toLowerCase()}-layout`
   const blocks = useBlocks((state) => state.blocks) || [];
 
   const prepareBlocks = (list) => {
     
     const outBlocks = []
     const handlersBlocks = {};
-    const layout = `${slugPath[0].toLowerCase()}-layout`
 
     // First iterator
     const i = 0, len_i = list.length;
@@ -49,7 +47,7 @@ const ComposerPage: React.FC = () => {
     }
   return  outBlocks
   }
-
+console.log(layout)
   const { loading, error, data, refetch } = useQuery(GET_BLOCKS,{
     variables: { 
       sort:{order:"asc"},
@@ -61,7 +59,7 @@ const ComposerPage: React.FC = () => {
             // main blocks from router
             slugPath[1],
             // page layout 
-            'page-layout'
+            layout
             // some extra layout
           ]
         }

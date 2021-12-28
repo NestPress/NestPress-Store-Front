@@ -42,6 +42,7 @@ export const Targeter: React.FC<Props> = ({item, level, type}) => {
       ></div>
       {!preview && <><div 
         onClick={(e) => {
+           e.preventDefault();
           e.stopPropagation();
           if(!item.cloneIndex){
             if (!replace) {
@@ -55,26 +56,28 @@ export const Targeter: React.FC<Props> = ({item, level, type}) => {
           fontSize:'12px',
           display:'flex',
           alignItems:'center',
-          justifyContent:'center',
+          justifyContent:'flex-end',
+          textAlign:'right',
+          padding:'5px',
           color:'#fff',
           cursor:'pointer',
           position:'absolute',
-          width:'24px',
+          width:'44px',
           height:'26px',
           borderTop:'1px solid #00000040',
           borderLeft:'1px solid #00000040',
           borderRight:'1px solid #00000040',
-          left:`${level*24}px`,
+          left:`${level*22}px`,
           boxShadow:'0 0 3px #00000020',
           top:'-26px',
           borderRadius: '6px 6px 0 0',
-          backgroundColor: selectedBlockId === item.id ? '#00000090' : '#00000030',
+          backgroundColor: selectedBlockId === item.id ? '#404040' : '#707070',
           // backgroundImage: `url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAMElEQVQYV2NkQADj////z2RkZDRhhIrBBUB8kCCKAFjw////Z0BakI2BaYeJgXUBAB/FFAI+hBjAAAAAAElFTkSuQmCC)`,
           // backgroundRepeat: 'repeat',
         }}>{level}</div>
        {!preview && <div
-        style={{ top: "-18px", right: "3px", zIndex: 1000, background: '#404040' }}
-        className={`absolute text-xs text-white p-1 ${
+        style={{ top: "-18px", right: "3px", zIndex: 1000, background: '#404040', borderRadius:'4px' }}
+        className={`absolute text-xs text-white py-1 px-2 ${
           selectedBlockId == item.id ? "visible" : "invisible"
         }`}
       >

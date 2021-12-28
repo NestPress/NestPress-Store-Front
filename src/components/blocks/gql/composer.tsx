@@ -30,6 +30,7 @@ export const CREATE_BLOCKS = gql`
 `
 
 
+
 export const UPDATE_BLOCK = gql`
   mutation updateBlock(
       $id: String!

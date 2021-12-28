@@ -1,3 +1,6 @@
+// TODO
+// https://www.npmjs.com/package/gql-query-builder
+
 interface Props {
   keyName: string;
   res: any;

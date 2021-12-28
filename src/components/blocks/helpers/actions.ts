@@ -44,6 +44,10 @@
 	key: router.push 
 	value: /Page/home/${this.input1}/${this.input2}
 
+	form change block text
+	key: block.e39f949a-d853-4e70-b9d0-8bb4e27c54cd.changeAttrs.text
+	value: this.input1
+
 
 */
 
