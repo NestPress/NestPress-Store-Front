@@ -24,6 +24,7 @@ const QueryList: React.FC<Props> = memo(({ attrs, children }) => {
       const QUERY = gql `${attrs.query}`
       const res = {
         onCompleted(resData) {
+          console.log('resData',resData)
           /* stated query result */
           addQuery({ref:attrs.refName || attrs.id, data:queryList})
           /* hack to rerender after first loading */
@@ -37,7 +38,7 @@ const QueryList: React.FC<Props> = memo(({ attrs, children }) => {
   } catch (error) { console.error('query:',error) }
   
   return (
-    <div className={attrs.classes}>
+    <div className={`block ${attrs.classes}`}>
       {queryList?.length ? queryList.map((el,i)=><div key={i}>{children}</div>):children}
     </div>
   );

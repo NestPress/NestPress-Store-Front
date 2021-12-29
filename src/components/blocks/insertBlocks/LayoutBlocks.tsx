@@ -18,6 +18,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
   const blocks = useBlocks((state) => state.blocks);
   const block = () => blocks.find((x) => x.id === selectedBlockId);
   const addBlock = useBlocks((state) => state.addBlock);
+  const setBlock = useBlocks((state) => state.setBlock);
   
   /* local consts */
   const router = useRouter()
@@ -34,9 +35,6 @@ export const LayoutBlocks: React.FC = ({type}) => {
       : block()?.id,
   };
 
-  console.log('prefix',parseInt(blocks[blocks.length - 1].order));
-
-  
   const buttonClass =
     "text-sm bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500 flex items-center";  
  
@@ -46,6 +44,8 @@ export const LayoutBlocks: React.FC = ({type}) => {
         const payload = Object.assign({},data.createBlock) 
         payload.parentId === "0" ? payload.parentId = 0 : null
         addBlock(payload);
+        /* set block to active */
+        setBlock(payload.id);
     }, 
     update: (cache) => {
       cache.evict({ id: "ROOT_QUERY", fieldName: "getBlocks" });

@@ -47,7 +47,7 @@ const ComposerPage: React.FC = () => {
     }
   return  outBlocks
   }
-console.log(layout)
+
   const { loading, error, data, refetch } = useQuery(GET_BLOCKS,{
     variables: { 
       sort:{order:"asc"},
@@ -59,8 +59,9 @@ console.log(layout)
             // main blocks from router
             slugPath[1],
             // page layout 
-            layout
+            layout,
             // some extra layout
+            'footer-layout'
           ]
         }
       }

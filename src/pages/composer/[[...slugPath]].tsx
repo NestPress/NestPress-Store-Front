@@ -22,6 +22,7 @@ const ComposerPage: React.FC = () => {
   const slugPath = router.query?.slugPath || ["Page","home"];
   const blocks = useBlocks((state) => state.blocks) || [];
   const addBlock = useBlocks((state) => state.addBlock);
+  const preview = useBlocks((state) => state.preview);
   
   /* workaround sollution to indexing childrens with queryList blocks */
   /* TODO - better method is copying blocks  */
@@ -95,7 +96,7 @@ const ComposerPage: React.FC = () => {
         <div style={{ 
 
           minHeight: '100vh',
-          background:`url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAK0lEQVQoU2NkYGCQYmBgeMaAACh8RiQJrEzqKEB3gzEDA8NZmH3UsQKvRwDfzgQJzDH7IgAAAABJRU5ErkJggg==) repeat`,
+          background: !preview ? `#f9f9f9 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAK0lEQVQoU2NkYGCQYmBgeMaAACh8RiQJrEzqKEB3gzEDA8NZmH3UsQKvRwDfzgQJzDH7IgAAAABJRU5ErkJggg==) repeat` : null,
           marginRight: "20rem", 
           marginLeft: blocksPocket ? "18rem" : null }}>
 

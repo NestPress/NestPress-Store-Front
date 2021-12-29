@@ -21,9 +21,13 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
   const form = getNestedChildren(blocks, attrs.id)
 
 
+
   getForm({ref:attrs.refName}) 
     ? null 
-    : addForm({ref:attrs.refName, data:{...buildFormOutput(form), ...buildVariables(attrs.consts)}})
+    : addForm({
+      ref:attrs.refName, 
+      data:{...buildFormOutput(form), ...buildVariables(attrs.consts)}
+    })
 
   /* mutation */
   try {
@@ -55,12 +59,14 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
         addAction({type:'success', key:"submitFormStart", value:{ref:attrs.refName, data: getForm({ref:attrs.refName}) }})
         
         // always success if mutation is undefined
-        !attrs.mutation && attrs.successActions ? actionsParser(attrs.successActions, getForm({ref:attrs.refName}), blocks, setBlockAttrs, router) : null
-        
+        !attrs.mutation && attrs.successActions ? actionsParser(attrs.successActions, getForm({ref:attrs.refName}), blocks, setBlockAttrs, router) : null        
         try {
           if(attrs.mutation){
-            formMutation({ variables: getForm({ref:attrs.refName})}).catch(error => {
-              addAction({type:'error', key:"submitForm", value:error.message})
+            formMutation({ 
+              variables: getForm({ref:attrs.refName})
+              
+              }).catch(error => {
+                addAction({type:'error', key:"submitForm", value:error.message})
             });
           }
         } catch (error) {}

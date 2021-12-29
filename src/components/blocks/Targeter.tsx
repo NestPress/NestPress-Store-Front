@@ -51,7 +51,7 @@ export const Targeter: React.FC<Props> = ({item, level, type}) => {
             } 
           }
         }}
-        className="block-edit-handler"
+        className={`block-edit-handler ${selectedBlockId == item.id ? "forced-visible" : null}`}
         style={{
           fontSize:'12px',
           display:'flex',
@@ -62,12 +62,13 @@ export const Targeter: React.FC<Props> = ({item, level, type}) => {
           color:'#fff',
           cursor:'pointer',
           position:'absolute',
-          width:'44px',
+          width:'40px',
           height:'26px',
           borderTop:'1px solid #00000040',
           borderLeft:'1px solid #00000040',
           borderRight:'1px solid #00000040',
-          left:`${level*22}px`,
+          left:`${level*14}px`,
+          zIndex:`${level*100}`,
           boxShadow:'0 0 3px #00000020',
           top:'-26px',
           borderRadius: '6px 6px 0 0',

@@ -24,7 +24,11 @@ export const NavBlocks: React.FC = ({type}) => {
   const slugPath = router.query?.slugPath || ["Page", "home"];
   const prefix = {
     id: uuidv4(),
-    parentId: type === "next" ? block()?.parentId : block()?.id,
+    post: slugPath[1],
+    order: parseInt(blocks[blocks.length - 1].order) + 1,
+    parentId: type === "next" 
+      ? block()?.parentId === 0 ? "0" : block()?.parentId 
+      : block()?.id,
   };
   const buttonClass =
     "text-sm bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500 flex items-center";  
@@ -53,12 +57,12 @@ export const NavBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "nav/NavLink",
-            post: slugPath[1],
-            order: blocks[blocks.length - 1].order + 1,
             attrs: {
               title: "Example link",
               to: "/",
-              classes: ""
+              classes: "",
+               /* tech attr to storege avilable ${} codes */ 
+              shortcodes: {}
             },
           })
 
@@ -73,8 +77,6 @@ export const NavBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "nav/NavButton",
-            post: slugPath[1],
-            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               title: "Example button",
               to: "/",
@@ -93,8 +95,6 @@ export const NavBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "form/SubmitButton",
-            post: slugPath[1],
-            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               text: "Submit button",
               classes: ""

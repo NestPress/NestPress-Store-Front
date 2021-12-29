@@ -20,6 +20,7 @@ export const Tree: React.FC<Props> =
     const components = useBlocks((state) => state.components);
     const setComponent = useBlocks((state) => state.setComponent);
     const block = () => blocks.find((x) => x.id === selectedBlockId);
+    const preview = useBlocks((state) => state.preview);
 
     /* mutation */
     const [updateBlock, { data, loading, error }] = useMutation(UPDATE_BLOCK, {
@@ -57,6 +58,9 @@ export const Tree: React.FC<Props> =
               item = {...item, queryIndex: parentItem?.queryIndex, queryRef:parentItem?.queryRef}
             }
 
+            const attrs = Object.assign({},item.attrs)
+            !preview ? attrs.classes = attrs.classes + '  block-editable' : null
+
           }
           return (
             components[item.block] && (
@@ -66,7 +70,10 @@ export const Tree: React.FC<Props> =
                     i:i, 
                     queryIndex: item.queryIndex ? item.queryIndex : null,  
                     queryRef: item.queryRef ? item.queryRef : null,  
-                    ...item.attrs 
+                    // item: { attrs: { classes: 'boder p-2'}},
+                    // ...item.attrs,
+                    ...attrs
+
                   }}
                   key={item.id}
                   item={item}
