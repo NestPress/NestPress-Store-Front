@@ -1,4 +1,5 @@
 export * from "./NumberField";
+export * from "./DataTarget";
 export * from "./TextareaField";
 export * from "./ImgObjectFit";
 export * from "./ImgLayout";

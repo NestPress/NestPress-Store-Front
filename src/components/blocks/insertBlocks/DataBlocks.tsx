@@ -18,13 +18,18 @@ export const DataBlocks: React.FC = ({type}) => {
   const blocks = useBlocks((state) => state.blocks);
   const block = () => blocks.find((x) => x.id === selectedBlockId);
   const addBlock = useBlocks((state) => state.addBlock);
+  const setBlock = useBlocks((state) => state.setBlock);
   
   /* local consts */
   const router = useRouter()
   const slugPath = router.query?.slugPath || ["Page", "home"];
   const prefix = {
     id: uuidv4(),
-    parentId: type === "next" ? block()?.parentId : block()?.id,
+    post: slugPath[1],
+    order: parseInt(blocks[blocks.length - 1].order) + 1,
+    parentId: type === "next" 
+      ? block()?.parentId === 0 ? "0" : block()?.parentId 
+      : block()?.id,
   };
   const buttonClass =
     "text-sm bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500 flex items-center";  
@@ -32,8 +37,12 @@ export const DataBlocks: React.FC = ({type}) => {
   /* mutation */
   const [addNewBlock, { data, loading, error }] = useMutation(CREATE_BLOCK, {
     onCompleted(data) {
-        console.log('insert block', data.createBlock)
-        addBlock(data.createBlock);
+        const payload = Object.assign({},data.createBlock) 
+        payload.parentId === "0" ? payload.parentId = 0 : null
+        addBlock(payload);
+        /* set block to active */
+        setBlock(payload.id);
+        useBlocks.setState({ panel: "block", composerTab: null });
     }, 
     update: (cache) => {
       cache.evict({ id: "ROOT_QUERY", fieldName: "getBlocks" });
@@ -51,21 +60,36 @@ export const DataBlocks: React.FC = ({type}) => {
         onClick={(e) =>
           teachSetBlock({
             ...prefix,
-            block: "data/QueryList",
-            post: slugPath[1],
-            order: parseInt(blocks[blocks.length - 1].order) + 1,
+            block: "data/Query",
             attrs: {
               refName: prefix.id,
               query: "",
               variables: {},
-              dataTarget: "",
               childrenSlots: [],
               classes: ""
             },
           })
         }
       >
-        Query elements list
+        Query
+      </button>
+
+     
+
+
+      <button
+        className={buttonClass}
+        onClick={(e) =>
+          teachSetBlock({
+            ...prefix,
+            block: "data/PlainData",
+            attrs: {
+              classes: ""
+            },
+          })
+        }
+      >
+        Plain data
       </button>
 
       <button
@@ -73,17 +97,15 @@ export const DataBlocks: React.FC = ({type}) => {
         onClick={(e) =>
           teachSetBlock({
             ...prefix,
-            block: "data/QueryElement",
-            post: slugPath[1],
-            order: parseInt(blocks[blocks.length - 1].order) + 1,
+            block: "data/ListData",
             attrs: {
-              query: "",
+              dataTarget: "",
               classes: ""
             },
           })
         }
       >
-        Query element
+        List data
       </button>
     </div>
   );

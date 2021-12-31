@@ -23,6 +23,8 @@ export const Data: React.FC = () => {
   const buttonDeleteClass =
     " bg-red-400 w-full p-2 rounded mt-1 text-white hover:bg-red-500 flex items-center";
 
+    console.log(queries)
+
   return(
    <div>
       <div className="p-2 flex items-center bg-pink-600 text-white">

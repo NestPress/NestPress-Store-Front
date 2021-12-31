@@ -11,7 +11,7 @@ import { useRouter, useHistory } from "next/router";
 interface Props {
   attrs: any;
 }
-const QueryList: React.FC<Props> = memo(({ attrs, children }) => {
+const Query: React.FC<Props> = memo(({ attrs, children }) => {
   const addQuery = useQueries((state) => state.addQuery);
   const router = useRouter()
   const slugPath = router.query?.slugPath || ["Page", "home"];
@@ -21,26 +21,24 @@ const QueryList: React.FC<Props> = memo(({ attrs, children }) => {
   try {
     if(attrs.query){
 
-      const QUERY = gql `${attrs.query}`
+      const QUERY_GQL = gql `${attrs.query}`
       const res = {
         onCompleted(resData) {
-          console.log('resData',resData)
           /* stated query result */
-          addQuery({ref:attrs.refName || attrs.id, data:queryList})
+          addQuery({ref:attrs.refName || attrs.id, data:resData})
           /* hack to rerender after first loading */
           router.push(`${slugPath[0]}/${slugPath[1]}/${Math.floor(Math.random() * 9999)}`)
         }
       }
       attrs.variables ? res.variables = buildVariables(attrs.variables) : null
-      const { queryLoading, queryError, data, refetch } = useQuery(QUERY, res);
-      const queryList = attrs?.dataTarget ? get(data, attrs.dataTarget) : data 
+      const { queryLoading, queryError, data, refetch } = useQuery(QUERY_GQL, res);
     }
-  } catch (error) { console.error('query:',error) }
+  } catch (error) { console.error('query error:',error) }
   
   return (
-    <div className={`block ${attrs.classes}`}>
-      {queryList?.length ? queryList.map((el,i)=><div key={i}>{children}</div>):children}
+    <div className={`${attrs.classes}`}>
+      {children}
     </div>
   );
 });
-export default QueryList;
+export default Query;

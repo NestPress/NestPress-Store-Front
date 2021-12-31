@@ -19,22 +19,33 @@ export const FormBlocks: React.FC = ({type}) => {
   const blocks = useBlocks((state) => state.blocks);
   const block = () => blocks.find((x) => x.id === selectedBlockId);
   const addBlock = useBlocks((state) => state.addBlock);
+  const setBlock = useBlocks((state) => state.setBlock);
   
   /* local consts */
   const router = useRouter()
   const slugPath = router.query?.slugPath || ["Page", "home"];
+  
   const prefix = {
     id: uuidv4(),
-    parentId: type === "next" ? block()?.parentId : block()?.id,
+    post: slugPath[1],
+    order: parseInt(blocks[blocks.length - 1].order) + 1,
+    parentId: type === "next" 
+      ? block()?.parentId === 0 ? "0" : block()?.parentId 
+      : block()?.id,
   };
+
   const buttonClass =
     "text-sm bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500 flex items-center";  
 
   /* mutation */
   const [addNewBlock, { data, loading, error }] = useMutation(CREATE_BLOCK, {
     onCompleted(data) {
-        console.log('insert block', data.createBlock)
-        addBlock(data.createBlock);
+        const payload = Object.assign({},data.createBlock) 
+        payload.parentId === "0" ? payload.parentId = 0 : null
+        addBlock(payload);
+        /* set block to active */
+        setBlock(payload.id);
+        useBlocks.setState({ panel: "block", composerTab: null });
     }, 
     update: (cache) => {
       cache.evict({ id: "ROOT_QUERY", fieldName: "getBlocks" });
@@ -53,8 +64,6 @@ export const FormBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "form/Form",
-            post: slugPath[1],
-            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               mutation: "",
               refName: prefix.id,
@@ -75,8 +84,6 @@ export const FormBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "form/InputField",
-            post: slugPath[1],
-            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               label: "Example label",
               placeholder: "Example placeholder",
@@ -95,8 +102,6 @@ export const FormBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "form/TextareaField",
-            post: slugPath[1],
-            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               rows: 6,
               label: "Example label",
@@ -117,8 +122,6 @@ export const FormBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "form/SelectField",
-            post: slugPath[1],
-            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               label: "Example label",
               outputValue: "data.select_value",
@@ -138,8 +141,6 @@ export const FormBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "form/KeyValueField",
-            post: slugPath[1],
-            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               placeholder1: "Insert key",
               placeholder2: "Insert value",
@@ -160,8 +161,6 @@ export const FormBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "form/SwithField",
-            post: slugPath[1],
-            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               label: "Example label",
               outputValue: "data.swith_value",
@@ -179,8 +178,6 @@ export const FormBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "form/SubmitButton",
-            order: parseInt(blocks[blocks.length - 1].order) + 1,
-            post: slugPath[1],
             attrs: {
               title: "Submit button",
               classes: ""

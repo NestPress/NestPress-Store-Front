@@ -16,6 +16,7 @@ export const Page: React.FC = () => {
   const messageType = useBlocks((state) => state.messageType);
   const storedPage = useBlocks((state) => state.currentPage);
   const blocks = useBlocks((state) => state.blocks) || [];
+  const setBlock = useBlocks((state) => state.setBlock);
   
   const buttonClass =
     " bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500";
@@ -93,6 +94,9 @@ export const Page: React.FC = () => {
       })
       useBlocks.setState({ message: `Page ${slugPath[1]} with block created complete!`})
       useBlocks.setState({ messageType: 'success'})
+      /* set block to active */
+      setBlock(block.id);
+      useBlocks.setState({ panel: "block", composerTab: null });
     },
 
     update: (cache) => {

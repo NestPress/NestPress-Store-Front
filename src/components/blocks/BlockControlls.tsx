@@ -10,7 +10,7 @@ import { useMutation} from '@apollo/client';
 import { UPDATE_BLOCK, DELETE_BLOCK } from "components/blocks/gql/composer"
 
 import { getNestedChildren } from 'components/blocks/helpers/blocks'
-import { QueryField, TagsField, InputField, ImgObjectFit, ImgLayout, TextareaField, KeyValueField, NumberField } from "components/blocks/blockControlls"
+import { DataTarget, QueryField, TagsField, InputField, ImgObjectFit, ImgLayout, TextareaField, KeyValueField, NumberField } from "components/blocks/blockControlls"
 
 export const BlockControlls: React.FC = () => {
 
@@ -118,7 +118,7 @@ export const BlockControlls: React.FC = () => {
 
               { 
                 /* Print key */
-                key !== "childrenSlots" && <div key={index} className="py-1 flex items-center mt-1">
+                key !== "childrenSlots" && <div key={index} className="py-1 flex items-center mt-1 font-bold text-gray-600">
                 {key}:
               </div>}
 
@@ -160,6 +160,12 @@ export const BlockControlls: React.FC = () => {
                 <QueryField key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
               )}
 
+              {key === "dataTarget" && (
+                <DataTarget key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
+              )}
+
+              
+
               {key !== "text" &&
                 key !== "mutation" &&
                 key !== "imglayout" &&
@@ -174,6 +180,7 @@ export const BlockControlls: React.FC = () => {
                 key !== "errorActions" &&
                 key !== "successActions" &&
                 key !== "childrenSlots" &&
+                key !== "dataTarget" &&
                 
                (
                   <InputField key={`brd-${index}`} keyName={key} res={res}  block={block()}/>

@@ -24,8 +24,6 @@ export const LayoutBlocks: React.FC = ({type}) => {
   const router = useRouter()
   const slugPath = router.query?.slugPath || ["Page", "home"];
 
-  
-
   const prefix = {
     id: uuidv4(),
     post: slugPath[1],
@@ -46,6 +44,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
         addBlock(payload);
         /* set block to active */
         setBlock(payload.id);
+        useBlocks.setState({ panel: "block", composerTab: null });
     }, 
     update: (cache) => {
       cache.evict({ id: "ROOT_QUERY", fieldName: "getBlocks" });

@@ -21,7 +21,9 @@ export const JsonView = ({
         onClick={() => setIsToggled(!isToggled)}
       />
       {name ? <div className={`key p-1 border-b bg-gray-100  text-gray-700 ${isDataArray && "inline leading-6"}`}>{name}:</div> : <span></span>}
-      {Object.keys(data).map((v, i, a) =>
+
+      {
+       data && Object.keys(data).map((v, i, a) =>
         typeof data[v] === 'object' ? 
           <JsonView
             key={`${name}-${v}-${i}`}
@@ -39,7 +41,8 @@ export const JsonView = ({
             {isDataArray ? '' : <span className="key">{v}: </span>}
             <span className="text-blue-800 cursor-pointer hover:underline">{data[v]}</span>
           </p>
-      )}
+      )
+      }
     </div>
   );
 };
