@@ -84,6 +84,7 @@ export const DataBlocks: React.FC = ({type}) => {
             ...prefix,
             block: "data/PlainData",
             attrs: {
+              dataTarget: "",
               classes: ""
             },
           })

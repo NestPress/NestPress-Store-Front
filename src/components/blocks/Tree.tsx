@@ -47,6 +47,9 @@ export const Tree: React.FC<Props> =
               parentItem.childrenSlots.push(parentItem.childrenSlots.length)
               item = {...item, dataTarget: parentItem.attrs.dataTarget, queryIndex: parentItem.childrenSlots.length}
             }
+            if(parentItem?.block === 'data/PlainData'){
+              item = {...item, dataTarget: parentItem.attrs.dataTarget}
+            }
             if(parentItem?.queryIndex){
               item = {...item, queryIndex: parentItem?.queryIndex, dataTarget:parentItem?.dataTarget}
             }

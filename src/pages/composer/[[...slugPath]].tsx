@@ -31,6 +31,7 @@ const ComposerPage: React.FC = () => {
   const queryIndex = []
 
   useForms.setState({ pageData: {slugPath : slugPath} })
+  useBlocks.setState({ preview: true })
 
   const keysHandler = (e) => { 
     if(document.activeElement.tagName !== "INPUT" && document.activeElement.tagName !== "TEXTAREA"){
