@@ -14,8 +14,12 @@ const TextareaField: React.FC<Props> = ({ attrs, children }) => {
   const updateForm = useForms((state) => state.updateForm);
   const ref = findOutByBlock(blocks, attrs.id, 'form/Form').attrs.refName
 
+  if(attrs.default && ref){
+    updateForm({ref:ref, path:attrs.outputValue, data:attrs.default})
+  }
+
   return (
-    <div className="block">
+    <div className={`block ${attrs.classes}`}>
       {attrs.label ? (
         <label className="text-gray-700 text-xs">{attrs.label}</label>
       ) : null}
@@ -24,6 +28,7 @@ const TextareaField: React.FC<Props> = ({ attrs, children }) => {
         placeholder={attrs.placeholder}
         className="bg-white p-3 rounded-sm w-full text-gray-500 text-sm border mt-1"
         type={attrs.type || "text"}
+        defaultValue={attrs.default}
         onChange={(e)=>{ 
           updateForm({ref:ref, path:attrs.outputValue, data:e.target.value}) 
         }}

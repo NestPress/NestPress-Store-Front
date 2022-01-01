@@ -38,7 +38,7 @@ export const getNestedChildren = (arr: any, parent: string, withFirst: boolean) 
 */
 export const findOutByBlock:any = (regBlocks:any, currentId:number, blockName:string) => {
     const block:any = regBlocks.find(el => el.id === currentId)
-    if(block.parentId == 0){
+    if(block?.parentId == 0){
       return false
     }else{
       return block.block === blockName ? block : findOutByBlock(regBlocks, block.parentId, blockName) 

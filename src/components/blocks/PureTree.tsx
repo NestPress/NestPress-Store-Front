@@ -36,8 +36,14 @@ export const PureTree: React.FC<Props> = memo(
               parentItem.childrenSlots.push(parentItem.childrenSlots.length)
               item = {...item, dataTarget: parentItem.attrs.dataTarget, queryIndex: parentItem.childrenSlots.length}
             }
+            if(parentItem?.block === 'data/PlainData'){
+              item = {...item, dataTarget: parentItem.attrs.dataTarget}
+            }
             if(parentItem?.queryIndex){
-              item = {...item, queryIndex: parentItem?.queryIndex, dataTarget:parentItem?.dataTarget}
+              item = {...item, queryIndex: parentItem?.queryIndex}
+            }
+            if(parentItem?.dataTarget){
+              item = {...item, dataTarget:parentItem?.dataTarget}
             }
             /*
               /!!! indexing blinded copy of children blocks /

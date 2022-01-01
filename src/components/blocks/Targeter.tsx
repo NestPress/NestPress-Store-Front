@@ -29,6 +29,10 @@ export const Targeter: React.FC<Props> = ({item, level, type}) => {
   if(group[0] == 'data'){
     cardColor = ['#065f46','#10b981']
   }
+  if(group[0] == 'form'){
+    cardColor = ['#5b21b6','#8b5cf6']
+  }
+
 
   return (
     <>

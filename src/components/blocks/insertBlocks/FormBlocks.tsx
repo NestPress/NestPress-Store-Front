@@ -87,6 +87,7 @@ export const FormBlocks: React.FC = ({type}) => {
             attrs: {
               label: "Example label",
               placeholder: "Example placeholder",
+              default: "",
               outputValue: "data.input_value",
               classes: ""
             },
@@ -106,6 +107,7 @@ export const FormBlocks: React.FC = ({type}) => {
               rows: 6,
               label: "Example label",
               placeholder: "Example placeholder",
+              default: "",
               outputValue: "data.textarea_value",
               classes: ""
             },

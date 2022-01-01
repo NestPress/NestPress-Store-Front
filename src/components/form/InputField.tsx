@@ -13,6 +13,10 @@ const InputField: React.FC<Props> = memo(({ attrs, children }) => {
   const updateForm = useForms((state) => state.updateForm);
   const ref = findOutByBlock(blocks, attrs.id, 'form/Form')?.attrs?.refName
 
+  if(attrs.default && ref){
+    updateForm({ref:ref, path:attrs.outputValue, data:attrs.default})
+  }
+
   return (
     <div  className={`block ${attrs.classes}`}>
       {attrs.label ? (
@@ -22,6 +26,7 @@ const InputField: React.FC<Props> = memo(({ attrs, children }) => {
         placeholder={attrs.placeholder}
         className="bg-white p-3 rounded-sm w-full text-gray-500 text-sm border mt-1"
         type={attrs.type || "text"}
+        defaultValue={attrs.default}
         onChange={(e)=>{ 
           ref ? updateForm({ref:ref, path:attrs.outputValue, data:e.target.value}) : null
         }}
