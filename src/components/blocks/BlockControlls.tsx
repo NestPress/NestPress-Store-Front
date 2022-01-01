@@ -68,14 +68,15 @@ export const BlockControlls: React.FC = () => {
       /* -------------------------- */
       /* build paths to shortcodes */
 
-      if(typeof res.value === 'string'){
-        const matches = res.value.match(/(?<=\$\{).+?(?=\})/g);
-        if(matches?.length > 0){
-          copy['shortcodes'][res.key] = matches
-        }else{
-          copy['shortcodes']?.[res.key] ? delete copy['shortcodes'][res.key] : null
-        }
-      }
+      // if(typeof res.value === 'string'){
+      //   const matches = res.value.match(/(?<=\$\{).+?(?=\})/g);
+      //   if(matches?.length > 0){
+      //     copy['shortcodes'][res.key] = matches
+      //   }else{
+      //     copy['shortcodes']?.[res.key] ? delete copy['shortcodes'][res.key] : null
+      //   }
+      // }
+      
       /* TODO - for queries variables */
       if(typeof res.value === 'object'){
         console.log('start update object', res.key, res.value, copy)

@@ -40,10 +40,16 @@ export const Tree: React.FC<Props> =
             /*
               / indexing blinded copy of children blocks /
             */
-            if(item.block === 'data/ListData'){
+            if(
+              item.block === 'data/ListData' 
+              // || parentItem?.block === 'data/PlainData'
+            ){
               item = {...item, childrenSlots:[]}
             }
-            if(parentItem?.block === 'data/ListData'){
+            if(
+              parentItem?.block === 'data/ListData' 
+              // || parentItem?.block === 'data/PlainData'
+            ){
               parentItem.childrenSlots.push(parentItem.childrenSlots.length)
               item = {...item, dataTarget: parentItem.attrs.dataTarget, queryIndex: parentItem.childrenSlots.length}
             }
@@ -51,7 +57,10 @@ export const Tree: React.FC<Props> =
               item = {...item, dataTarget: parentItem.attrs.dataTarget}
             }
             if(parentItem?.queryIndex){
-              item = {...item, queryIndex: parentItem?.queryIndex, dataTarget:parentItem?.dataTarget}
+              item = {...item, queryIndex: parentItem?.queryIndex}
+            }
+            if(parentItem?.dataTarget){
+              item = {...item, dataTarget:parentItem?.dataTarget}
             }
             /*
               /!!! indexing blinded copy of children blocks /
