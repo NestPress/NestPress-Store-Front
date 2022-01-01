@@ -13,7 +13,7 @@ export const QueryField: React.FC<Props> = ({ keyName, res, block }) => {
   }
   return (
     <> 
-      <div className="border-b mb-1 pb-px" >
+      <div className="py-1" >
         <span>example:</span> 
         <span
           onClick={e=>update(`query getPosts(
@@ -49,10 +49,10 @@ export const QueryField: React.FC<Props> = ({ keyName, res, block }) => {
       title
     }
   }`)} 
-          className="text-indigo-600 cursor-pointer hover:underline pl-1">getPostBySlug</span> 
+          className="text-indigo-600 cursor-pointer hover:underline pl-1">getPost</span> 
         <span 
           onClick={e=>update(``)} 
-          className="text-indigo-600 cursor-pointer hover:underline pl-1">getCustomers</span> 
+          className="text-indigo-600 cursor-pointer hover:underline pl-1">clear</span> 
       </div>
       <textarea
         onChange={e => {
@@ -68,7 +68,7 @@ export const QueryField: React.FC<Props> = ({ keyName, res, block }) => {
         className="col-span-3 border p-1 w-full"
         value={block?.attrs[keyName]}
       />
-      <div>After change query <span className="text-indigo-600 cursor-pointer hover:underline" onClick={e=>window.location.reload(false)}>restart app</span> to refetch all components. (We working to fix this :)</div>
+      <div className="border-b py-1">After change query <span className="text-indigo-600 cursor-pointer hover:underline" onClick={e=>window.location.reload(false)}>restart app</span> to refetch all components. (We working to fix this :)</div>
     </>
   );
 };
