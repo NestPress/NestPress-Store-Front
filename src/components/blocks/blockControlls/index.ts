@@ -7,3 +7,5 @@ export * from "./InputField";
 export * from "./TagsField";
 export * from "./KeyValueField";
 export * from "./QueryField";
+export * from "./LabelNameValue";
+

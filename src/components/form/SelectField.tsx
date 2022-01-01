@@ -69,7 +69,8 @@ const SelectField: React.FC<Props> = ({attrs, children}) => {
                     onClick={() => {
                       setActiveValue(el.value);
                       setActive(!active);
-                      updateForm({ref:ref, path:attrs.outputValue, data:e.target.value}) 
+                      alert('chceck select line 72')
+                      // updateForm({ref:ref, path:attrs.outputValue, data:e.target.value}) 
                     }}
                     className="px-3 py-1 leading-8 border-b hover:bg-gray-100"
                   >

@@ -11,7 +11,7 @@ import { useMutation } from '@apollo/client';
 import { UPDATE_BLOCK, DELETE_BLOCK } from "components/blocks/gql/composer"
 
 import { getNestedChildren } from 'components/blocks/helpers/blocks'
-import { DataTarget, QueryField, TagsField, InputField, ImgObjectFit, ImgLayout, TextareaField, KeyValueField, NumberField } from "components/blocks/blockControlls"
+import { LabelNameValue, DataTarget, QueryField, TagsField, InputField, ImgObjectFit, ImgLayout, TextareaField, KeyValueField, NumberField } from "components/blocks/blockControlls"
 
 export const BlockControlls: React.FC = () => {
 
@@ -160,7 +160,6 @@ export const BlockControlls: React.FC = () => {
 
               {(
                 key === "variables" || 
-                key === "options" || 
                 key === "consts" || 
                 key === "errorActions" || 
                 key === "successActions") && (
@@ -179,6 +178,12 @@ export const BlockControlls: React.FC = () => {
                 <DataTarget key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
               )}
 
+              {key === "options" && (
+                <LabelNameValue key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
+              )}
+
+              
+
               
 
               {key !== "text" &&
@@ -196,6 +201,7 @@ export const BlockControlls: React.FC = () => {
                 key !== "successActions" &&
                 key !== "childrenSlots" &&
                 key !== "dataTarget" &&
+ 
                 
                (
                   <InputField key={`brd-${index}`} keyName={key} res={res}  block={block()}/>
