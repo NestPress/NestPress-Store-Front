@@ -124,7 +124,7 @@ export const Targeter: React.FC<Props> = ({item, level, type}) => {
     }
 
 
-    {preview && selectedBlockId == item.id && item.block === 'data/ListData' && type == 'layer' && <div 
+    {preview && selectedBlockId == item.id && (item.block === 'data/ListData' || item.block === 'data/PlainData') && type == 'layer' && <div 
       style={{
         position:'absolute',
         right:'0',
