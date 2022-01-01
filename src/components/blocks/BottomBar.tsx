@@ -13,7 +13,7 @@ export const BottomBar: React.FC = () => {
       <div className="p-2 border-r ">NP NestPress</div>    
       <div
         onClick={e=>{
-          useBlocks.setState({ preview: false });
+          useBlocks.setState({ preview: true });
           router.push(['composer',...slugPath].join('/'))
         }} 
         className="p-3 border-r underline text-xs cursor-pointer flex items-center gap-1">

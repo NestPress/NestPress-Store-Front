@@ -5,8 +5,9 @@
 import { FiCornerRightDown, FiArrowDown, FiArrowUp, FiExternalLink, FiArrowRight } from "react-icons/fi";
 import { BlocksHeader, MainTabs } from "components/blocks";
 import { useBlocks } from "store/blocksStore";
+import { useRouter } from "next/router";
 
-import { useMutation} from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { UPDATE_BLOCK, DELETE_BLOCK } from "components/blocks/gql/composer"
 
 import { getNestedChildren } from 'components/blocks/helpers/blocks'
@@ -21,11 +22,19 @@ export const BlockControlls: React.FC = () => {
   const setBlockAttrs = useBlocks((state) => state.setBlockAttrs);
   const replace = useBlocks((state) => state.replace);
   const removeBlock = useBlocks((state) => state.removeBlock);
+  const router = useRouter();
+  const slugPath = router.query?.slugPath || ["Page","home"];
 
   const [updateBlock, { updateBlockData, updateBlockLoading, updateBlockError }] = useMutation(UPDATE_BLOCK, {
     onCompleted(updateBlockData) {
-      // console.log('update', updateBlockData)
-    }
+     
+      console.log('update', updateBlockData)
+
+    },
+    update: (cache) => {
+      cache.evict({ id: "ROOT_QUERY", fieldName: "getBlocks" });
+      cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
+    }, 
   });
 
   const [deleteBlock, { deleteBlockData, deleteBlockLoading, deleteBlockError }] = useMutation(DELETE_BLOCK, {
@@ -33,7 +42,10 @@ export const BlockControlls: React.FC = () => {
       // console.log('delete', deleteBlockData)
       removeBlock(deleteBlockData.deleteBlock);
       useBlocks.setState({ panel: "mainPanel" })
-      
+    },
+    update: (cache) => {
+      cache.evict({ id: "ROOT_QUERY", fieldName: "getBlocks" });
+      cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
     }
   });
 
@@ -44,6 +56,8 @@ export const BlockControlls: React.FC = () => {
   
   const res = (res) => {
     res.mutation ? saveData(res) : setBlockAttrs({...res,id:selectedBlockId})
+    /* hack to rerender after first loading */
+    router.push(`${slugPath[0]}/${slugPath[1]}/${Math.floor(Math.random() * 9999)}`)
   }
 
   function saveData(res){

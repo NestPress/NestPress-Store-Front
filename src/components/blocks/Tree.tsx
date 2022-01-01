@@ -22,16 +22,7 @@ export const Tree: React.FC<Props> =
     const block = () => blocks.find((x) => x.id === selectedBlockId);
     const preview = useBlocks((state) => state.preview);
 
-    /* mutation */
-    const [updateBlock, { data, loading, error }] = useMutation(UPDATE_BLOCK, {
-      onCompleted(data) {
-          // console.log('insert block', data.createBlock)
-          // addBlock(data.createBlock);
-      }, 
-      update: (cache) => {
-        cache.evict({ id: "ROOT_QUERY", fieldName: "getBlocks" });
-      },
-    });
+   
 
     return (
       <>
@@ -46,20 +37,26 @@ export const Tree: React.FC<Props> =
             const Block: string =
               components[item.block] && components[item.block];
 
-            /*/ indexing blinded copy of children blocks /*/
-            if(item.block === 'data/QueryList'){
+            /*
+              / indexing blinded copy of children blocks /
+            */
+            if(item.block === 'data/ListData'){
               item = {...item, childrenSlots:[]}
             }
-            if(parentItem?.block === 'data/QueryList'){
+            if(parentItem?.block === 'data/ListData'){
               parentItem.childrenSlots.push(parentItem.childrenSlots.length)
-              item = {...item, queryRef: parentItem.attrs.refName, queryIndex: parentItem.childrenSlots.length}
+              item = {...item, dataTarget: parentItem.attrs.dataTarget, queryIndex: parentItem.childrenSlots.length}
             }
             if(parentItem?.queryIndex){
-              item = {...item, queryIndex: parentItem?.queryIndex, queryRef:parentItem?.queryRef}
+              item = {...item, queryIndex: parentItem?.queryIndex, dataTarget:parentItem?.dataTarget}
             }
+            /*
+              /!!! indexing blinded copy of children blocks /
+            */
 
-            const attrs = Object.assign({},item.attrs)
-            !preview ? attrs.classes = attrs.classes + '  block-editable' : null
+            /* add editable class if is editable mode */
+            const attrs = Object.assign({}, item.attrs)
+            preview ? attrs.classes = attrs.classes + '  block-editable' : null
 
           }
           return (
@@ -69,9 +66,7 @@ export const Tree: React.FC<Props> =
                     id: item.id,
                     i:i, 
                     queryIndex: item.queryIndex ? item.queryIndex : null,  
-                    queryRef: item.queryRef ? item.queryRef : null,  
-                    // item: { attrs: { classes: 'boder p-2'}},
-                    // ...item.attrs,
+                    dataTarget: item.dataTarget ? item.dataTarget : null,  
                     ...attrs
 
                   }}

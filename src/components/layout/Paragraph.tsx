@@ -3,16 +3,18 @@
 // @ts-nocheck
 import { memo } from "react";
 import { useQueries } from "store";
-import { shortcode } from "components/blocks/helpers/blocks"
+import { get, set, parseBlockAttrs } from "helpers"
 interface Props {
   attrs: any;
 }
 const Paragraph: React.FC<Props> = memo(({ attrs, children }) => {
   
-  const queries = useQueries((state) => state.queries)?.[attrs.queryRef]?.[attrs.queryIndex-1];
+  
+  attrs = attrs.dataTarget ? parseBlockAttrs(attrs, useQueries) : attrs
+ 
   return (
     <p className={`block ${attrs.classes}`}>
-      {typeof queries === 'object' ? shortcode('text', attrs, queries) : attrs.text}
+      {attrs.text}
       {children}  
     </p>
   );

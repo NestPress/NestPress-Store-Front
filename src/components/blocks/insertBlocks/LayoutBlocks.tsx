@@ -34,7 +34,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
   };
 
   const buttonClass =
-    "text-sm bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500 flex items-center";  
+    "text-sm bg-blue-500 w-full p-2 rounded mt-1 text-white hover:bg-blue-800 flex items-center";  
  
   /* mutation */
   const [addNewBlock, { data, loading, error }] = useMutation(CREATE_BLOCK, {

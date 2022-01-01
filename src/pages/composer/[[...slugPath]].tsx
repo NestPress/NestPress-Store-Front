@@ -6,7 +6,9 @@ import { Composer, Tree, BlocksPocket } from "components/blocks";
 import { useBlocks, useForms } from "store";
 import { useRouter } from "next/router";
 import { useEffect , useRef } from "react";
+
 import { getNestedChildren, prepareBlocksToClone } from 'components/blocks/helpers/blocks'
+
 import { gql, useQuery, useMutation} from '@apollo/client';
 import { GET_BLOCKS, CREATE_BLOCKS } from "components/blocks/gql/composer"
 
@@ -80,10 +82,14 @@ const ComposerPage: React.FC = () => {
       }
     },
     onCompleted(data) {      
+      /* tutaj modyfikuj listy */
+      
+      useBlocks.setState({ 
+        blocks: data.getBlocks.list.map(el => el.parentId === "0" ? {...el, parentId:0} : el) 
+      })},
+      optimisticResponse(){
         useBlocks.setState({blocks: []});
-        useBlocks.setState({ 
-          blocks: data.getBlocks.list.map(el => el.parentId === "0" ? {...el, parentId:0} : el) 
-        })}
+      }
   });
 
 
@@ -96,7 +102,7 @@ const ComposerPage: React.FC = () => {
         <div style={{ 
 
           minHeight: '100vh',
-          background: !preview ? `#f9f9f9 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAK0lEQVQoU2NkYGCQYmBgeMaAACh8RiQJrEzqKEB3gzEDA8NZmH3UsQKvRwDfzgQJzDH7IgAAAABJRU5ErkJggg==) repeat` : null,
+          background: preview ? `#f9f9f9 url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAK0lEQVQoU2NkYGCQYmBgeMaAACh8RiQJrEzqKEB3gzEDA8NZmH3UsQKvRwDfzgQJzDH7IgAAAABJRU5ErkJggg==) repeat` : null,
           marginRight: "20rem", 
           marginLeft: blocksPocket ? "18rem" : null }}>
 
@@ -109,7 +115,10 @@ const ComposerPage: React.FC = () => {
               className="border-r p-3.5  hover:bg-gray-100 cursor-pointer">
               {blocksPocket ? <FiChevronLeft/> : <FiGitPullRequest/>}
             </div>
-            <div onClick={e=>router.push(`/${slugPath[0]}/${slugPath[1]}`)} className="flex flex-1 items-center hover:bg-gray-100 p-2.5 cursor-pointer ">
+            <div onClick={e=>{
+                useBlocks.setState({ preview: false });
+                router.push(`/${slugPath[0]}/${slugPath[1]}`)
+              }} className="flex flex-1 items-center hover:bg-gray-100 p-2.5 cursor-pointer ">
               <FiFile/>
               <div key={router.asPath} className="ml-1 flex-1">{slugPath[1]}</div>
               <div className="flex items-center text-xs font-normal text-blue-400"><FiChevronLeft/><span>Back to page view</span></div>

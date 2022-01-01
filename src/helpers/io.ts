@@ -1,6 +1,7 @@
 /* TODO fix type */
 // @ts-ignore
 // @ts-nocheck
+
 export const get = (ob: any, path: string) => {
   const p = path.split(".");
   for (let i = 0; i < p.length; i++) {
@@ -31,3 +32,10 @@ export const downloadObjectAsJson = (exportObj: any, exportName: any) => {
   downloadAnchorNode.click();
   downloadAnchorNode.remove();
 };
+
+export const interpolate = (t, c) => {
+  return t.replace(/\${([^}]+)}/g,
+    (m,p)=>p.split('.').reduce((a,f)=>a?a[f]:undefined,c)??m);
+}
+
+

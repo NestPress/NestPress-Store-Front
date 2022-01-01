@@ -14,6 +14,7 @@ export const DataTarget: React.FC<Props> = ({ keyName, res, block }) => {
     res({ key: keyName, value: value, mutation: false});
     res({ key: keyName, value: value, mutation: true});
   }
+
   return (
     <div className="border-b mb-2">
       <div>
@@ -29,24 +30,24 @@ export const DataTarget: React.FC<Props> = ({ keyName, res, block }) => {
         )}</div>}
       </div>
       
-      {(pathArray[0] == "" && queries[0]) && <div>
+      {(pathArray[0] == "" && Object.keys(queries).length !== 0) && <div>
         <div className="py-1">select avilable query with results</div> 
         {Object.keys(queries).map(key => <div 
           onClick={e=>update(key)}
-          className="cursor-pointer border-t py-1 text-indigo-600 hover:underline" key={key}>{key}</div>)}
+          className="bg-white cursor-pointer border-t py-1 text-indigo-600 hover:underline" key={key}>{key}</div>)}
       </div>}
 
-      {(pathArray[0] != "" && queries[0]) && <div>
+      {(pathArray[0] != "" && Object.keys(queries).length !== 0) && <div>
         <div className="py-1">select target key</div> 
         {!get(queries, pathArray.join('.')).length ? Object.keys(get(queries, pathArray.join('.'))).map(key => <div 
           onClick={e=>{
             pathArray = pathArray.concat([key])
             update(pathArray.join('.'))
           }}
-          className="cursor-pointer border-t py-1 text-indigo-600 hover:underline" key={key}>{key}</div>) : null}
+          className="bg-white cursor-pointer border-t py-1 text-indigo-600 hover:underline" key={key}>{key}</div>) : null}
       </div>}
 
-      {!queries[0] && <div className="border-t py-1">Not find storage queries</div>}
+      {Object.keys(queries).length === 0 && <div className="border-t py-1">Not find storage queries</div>}
       
     </div>
   );

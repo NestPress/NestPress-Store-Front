@@ -25,6 +25,8 @@ const ComposerPage: React.FC = () => {
     const outBlocks = []
     const handlersBlocks = {};
 
+    
+
     // First iterator
     const i = 0, len_i = list.length;
     while (i < len_i) {
@@ -70,7 +72,10 @@ const ComposerPage: React.FC = () => {
       data.getBlocks.list.length 
       ? useBlocks.setState({ blocks: prepareBlocks(data.getBlocks.list) })
       : null    
-    }
+    },
+    optimisticResponse(){
+        useBlocks.setState({blocks: []});
+      }
   });
   return (
       <>
