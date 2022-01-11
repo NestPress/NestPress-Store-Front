@@ -7,7 +7,7 @@ import { parseBlockAttrs } from "helpers"
 interface Props {
   attrs: any;
 }
-const Paragraph: React.FC<Props> = memo(({ attrs, children }) => {
+const Paragraph: React.FC<Props> = ({ attrs, children }) => {
   attrs = attrs.dataTarget ? parseBlockAttrs(attrs, useQueries) : attrs
   return (
     <p className={`block ${attrs.classes}`}>
@@ -15,5 +15,5 @@ const Paragraph: React.FC<Props> = memo(({ attrs, children }) => {
       {children}  
     </p>
   );
-});
+};
 export default Paragraph;

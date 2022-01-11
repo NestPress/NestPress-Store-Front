@@ -1,12 +1,12 @@
 /* TODO fix type */
 // @ts-ignore
 // @ts-nocheck
-import { useBlocks, useForms } from "store";
-import { findOutByBlock } from "components/blocks/helpers/blocks"
+import { memo, useState } from "react";
+import { useApp, useQueries } from "store";
+import { fieldHead, findOutByBlock, parseBlockAttrs } from "helpers"
 
 // https://blog.logrocket.com/building-a-custom-dropdown-menu-component-for-react-e94f02ced4a1/
 import { FiChevronDown, FiX } from "react-icons/fi";
-import { useState } from "react";
 import { categoryType } from "types/layout";
 
 // TODO - add vlid types
@@ -14,20 +14,19 @@ interface Props {
   attrs: any;
 }
 
-  // label?: string;
-  // placeholder?: string;
-  // value?: string;
-  // options?: any;
-
 const SelectField: React.FC<Props> = ({attrs, children}) => {
-  const blocks = useBlocks((state) => state.blocks);
-  const updateForm = useForms((state) => state.updateForm);
-  const ref = findOutByBlock(blocks, attrs.id, 'form/Form').attrs.refName
+  
+  attrs = attrs.dataTarget ? parseBlockAttrs(attrs, useQueries) : attrs
+  const {blocks, updateData, ref} = fieldHead(useApp, attrs)
+
+  if(attrs.default && ref){
+    updateData({ref:ref, path:attrs.outputValue, data:attrs.default, store:"forms"})
+  }
 
   const [active, setActive] = useState(false);
   const [activeValue, setActiveValue] = useState(attrs.value);
   return (
-    <div className="block">
+    <div className={`${attrs.classes}`}>
       {active ? (
         <div
           onClick={() => {
@@ -38,13 +37,14 @@ const SelectField: React.FC<Props> = ({attrs, children}) => {
       ) : null}
       {attrs.label ? <label className="text-xs">{attrs.label}</label> : null}
       <div
-        className={`relative text-sm ${active ? "z-10" : null}`}
+        className={`relative w-full text-sm ${active ? "z-10" : null}`}
       >
         
         <input
           className="bg-white p-2.5 pr-12 rounded-sm w-full border"
           type="text"
-          defaultValue={activeValue}
+          placeholder={attrs.placeholder}
+          value={activeValue}
           onChange={(e)=>{ 
             setActiveValue(e.target.value)
             updateForm({ref:ref, path:attrs.outputValue, data:e.target.value}) 
@@ -61,7 +61,7 @@ const SelectField: React.FC<Props> = ({attrs, children}) => {
 
         {/* options*/}
         {active ? (
-          <ul className="w-full md:w-auto absolute text-left bg-white mt-1 rounded-sm flex flex-col right-0 cursor-pointer z-10">
+          <ul style={{maxHeight:'340px'}} className="overflow-y-scroll w-full md:w-auto absolute text-left bg-white mt-1 rounded-sm flex flex-col right-0 cursor-pointer z-10">
             {attrs.options.length &&
               attrs.options.map((el: categoryType) => {
                 return (
@@ -69,10 +69,9 @@ const SelectField: React.FC<Props> = ({attrs, children}) => {
                     onClick={() => {
                       setActiveValue(el.value);
                       setActive(!active);
-                      alert('chceck select line 72')
-                      // updateForm({ref:ref, path:attrs.outputValue, data:e.target.value}) 
+                      updateForm({ref:ref, path:attrs.outputValue, data:el.value}) 
                     }}
-                    className="px-3 py-1 leading-8 border-b hover:bg-gray-100"
+                    className="w-64 px-3 py-1 leading-8 border-b hover:bg-gray-100"
                   >
                     {el.label}
                   </li>

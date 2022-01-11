@@ -3,7 +3,7 @@
 // @ts-nocheck
 import { memo } from "react";
 import { gql, useMutation } from "@apollo/client";
-import { useBlocks, useForms, getForm, useActions } from "store";
+import { useBlocks, getFromStore, useApp, useActions } from "store";
 import { getNestedChildren, buildFormOutput, buildVariables } from "components/blocks/helpers/blocks"
 import { actionsParser } from "components/blocks/helpers/actions"
 import { useRouter } from 'next/router'
@@ -16,15 +16,16 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
   const router = useRouter()
   const blocks = useBlocks((state) => state.blocks);
   const setBlockAttrs = useBlocks((state) => state.setBlockAttrs);
-  const addForm = useForms((state) => state.addForm);
+  const setData = useApp((state) => state.setData);
   const addAction = useActions((state) => state.addAction);
   const form = getNestedChildren(blocks, attrs.id)
 
 
 
-  getForm({ref:attrs.refName}) 
+  getFromStore({ref:attrs.refName, store:"forms"}) 
     ? null 
-    : addForm({
+    : setData({
+      store:"forms",
       ref:attrs.refName, 
       data:{...buildFormOutput(form), ...buildVariables(attrs.consts)}
     })
@@ -35,7 +36,7 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
       const MUTATION = attrs.mutation ? gql`${attrs.mutation}` : ``;
       const [formMutation, { data, loading, error }] = useMutation(MUTATION, {
           onCompleted(data) {
-            attrs.successActions ? actionsParser(attrs.successActions, getForm({ref:attrs.refName}), blocks, setBlockAttrs, router) : null
+            attrs.successActions ? actionsParser(attrs.successActions, getFromStore({ref:attrs.refName, store:"forms"}), blocks, setBlockAttrs, router) : null
             
             // set results to actions store (this is unless)
             addAction({type:'success', key:"submitFormCompleted", value:data})
@@ -56,14 +57,14 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
         e.preventDefault();
         
         // set results to actions store (this is unless)
-        addAction({type:'success', key:"submitFormStart", value:{ref:attrs.refName, data: getForm({ref:attrs.refName}) }})
+        addAction({type:'success', key:"submitFormStart", value:{ref:attrs.refName, data: getFromStore({ref:attrs.refName, store:"forms"}) }})
         
         // always success if mutation is undefined
-        !attrs.mutation && attrs.successActions ? actionsParser(attrs.successActions, getForm({ref:attrs.refName}), blocks, setBlockAttrs, router) : null        
+        !attrs.mutation && attrs.successActions ? actionsParser(attrs.successActions, getFromStore({ref:attrs.refName, store:"forms"}), blocks, setBlockAttrs, router) : null        
         try {
           if(attrs.mutation){
             formMutation({ 
-              variables: getForm({ref:attrs.refName})
+              variables: getFromStore({ref:attrs.refName, store:"forms"})
               
               }).catch(error => {
                 addAction({type:'error', key:"submitForm", value:error.message})

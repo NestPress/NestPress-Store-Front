@@ -4,7 +4,7 @@ interface Props {
 }
 const PlainData: React.FC<Props> = memo(({ attrs, children }) => {
   return (
-    <div className={`${attrs.classes}`}>
+    <div className={`block ${attrs.classes}`}>
       {children}
     </div>
   );

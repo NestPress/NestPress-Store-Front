@@ -1,21 +1,26 @@
+/* TODO fix type */
+// @ts-ignore
+// @ts-nocheck
+
 import { memo } from "react";
-import { useBlocks, useQueries } from "store";
-import { get } from "helpers/io";
+import { useApp, getFromStore } from "store";
+import { getBy } from "helpers";
 interface Props {
   attrs: any;
 }
 const ListData: React.FC<Props> = memo(({ attrs, children }) => {
-  const preview = useBlocks((state) => state.preview);
-  const queries = useQueries((state) => state.queries);
-  const targetedList = get(queries, attrs.dataTarget)
+  const targeter = useApp((state) => state.custom.activeTargeter);
+  const targetedList = getBy(useApp((state) => state.queries), attrs.dataTarget)
   const length = targetedList?.length
   return (
-    <div className={`${attrs.classes}`}>
-      {length ? targetedList.map((el,i)=><>
-        {(length-1 === i || !preview) ? children : <div 
-          className="border py-px my-px text-xs bg-white">List element {i}</div>}
-      </>):children}
+    <div className={`block ${attrs.classes}`}>
+       {Array.isArray(targetedList) ? targetedList.map((el,i)=><>
+        {(length-1 === i ) || !targeter ? children : <span 
+          className="p-1 m-px text-xs bg-pink-500 text-white">List el. {i}</span>}</>):children}
     </div>
   );
 });
 export default ListData;
+
+
+

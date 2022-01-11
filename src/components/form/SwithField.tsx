@@ -9,14 +9,14 @@ import React, { useState } from "react";
 interface Props {
   attrs: any;
 }
-const SwithField: React.FC<Props> = ({ attrs }) => {
+const SwithField: React.FC<Props> = ({ attrs, children }) => {
   const blocks = useBlocks((state) => state.blocks);
   const updateForm = useForms((state) => state.updateForm);
   const ref = findOutByBlock(blocks, attrs.id, 'form/Form').attrs.refName
 
   const [active, setActive] = useState(false);
   return (
-    <div className="">
+    <div className={`block ${attrs.classes}`}>
       {attrs.label ? (
         <label className="text-gray-700 text-xs">{attrs.label}</label>
       ) : null}
@@ -28,6 +28,7 @@ const SwithField: React.FC<Props> = ({ attrs }) => {
           ? (<div className="text-gray-600"><FiToggleLeft/></div>) 
           : (<div className="text-green-600"><FiToggleRight/></div>)}
       </div>
+      {children}
     </div>
   );
 };

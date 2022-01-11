@@ -1,21 +1,17 @@
 // @ts-nocheck
-import { useBlocks, useForms, useQueries } from "store";
-import { findOutByBlock } from "components/blocks/helpers/blocks"
-import { parseBlockAttrs } from "helpers"
-
+import { memo } from "react";
+import { useApp, useQueries } from "store";
+import { fieldHead, findOutByBlock, parseBlockAttrs } from "helpers"
 interface Props {
   attrs: any;
 }
 const TextareaField: React.FC<Props> = ({ attrs, children }) => {
   
   attrs = attrs.dataTarget ? parseBlockAttrs(attrs, useQueries) : attrs
-
-  const blocks = useBlocks((state) => state.blocks);
-  const updateForm = useForms((state) => state.updateForm);
-  const ref = findOutByBlock(blocks, attrs.id, 'form/Form').attrs.refName
+  const {blocks, updateData, ref} = fieldHead(useApp, attrs)
 
   if(attrs.default && ref){
-    updateForm({ref:ref, path:attrs.outputValue, data:attrs.default})
+    updateData({ref:ref, path:attrs.outputValue, data:attrs.default, store:"forms"})
   }
 
   return (

@@ -1,0 +1,28 @@
+
+.fc-theme-standard .fc-scrollgrid{
+	border: none !important;
+}
+/*.fc .fc-daygrid-day:hover{
+	background-color: green;
+	cursor: pointer;
+}*/
+.fc table{
+	font-size: 12px !important;
+}
+.fc table tr{
+	border: none !important;
+}
+.fc table td{
+	border-left:none;
+	border-right:none;
+	
+}
+.fc-timegrid-slot-minor{
+	border-bottom: 1px dotted #ddd !important;
+}
+.fc-timegrid-slot-shrink{
+	border-bottom: 1px solid #ddd !important;
+}
+/*.fc-timegrid-slot{
+	border-bottom: 1px solid #ddd !important;
+}*/

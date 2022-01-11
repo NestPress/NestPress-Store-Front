@@ -54,7 +54,7 @@
 
 */
 
-import { get, set } from "helpers/io"
+import { get, set } from "components/blocks/helpers/blocks"
 export const actionsParser = (actions, data, blocks, setBlockAttrs, router) => {
 	for (const [key, value] of Object.entries(actions)) {
 		const setter = key.split('.')

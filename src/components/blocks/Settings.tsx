@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { usePage } from "store/pageStore";
 import { Upload } from "components/blocks"
 import { useBlocks } from "store/blocksStore";
-import { downloadObjectAsJson } from "helpers/io";
+import { downloadObjectAsJson } from "components/blocks/helpers/blocks";
 
 export const Settings: React.FC = () => {
   const router = useRouter()

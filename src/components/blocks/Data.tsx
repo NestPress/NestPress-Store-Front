@@ -1,7 +1,7 @@
 /* TODO fix type */
 // @ts-ignore
 // @ts-nocheck
-import { useForms, useQueries, useActions } from "store";
+import { useForms, useQueries, useActions , useApp} from "store";
 import { FiDatabase } from "react-icons/fi";
 import JSONViewer from 'react-json-viewer';
 import { JsonView } from "components/blocks";
@@ -11,7 +11,7 @@ import React, { useState } from "react";
 export const Data: React.FC = () => {
   
   const forms = useForms((state) => state.forms);
-  const queries = useQueries((state) => state.queries);
+  const queries = useApp((state) => state.queries);
   const pageData = useForms((state) => state.pageData);
   const globalData = useForms((state) => state.globalData);
   const actions = useActions((state) => state.actions);
