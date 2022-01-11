@@ -19,8 +19,6 @@ export const interpolate = (t, c) => {
     (m,p)=>p.split('.').reduce((a,f)=>a?a[f]:undefined,c)??m);
 }
 
-
-
 export const getBy = (ob: any, path: string) => {
   const p = path.split(".");
   for (let i = 0; i < p.length; i++) {

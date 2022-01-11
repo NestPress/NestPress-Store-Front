@@ -16,7 +16,7 @@ export const MainMapper: React.FC<Props> = memo(
     if (!items.length) return null;
     
     const components = useApp((state) => state.components);
-    const setData = useApp((state) => state.setData);
+    const setStore = useApp((state) => state.setStore);
     const targeter = getFromStore({store:"custom", ref:"activeTargeter"})
 
 
@@ -25,7 +25,7 @@ export const MainMapper: React.FC<Props> = memo(
       <>
         {items.map((el, i) => { 
           if(!components[el.block]){
-              setData({
+              setStore({
                 store: 'components',
                 ref: el.block,
                 data: dynamic(() => import(`components/${el.block}`)),
@@ -40,8 +40,8 @@ export const MainMapper: React.FC<Props> = memo(
                 attrs={{ 
                   id: el.id, 
                   i:i,
-                  queryIndex: el.queryIndex,
-                  dataTarget: el.dataTarget,
+                  ...(el.queryIndex && {queryIndex: el.queryIndex}),
+                  ...(el.dataTarget && {dataTarget: el.dataTarget}),
                   ...el.attrs 
                 }}
                 key={el.id}

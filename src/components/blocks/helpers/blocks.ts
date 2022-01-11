@@ -90,18 +90,16 @@ export const buildVariables = (variables) => {
   required defined attrs?.shortcodes schema
   example: shortcode('text', attrs, queries) 
 */
-export const shortcode = (key, attrs, dataPart) => {
-    const map = (attr) => {
-      for (const i in attrs?.shortcodes[key]) {
-        attr = attr.replaceAll('${'+attrs?.shortcodes[key][i]+'}', get(dataPart, attrs?.shortcodes[key][i]))
-      }
-      return attr
-    }
-    return (attrs?.shortcodes?.[key] && attrs.queryIndex) 
-      ? map(attrs[key]) : attrs[key]
-  }
-
-
+// export const shortcode = (key, attrs, dataPart) => {
+//     const map = (attr) => {
+//       for (const i in attrs?.shortcodes[key]) {
+//         attr = attr.replaceAll('${'+attrs?.shortcodes[key][i]+'}', get(dataPart, attrs?.shortcodes[key][i]))
+//       }
+//       return attr
+//     }
+//     return (attrs?.shortcodes?.[key] && attrs.queryIndex) 
+//       ? map(attrs[key]) : attrs[key]
+//   }
 
 
 export const parseBlockAttrs = (attrs, useQueries) => {

@@ -62,8 +62,6 @@ export const NavBlocks: React.FC = ({type}) => {
               title: "Example link",
               to: "/",
               classes: "",
-               /* tech attr to storege avilable ${} codes */ 
-              shortcodes: {}
             },
           })
 

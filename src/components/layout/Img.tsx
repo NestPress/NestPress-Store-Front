@@ -1,10 +1,11 @@
 import Image from 'next/image'
 import { memo } from "react";
-import { columns, colspan, rowspan } from "blogData/blockClasses";
+import { parseBlockAttrs } from "helpers"
 interface Props {
   attrs: any;
 }
 const Img: React.FC<Props> = memo(({ attrs,  children }) => {
+  attrs = attrs.dataTarget ? parseBlockAttrs(attrs) : attrs
   return (
     <div className={`block ${attrs.classes}`}>
       <Image 

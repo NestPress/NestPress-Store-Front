@@ -15,7 +15,7 @@ const useApp = create((set) => ({
     layout:[],
     blocks:[]
   },
-  setData: (_in) =>
+  setStore: (_in) =>
     set(
       produce((_) => {
         _[_in.store][_in.ref] = _in.data;

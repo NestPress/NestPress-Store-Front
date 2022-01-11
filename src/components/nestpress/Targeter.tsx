@@ -41,6 +41,7 @@ export const Targeter: React.FC<Props> = ({item, type, level = 0}) => {
   return (
     <>
       {(targeter.id === item.id || targeter.parentId === item.id) && <div 
+        key={`b-${item.id}`}
         onClick={(e) => click(e, item)}
         className={`
           ${targeter.parentId == item.id ? "opacity-70" : null} 
@@ -54,6 +55,7 @@ export const Targeter: React.FC<Props> = ({item, type, level = 0}) => {
         }}>{item.block.split('/')[1]}:{level}</div>}
 
       <div 
+        key={`t-${item.id}`}
         className={`${a} ${b} bottom-0 right-0 cursor-pointer`}
         onClick={(e) => click(e, item)}
         style={{ zIndex: 999, border:c, outline: targeter.id === item.id && '2px solid black' }}> 

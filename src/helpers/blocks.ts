@@ -2,14 +2,21 @@
 // @ts-ignore
 // @ts-nocheck
 import { v4 as uuidv4 } from 'uuid';
-import { getBy, interpolate } from 'helpers'
+import { getBy, interpolate, findStorage } from 'helpers'
+import { useApp, getFromStore } from "store";
+
 /* 
   templating ${} shordcodes by map query (depreciated)
 */
-export const parseBlockAttrs = (attrs:any, useQueries:any) => {
-  const queries = useQueries((state) => state.queries)
-  const partialData = getBy(queries, attrs.dataTarget)
-  partialData?.length ? partialData = partialData[attrs.queryIndex-1] : null
+export const parseBlockAttrs = (attrs:any) => {
+  const partialData = getFromStore(findStorage(attrs.dataTarget))
+  Array.isArray(partialData) ? partialData = partialData[attrs.queryIndex-1] : null
+  const store = {
+    forms: useApp((state) => state.forms),
+    custom: useApp((state) => state.custom),
+    router: useApp((state) => state.router)
+  };
+  partialData = {...partialData, ...store}
   return partialData ? JSON.parse(interpolate(JSON.stringify(attrs), partialData)) : attrs
 }
 /* 

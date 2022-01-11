@@ -22,7 +22,7 @@ export const runCommands = (cmd: []) => {
 /* 
   prepare value type
 */
-const findStorage = (val) => {
+export const findStorage = (val) => {
   const arr = val.split('.');
   return (
     arr[0] === 'custom' || 

@@ -87,13 +87,13 @@ export const BlockControlls: React.FC = () => {
     <div style={{height:"100vh", overflowX:"scroll"}}>
       <MainTabs/>
       <BlocksHeader title={targeter?.block || ""} />
-      <div className='grid grid-cols-6 text-xs gap-1 p-2'>
-        <div className="py-1 ">ID:</div>
-        <div className="col-span-5 bg-gray-100 p-1 border">
+      <div className='grid grid-cols-10 text-xs px-2 pt-2'>
+        <div className="col-span-2 p-px border-t border-l">ID</div>
+        <div className="col-span-8 p-px border-t border-r border-l bg-gray-100 ">
           {targeter?.id || ""}
         </div>
-        <div className="py-1 ">ParentID:</div>
-        <div className="col-span-5 bg-gray-100 p-1 border">
+        <div className="col-span-2 p-px border-t border-l border-b">ParentID</div>
+        <div className="col-span-8 p-px border bg-gray-100">
           {targeter?.parentId || ""}
         </div>
 

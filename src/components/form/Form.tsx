@@ -16,7 +16,7 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
   const router = useRouter()
   const blocks = useBlocks((state) => state.blocks);
   const setBlockAttrs = useBlocks((state) => state.setBlockAttrs);
-  const setData = useApp((state) => state.setData);
+  const setStore = useApp((state) => state.setStore);
   const addAction = useActions((state) => state.addAction);
   const form = getNestedChildren(blocks, attrs.id)
 
@@ -24,7 +24,7 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
 
   getFromStore({ref:attrs.refName, store:"forms"}) 
     ? null 
-    : setData({
+    : setStore({
       store:"forms",
       ref:attrs.refName, 
       data:{...buildFormOutput(form), ...buildVariables(attrs.consts)}
