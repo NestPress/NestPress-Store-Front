@@ -35,7 +35,7 @@ export const Targeter: React.FC<Props> = ({item, type, level = 0}) => {
     useBlocks.setState({ panel: "block"})
     setToStore({store:"custom",ref:`activeTargeter`, data:item})
     const r = getFromStore({store:"router",ref:"slugPath"})
-    router.push(`${r[0]}/${r[1]}#${item.id}`)
+    router.push(`${r.join('/')}#${item.id}`)
   }
 
   return (

@@ -4,8 +4,9 @@
 
 import { useQuery, gql } from '@apollo/client';
 import { useApp, setToStore, pushToStore} from "store";
-import { buildVariables } from "components/blocks/helpers/blocks"
+import { buildVariables, parseBlockAttrs } from "components/blocks/helpers/blocks"
 import { useRouter, useHistory } from "next/router";
+
 
 interface Props {
   attrs: any;

@@ -84,8 +84,8 @@ export const QueryField: React.FC<Props> = ({ keyName, res, block }) => {
         value={block?.attrs[keyName]}
       />
       <div className="border-b py-1">
-        After change query <span className="text-indigo-600 cursor-pointer hover:underline" 
-        onClick={e=>myQuery()}>restart query</span> to refetch all components. (We working to fix this :)</div>
+        After change <span className="text-indigo-600 cursor-pointer hover:underline" 
+        onClick={e=>myQuery()}>restart query</span> to refetch components.</div>
     </>
   );
 };

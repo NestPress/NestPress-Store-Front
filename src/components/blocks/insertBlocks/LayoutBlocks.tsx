@@ -106,8 +106,6 @@ export const LayoutBlocks: React.FC = ({type}) => {
           teachSetBlock({
             ...prefix,
             block: "layout/Img",
-            post: slugPath[1],
-            order: parseInt(blocks[blocks.length - 1].order) + 1,
             attrs: {
               objectfit: "",
               imglayout: "",
@@ -130,9 +128,9 @@ export const LayoutBlocks: React.FC = ({type}) => {
         onClick={(e) =>
           teachSetBlock({
             ...prefix,
-            post: slugPath[1],
             block: "layout/Breakpoints",
             attrs: {
+              handler:"",
               classes: ""
             },
           })

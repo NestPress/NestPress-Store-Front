@@ -81,8 +81,6 @@ export const BlockControlls: React.FC = () => {
       }).catch(error => console.log(error.message));
     }
 
-
-
   return (
     <div style={{height:"100vh", overflowX:"scroll"}}>
       <MainTabs/>

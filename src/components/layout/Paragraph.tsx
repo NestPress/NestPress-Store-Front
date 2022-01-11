@@ -1,6 +1,9 @@
 /* TODO fix type */
 // @ts-ignore
 // @ts-nocheck
+
+// https://www.npmjs.com/package/content-editable
+
 import { memo } from "react";
 import { parseBlockAttrs } from "helpers"
 interface Props {
