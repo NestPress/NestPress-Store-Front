@@ -40,12 +40,42 @@ const setToStore = (_in) => {
   })
   useApp.setState({[_in.store]: nextState});  
 }
+
+const removeById = (_in) => {
+  const i = 0
+  const nextState = produce(useApp.getState()[_in.store] , draft => {
+    const a = getBy(draft, _in.ref.split('.').slice(0, -1).join('.'));
+    i = a.findIndex(el => el[_in.ref.split('.').pop()] === _in.data)
+    a.splice(i, 1);
+  })
+  useApp.setState({[_in.store]: nextState}); 
+  return {index:i} 
+}
+
 const pushToStore = (_in) => {
   const nextState = produce(useApp.getState()[_in.store] , draft => {
-    const array = getBy(draft, _in.ref);
-    setBy(draft,`${_in.ref}`,[...array, _in.data])
+    setBy(draft,`${_in.ref}`,[...getBy(draft, _in.ref), _in.data])
   })
   useApp.setState({[_in.store]: nextState});  
 }
 
-export { useApp, getFromStore, setToStore, pushToStore};
+// const pushByIndex = (_in) => {
+//   const nextState = produce(useApp.getState()[_in.store] , draft => {
+//     const a = getBy(draft, _in.ref.split('.').slice(0, -1).join('.'));
+//     console.log(a)
+//   })
+//   // useApp.setState({[_in.store]: nextState});  
+// }
+
+const itemById = (_in) => {
+  const a = getBy(useApp.getState()[_in.store], _in.ref.split('.').slice(0, -1).join('.'));
+  const i = a.findIndex(el => el[_in.ref.split('.').pop()] === _in.data)
+  return {
+    index:i, 
+    item:a[i],     
+    itemLeft:a[parseInt(i)-1],
+    itemRight:a[parseInt(i)+1],
+  }
+}
+
+export { useApp, getFromStore, setToStore, pushToStore, removeById, itemById};

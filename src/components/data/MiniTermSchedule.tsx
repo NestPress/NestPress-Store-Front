@@ -1,10 +1,12 @@
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { memo } from "react";
+import { parseBlockAttrs } from "helpers"
 interface Props {
-  className?: string;
+  attrs: any;
 }
-export const MiniTermSchedule: React.FC<Props> = ({ className }) => {
+const MiniTermSchedule: React.FC<Props> = memo(({ attrs,  children }) => {
   return (
-    <div className="flex">
+    <div className={`block flex ${attrs.classes}`}>
       <div>
         <div className="p-2 bg-blue-100 rounded-2xl h-min cursor-pointer">
           <FiChevronLeft className=" "/>
@@ -50,7 +52,8 @@ export const MiniTermSchedule: React.FC<Props> = ({ className }) => {
         </div>
       </div>
 
-      
+      {children}  
     </div>
   );
-};
+});
+export default MiniTermSchedule;

@@ -4,9 +4,9 @@
 
 import { FiCornerRightDown, FiArrowDown, FiArrowUp, FiExternalLink, FiArrowRight } from "react-icons/fi";
 import { BlocksHeader, MainTabs } from "components/blocks";
-import { useApp, useBlocks, setToStore } from "store";
+import { useApp, useBlocks, setToStore, removeById, itemById } from "store";
 import { useMutation } from '@apollo/client';
-import { UPDATE_BLOCK, DELETE_BLOCK } from "components/blocks/gql/composer"
+import { UPDATE_BLOCK, UPDATE_BLOCKS, DELETE_BLOCK } from "components/blocks/gql/composer"
 
 import { getNestedChildren } from 'components/blocks/helpers/blocks'
 import { LabelNameValue, DataTarget, QueryField, TagsField, InputField, ImgObjectFit, ImgLayout, TextareaField, KeyValueField, NumberField } from "components/blocks/blockControllsFolder"
@@ -16,7 +16,65 @@ export const BlockControlls: React.FC = () => {
   const targeter = useApp((state) => state.custom.activeTargeter);
   const blocks = useApp((state) => state.display.blocks);
   const replace = useBlocks((state) => state.replace);
-  // const swapBlocks = useBlocks((state) => state.swapBlocks)
+  const swapBlocks = (_in) => {
+
+    const item = itemById({store:'display',ref:'blocks.id', data:targeter.id})
+    
+
+    if( _in.mode == 'up'){
+      if(targeter.parentId == item.itemLeft.parentId){
+        setToStore({store:'display',ref:`blocks.${item.index-1}`, data:{...targeter, order:item.itemLeft.order}})
+        setToStore({store:'display',ref:`blocks.${item.index}`, data:{...item.itemLeft, order:item.item.order}})
+        updateBlocks({ 
+          variables: {input: { blocks: [
+            {
+              attrs: targeter.attrs,
+              block: targeter.block,
+              id: targeter.id,
+              parentId: targeter.parentId.toString(),
+              post: targeter.post,
+              order:item.itemLeft.order
+            },
+            { 
+              attrs: item.itemLeft.attrs,
+              block: item.itemLeft.block,
+              id: item.itemLeft.id,
+              parentId: item.itemLeft.parentId.toString(),
+              post: item.itemLeft.post,
+              order:item.item.order
+            }
+          ]}}
+        }).catch(error => console.log(error.message));
+      }
+    }
+    if( _in.mode == 'down'){
+      if(targeter.parentId == item.itemRight.parentId){
+        setToStore({store:'display',ref:`blocks.${parseInt(item.index)+1}`, data:{...targeter, order:item.itemRight.order}})
+        setToStore({store:'display',ref:`blocks.${item.index}`, data:{...item.itemRight, order:item.item.order}})
+        updateBlocks({ 
+          variables: {input: { blocks: [
+            {
+              attrs: targeter.attrs,
+              block: targeter.block,
+              id: targeter.id,
+              parentId: targeter.parentId.toString(),
+              post: targeter.post,
+              order:item.itemRight.order
+            },
+            { 
+              attrs: item.itemRight.attrs,
+              block: item.itemRight.block,
+              id: item.itemRight.id,
+              parentId: item.itemRight.parentId.toString(),
+              post: item.itemRight.post,
+              order:item.item.order
+            }
+          ]}}
+        }).catch(error => console.log(error.message));
+      }
+    }
+
+  }
 
   const [updateBlock, { updateBlockData, updateBlockLoading, updateBlockError }] = useMutation(UPDATE_BLOCK, {
     onCompleted(updateBlockData) {
@@ -24,18 +82,28 @@ export const BlockControlls: React.FC = () => {
     },
     update: (cache) => {
       cache.evict({ id: "ROOT_QUERY", fieldName: "getBlocks" });
-      cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
+      // cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
+    }, 
+  });
+
+  const [updateBlocks, { updateBlocksData, updateBlocksLoading, updateBlocksError }] = useMutation(UPDATE_BLOCKS, {
+    onCompleted(updateBlocksData) {
+      console.log('update', updateBlocksData)
+    },
+    update: (cache) => {
+      cache.evict({ id: "ROOT_QUERY", fieldName: "getBlocks" });
+      // cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
     }, 
   });
 
   const [deleteBlock, { deleteBlockData, deleteBlockLoading, deleteBlockError }] = useMutation(DELETE_BLOCK, {
     onCompleted(deleteBlockData) {
-      removeBlock(deleteBlockData.deleteBlock);
+      removeById({store:'display',ref:'blocks.id', data:targeter.id})
       useBlocks.setState({ panel: "mainPanel" })
     },
     update: (cache) => {
       cache.evict({ id: "ROOT_QUERY", fieldName: "getBlocks" });
-      cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
+      // cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
     }
   });
 
@@ -90,9 +158,19 @@ export const BlockControlls: React.FC = () => {
         <div className="col-span-8 p-px border-t border-r border-l bg-gray-100 ">
           {targeter?.id || ""}
         </div>
-        <div className="col-span-2 p-px border-t border-l border-b">ParentID</div>
-        <div className="col-span-8 p-px border bg-gray-100">
+        <div className="col-span-2 p-px border-t border-l ">ParentID</div>
+        <div className="col-span-8 p-px border-t border-r bg-gray-100">
           {targeter?.parentId || ""}
+        </div>
+
+        <div className="col-span-2 p-px border-t border-l border-b">Post</div>
+        <div className="col-span-3 p-px border-t border-l border-b bg-gray-100">
+          {targeter?.post || ""}
+        </div>
+
+        <div className="col-span-2 p-px border-t border-l border-b">Order</div>
+        <div className="col-span-3 p-px border bg-gray-100">
+          {targeter?.order || ""}
         </div>
 
       </div>
@@ -236,14 +314,7 @@ export const BlockControlls: React.FC = () => {
                 variables: {
                   id: targeter.id,
                 }
-              }).catch(error => {
-                // if (error.networkError) {
-                //   getNetworkErrors(error).then(console.log)
-                // } else {
-                  console.log(error.message)
-                //}
-              });
-
+              }).catch(error => console.log(error.message));
             }}
           >
             <FiExternalLink />

@@ -54,7 +54,7 @@ export const findOutByBlock = (regBlocks:any, currentId:number, blockName:string
     if(block?.parentId == 0){
       return false
     }else{
-      return block.block === blockName ? block : findOutByBlock(regBlocks, block.parentId, blockName) 
+      return block?.block === blockName ? block : findOutByBlock(regBlocks, block.parentId, blockName) 
     }
     
   }
