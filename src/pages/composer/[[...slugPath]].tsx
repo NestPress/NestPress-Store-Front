@@ -27,8 +27,10 @@ const ComposerPage: React.FC = () => {
 
   // routing event use to change app data by routing way
   useEffect(() => {
-    // setToStore({store:"custom",ref:`activeTargeter`, data:true})
-    // console.log('router change', getFromStore({store:"custom"}))
+    router.asPath === '/' ? router.push('/Page/home') : null
+     if(!rMix.slugPath[1]){
+      useApp.setState({ display: {blocks: []}});
+     }
   }, [router.asPath]);  
 
   useBlocks.setState({ preview: true })

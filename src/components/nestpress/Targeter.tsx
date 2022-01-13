@@ -58,7 +58,11 @@ export const Targeter: React.FC<Props> = ({item, type, level = 0}) => {
         key={`t-${item.id}`}
         className={`${a} ${b} bottom-0 right-0 cursor-pointer`}
         onClick={(e) => click(e, item)}
-        style={{ zIndex: 999, border:c, outline: targeter.id === item.id && '2px solid black' }}> 
+        style={{ 
+          zIndex: 999, border:c, 
+          border: `${item.attrs.handler ? "1px solid orange" : "none"}`, 
+          outline: targeter.id === item.id && '2px solid black' 
+        }}> 
       </div>
     </>  
   );

@@ -3,7 +3,7 @@
 // @ts-nocheck
 import { FiAnchor, FiType, FiMessageSquare, FiFile } from "react-icons/fi";
 import { useRouter, useHistory } from "next/router";
-import { useBlocks } from "store/blocksStore";
+import { useBlocks, useApp, pushToStore } from "store";
 import { v4 as uuidv4 } from 'uuid';
 
 import { useQuery, useMutation } from '@apollo/client';
@@ -14,9 +14,12 @@ export const Page: React.FC = () => {
   const slugPath = router.query?.slugPath || ["Page", "home"];
   const message = useBlocks((state) => state.message);
   const messageType = useBlocks((state) => state.messageType);
-  const storedPage = useBlocks((state) => state.currentPage);
-  const blocks = useBlocks((state) => state.blocks) || [];
-  const setBlock = useBlocks((state) => state.setBlock);
+  // const storedPage = useBlocks((state) => state.currentPage);
+  const blocks = useApp((state) => state.display.blocks) || [];
+  const haveBlocks = useApp((state) => state.custom.handlersBlocks) || [];
+  // const setBlock = useBlocks((state) => state.setBlock);
+
+
   
   const buttonClass =
     " bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500";
@@ -48,9 +51,9 @@ export const Page: React.FC = () => {
   /* mutation */
   const [addNewPost, { addNewPostData, addNewPostLoading, addNewPostError }] = useMutation(CREATE_POST, {
     onCompleted(addNewPostData) {
-      useBlocks.setState({ 
-          blocks: []
-      })
+      
+      useApp.setState({ display: {blocks: []}});
+      
       currentPage.id = addNewPostData.createPost.id
       currentPage.slug = addNewPostData.createPost.slug
       currentPage.postType = addNewPostData.createPost.postType
@@ -89,13 +92,20 @@ export const Page: React.FC = () => {
     onCompleted(addNewBlockData) {
 
       const block = addNewBlockData.createBlock
-      useBlocks.setState({ 
-          blocks: [{...block, parentId:0}]
-      })
+      // useBlocks.setState({ 
+      //     blocks: [{...block, parentId:0}]
+      // })
+        
+      pushToStore({store:"display", ref:`blocks`, data:{...block, parentId:0}})
+    
+        // useApp.setState({ custom: { activeTargeter:payload }})
+        // useBlocks.setState({ panel: "block", composerTab: null });
+
+
       useBlocks.setState({ message: `Page ${slugPath[1]} with block created complete!`})
       useBlocks.setState({ messageType: 'success'})
       /* set block to active */
-      setBlock(block.id);
+      // setBlock(block.id);
       useBlocks.setState({ panel: "block", composerTab: null });
     },
 
@@ -131,7 +141,7 @@ export const Page: React.FC = () => {
           </div> <span>{message}</span>
         </div> }
 
-        {blocks.length === 0 && currentPage.id && <div className="text-xs px-4 py-2 border-b flex items-top gap-1 border-t border-b bg-yellow-100">
+        {!haveBlocks[slugPath[1]] && <div className="text-xs px-4 py-2 border-b flex items-top gap-1 border-t border-b bg-yellow-100">
           <div className="w-3 mt-0.5"><FiFile/></div> <span>Page dont have blocks! <span onClick={e=>{
              addNewBlock({ variables: {
               input:{

@@ -5,7 +5,7 @@ import { FiSettings, FiSave, FiLogIn, FiLogOut } from "react-icons/fi";
 import { useRouter } from "next/router";
 import { usePage } from "store/pageStore";
 import { Upload } from "components/blocks"
-import { useBlocks } from "store/blocksStore";
+import { useApp } from "store";
 import { downloadObjectAsJson } from "components/blocks/helpers/blocks";
 
 export const Settings: React.FC = () => {
@@ -16,7 +16,7 @@ export const Settings: React.FC = () => {
   const buttonDeleteClass =
     " bg-red-400 w-full p-2 rounded mt-1 text-white hover:bg-red-500";
 
-  const blocks = useBlocks((state) => state.blocks) || [];
+  const blocks = useApp((state) => state.display.blocks) || [];
 
  
   return (
@@ -30,6 +30,26 @@ export const Settings: React.FC = () => {
         <div className="text-xs px-4 py-2 border-b bg-yellow-100">
           Message
         </div>
+
+
+        {/*<div className="px-2 mt-2">
+          <label className="inline-flex items-center">
+            <input type="radio" className="form-radio" name="accountType" value="personal"/>
+            <span className="ml-2">Single page</span>
+          </label>
+          <label className="inline-flex items-center ml-6">
+            <input type="radio" className="form-radio" name="accountType" value="busines"/>
+            <span className="ml-2">Business</span>
+          </label>
+        </div>*/}
+      <div className="mx-2 mt-2">
+        <select className="form-select mt-1 block w-full border py-2 bg-white text-xs">
+          <option>This page</option>
+          <option>Pages</option>
+          <option>Layouts</option>
+        </select>
+      </div>  
+
 
        
 

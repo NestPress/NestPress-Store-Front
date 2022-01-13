@@ -14,14 +14,14 @@ export const downloadObjectAsJson = (exportObj: any, exportName: any) => {
   downloadAnchorNode.remove();
 };
 
+/* Interpolate
+https://gist.github.com/smeijer/6580740a0ff468960a5257108af1384e*/
 export const interpolate = (t, c) => {
   return t.replace(/\${([^}]+)}/g,
     (m,p)=>p.split('.').reduce((a,f) => 
       a ? a[f] == 'undefined' ? '' : a[f] : undefined,c) ?? '');
 }
-// function interpolate(t, c){
-//   return t.replace(/\${([^}]+)}/g,(m,p)=>p.split('.').reduce((a,f)=>a?a[f]:undefined,c)??'');
-// }
+
 
 export const getBy = (ob: any, path: string) => {
   const p = path.split(".");

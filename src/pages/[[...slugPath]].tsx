@@ -20,6 +20,7 @@ const ComposerPage: React.FC = () => {
   // routing event use to change app data by routing way
   useEffect(() => {
     router.asPath === '/' ? router.push('/Page/home') : null
+   
   }, [router.asPath]);  
 
   const blocks = useApp((state) => state.display.blocks) || [];
@@ -36,7 +37,7 @@ const ComposerPage: React.FC = () => {
       list?.length && useApp.setState({ display: { blocks:prepareBlocks(list, rMix.slugPath) }}) 
     },
     optimisticResponse(){
-        useApp.setState({ display: {blocks: []}});
+        useApp.setState({ display: {blocks: [{}]}});
       }
   });
 

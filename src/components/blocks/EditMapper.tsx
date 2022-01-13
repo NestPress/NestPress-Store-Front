@@ -51,8 +51,8 @@ export const EditMapper: React.FC<Props> = memo(
                 <Targeter type="before" level={level} item={el} />
                   {el.attrs.handler && 
                     <div 
-                      style={{background:'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAALklEQVQYV2M0Njb+z8DAwJAWxs4wa9VPBkaQAIwDkmCc2Wn1HyQDA2AVMA5IJQB4EBAo8+rnBAAAAABJRU5ErkJggg==) repeat'}}
-                      className="text-xs p-1 text-white">Handler {el.attrs.handler}</div>}
+                      style={{textShadow:'0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff, 0 0 4px #fff', background:'url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAADCAYAAABWKLW/AAAAHklEQVQYV2NkYGBg+F/O8J+xk4GREcYACTKCCJgsAKt9CHmpBbB2AAAAAElFTkSuQmCC) repeat'}}
+                      className="text-xs p-1 text-black">{el.attrs.handler == '$route' ? 'MainLayout work area' : null}</div>}
                 <EditMapper
                   blocks={blocks}
                   parentId={el.id}

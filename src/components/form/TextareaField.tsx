@@ -1,13 +1,15 @@
 // @ts-nocheck
+
 import { memo } from "react";
-import { useApp, useQueries } from "store";
-import { fieldHead, findOutByBlock, parseBlockAttrs } from "helpers"
+import { parseBlockAttrs, fieldHead } from "helpers"
+import { useApp } from "store";
+
 interface Props {
   attrs: any;
 }
 const TextareaField: React.FC<Props> = ({ attrs, children }) => {
   
-  attrs = attrs.dataTarget ? parseBlockAttrs(attrs, useQueries) : attrs
+  attrs = attrs.dataTarget ? parseBlockAttrs(attrs) : attrs
   const {blocks, updateData, ref} = fieldHead(useApp, attrs)
 
   if(attrs.default && ref){
@@ -26,7 +28,7 @@ const TextareaField: React.FC<Props> = ({ attrs, children }) => {
         type={attrs.type || "text"}
         defaultValue={attrs.default}
         onChange={(e)=>{ 
-          updateForm({ref:ref, path:attrs.outputValue, data:e.target.value}) 
+          ref ? updateData({ref:ref, path:attrs.outputValue, data:e.target.value, store:"forms"}) : null
         }}
       />
       {children}

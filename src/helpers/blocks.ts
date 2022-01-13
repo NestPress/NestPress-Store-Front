@@ -3,7 +3,7 @@
 // @ts-nocheck
 import { v4 as uuidv4 } from 'uuid';
 import { getBy, setBy, interpolate, findStorage } from 'helpers'
-import { useApp, getFromStore } from "store";
+import { useApp, getFromStore, setToStore } from "store";
 
 /* 
   templating ${} shordcodes by map query (depreciated)
@@ -36,9 +36,10 @@ export const prepareBlocks = (list:any, slugPath:string) => {
     outBlocks[i] = { ...list[i] };
     i++
   }
+  setToStore({store:"custom",ref:`handlersBlocks`, data:handlersBlocks})
   // Second iterator
   while (j < len_i) {
-    list[j]?.attrs?.handler ? outBlocks[handlersBlocks[slugPath[1]].i]?.parentId = list[j].id : null
+    list[j]?.attrs?.handler ? outBlocks[handlersBlocks[slugPath[1]]?.i]?.parentId = list[j].id : null
     j++
   }
   return outBlocks
