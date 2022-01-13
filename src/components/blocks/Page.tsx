@@ -14,10 +14,8 @@ export const Page: React.FC = () => {
   const slugPath = router.query?.slugPath || ["Page", "home"];
   const message = useBlocks((state) => state.message);
   const messageType = useBlocks((state) => state.messageType);
-  // const storedPage = useBlocks((state) => state.currentPage);
   const blocks = useApp((state) => state.display.blocks) || [];
   const haveBlocks = useApp((state) => state.custom.handlersBlocks) || [];
-  // const setBlock = useBlocks((state) => state.setBlock);
 
 
   
@@ -91,22 +89,28 @@ export const Page: React.FC = () => {
   const [addNewBlock, { addNewBlockData, addNewBlockLoading, addNewBlockError }] = useMutation(CREATE_BLOCK, {
     onCompleted(addNewBlockData) {
 
-      const block = addNewBlockData.createBlock
-      // useBlocks.setState({ 
-      //     blocks: [{...block, parentId:0}]
-      // })
-        
-      pushToStore({store:"display", ref:`blocks`, data:{...block, parentId:0}})
-    
-        // useApp.setState({ custom: { activeTargeter:payload }})
-        // useBlocks.setState({ panel: "block", composerTab: null });
-
-
-      useBlocks.setState({ message: `Page ${slugPath[1]} with block created complete!`})
-      useBlocks.setState({ messageType: 'success'})
-      /* set block to active */
-      // setBlock(block.id);
-      useBlocks.setState({ panel: "block", composerTab: null });
+// const block = addNewBlockData.createBlock;
+      const block = Object.assign({},addNewBlockData.createBlock) 
+      console.log('ts',{store:"display", ref:`blocks`, data:{
+        id:block.id,
+        parentId:block.parentId,
+        attrs:block.attrs,
+        block:block.block,
+        order:block.order,
+        post:block.post
+      }})
+      pushToStore({store:"display", ref:`blocks`, data:{
+        id:block.id,
+        parentId:block.parentId,
+        attrs:block.attrs,
+        block:block.block,
+        order:block.order,
+        post:block.post
+      }})
+      useApp.setState({ custom: { activeTargeter:block }})
+      // router.push(`${slugPath[0]}/${slugPath[1]}/${Math.floor(Math.random() * 9999)}`)
+      window.location.reload();
+      
     },
 
     update: (cache) => {
@@ -149,7 +153,7 @@ export const Page: React.FC = () => {
                 parentId: "0",
                 block: "layout/Grid",
                 post: currentPage.slug,
-                order: (parseInt(currentPage.id) * 100),
+                order: slugPath[0] == 'Page' ? 600 : 10,
                 attrs: {
                     classes:"",
                     handler:""

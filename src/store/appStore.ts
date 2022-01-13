@@ -59,13 +59,13 @@ const pushToStore = (_in) => {
   useApp.setState({[_in.store]: nextState});  
 }
 
-// const pushByIndex = (_in) => {
-//   const nextState = produce(useApp.getState()[_in.store] , draft => {
-//     const a = getBy(draft, _in.ref.split('.').slice(0, -1).join('.'));
-//     console.log(a)
-//   })
-//   // useApp.setState({[_in.store]: nextState});  
-// }
+const pushByIndex = (_in) => {
+  const nextState = produce(useApp.getState()[_in.store] , draft => {
+    const a = getBy(draft, _in.ref.split('.').slice(0, -1).join('.'));
+    a.splice(_in.ref.split('.').pop(), 0, _in.data);
+  })
+  useApp.setState({[_in.store]: nextState}); 
+}
 
 const itemById = (_in) => {
   const a = getBy(useApp.getState()[_in.store], _in.ref.split('.').slice(0, -1).join('.'));
@@ -78,4 +78,4 @@ const itemById = (_in) => {
   }
 }
 
-export { useApp, getFromStore, setToStore, pushToStore, removeById, itemById};
+export { useApp, getFromStore, setToStore, pushToStore, pushByIndex, removeById, itemById};

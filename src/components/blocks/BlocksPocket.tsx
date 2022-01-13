@@ -3,12 +3,12 @@
 // @ts-nocheck
 // import { useBlocks } from "store/blocksStore";
 // import { BlockControlls, InsertBlock, MainPanel } from "components/blocks";
-import { useBlocks } from "store/blocksStore";
-import { FiGrid, FiType, FiClipboard ,FiSave, FiHash, FiDatabase } from "react-icons/fi";
+import { useBlocks, useApp} from "store";
+import { FiGrid, FiType, FiClipboard ,FiSave, FiHash, FiDatabase, FiLink, FiImage } from "react-icons/fi";
  
 
 export const BlocksPocket: React.FC = () => {
-  const blocks = useBlocks((state) => state.blocks) || [];
+  const blocks = useApp((state) => state.display.blocks) || [];
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
   const itemClass = 'text-xs p-1.5 border-b hover:bg-gray-100 grid grid-cols-10 gap-1'
 
@@ -33,6 +33,8 @@ export const BlocksPocket: React.FC = () => {
             {el.block === 'form/SubmitButton' && <FiSave/>}
             {el.block === 'form/InputField' && <FiHash/>}
             {el.block === 'data/QueryList' && <FiDatabase/>}
+            {el.block === 'nav/NavLink' && <FiLink/>}
+            {el.block === 'layout/Img' && <FiImage/>}
 
             
           </div>

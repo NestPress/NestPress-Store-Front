@@ -3,13 +3,16 @@
 // @ts-nocheck
 import { FiFile, FiGitPullRequest, FiChevronLeft } from "react-icons/fi";
 
-import { EditMapper, Composer } from "components/blocks"
-import { prepareBlocks } from "helpers"
+import { EditMapper, Composer, BlocksPocket } from "components/blocks"
+import { prepareBlocks, keysHandler } from "helpers"
 import { useQuery } from '@apollo/client'
 import { GET_BLOCKS } from "components/nestpress"
 import { useRouter } from "next/router"
 import { useEffect } from "react";
 import { useApp, useBlocks, getFromStore, setToStore } from "store";
+import { CREATE_BLOCKS, UPDATE_BLOCKS } from "components/blocks/gql/composer"
+import { useMutation } from '@apollo/client';
+
 
 const ComposerPage: React.FC = () => {
 
@@ -19,6 +22,7 @@ const ComposerPage: React.FC = () => {
   const composerTab = useBlocks((state) => state.composerTab);
   const addBlock = useBlocks((state) => state.addBlock);
   const preview = useBlocks((state) => state.preview);
+  const targeter = useApp((state) => state.custom.activeTargeter);
 
   const router = useRouter();
   const rMix = Object.assign({}, getFromStore({store:"router"}), router.query)
@@ -54,8 +58,40 @@ const ComposerPage: React.FC = () => {
       }
   });
 
-  return <div>
+  const [createBlocks, { createBlocksData, createBlocksLoading, createBlocksError }] = useMutation(CREATE_BLOCKS, {
+    onCompleted(createBlocksData) {
+      console.log('create', createBlocksData)
+    },
+    update: (cache) => {
+      cache.evict({ id: "ROOT_QUERY", fieldName: "getBlocks" });
+    }, 
+  });
 
+  const [updateBlocks, { updateBlocksData, updateBlocksLoading, updateBlocksError }] = useMutation(UPDATE_BLOCKS, {
+    onCompleted(updateBlocksData) {
+      console.log('update', updateBlocksData)
+    },
+    update: (cache) => {
+      cache.evict({ id: "ROOT_QUERY", fieldName: "getBlocks" });
+    }, 
+  });
+
+  return <div tabIndex="0" onKeyDown={(e)=>keysHandler(e, blocks, targeter, (res)=>{
+      if(res.insert){
+        createBlocks({ 
+          variables: {input: { blocks: res.insert}}
+        }).catch(error => console.log(error.message));
+      }
+      if(res.update){
+        updateBlocks({ 
+          variables: {input: { blocks: res.update}}
+        }).catch(error => console.log(error.message));
+      }
+      // updateBlocks({ 
+      //   variables: {input: { blocks: res}}
+      // }).catch(error => console.log(error.message));
+  })}>
+    
     <div className="font-bold text-base text-gray-500 border-b border-gray-300 bg-white mb-0.5 flex items-center">
       <div
         onClick={e=>useBlocks.setState({ blocksPocket: !blocksPocket })} 
@@ -78,6 +114,7 @@ const ComposerPage: React.FC = () => {
     <div style={{marginRight:'330px', marginLeft:"10px", marginTop:"10px"}}>
       { blocks.length > 0 && <EditMapper blocks={blocks} /> }
     </div>
+    {blocksPocket && <div style={{zIndex:10000,position:'relative'}}><BlocksPocket /></div>}
     </div>
 };
 export default ComposerPage;

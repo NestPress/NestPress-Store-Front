@@ -34,7 +34,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
     onCompleted(data) {
         
         const payload = Object.assign({},data.createBlock) 
-        payload.parentId === "0" ? payload.parentId = 0 : null
+        // payload.parentId === "0" ? payload.parentId = 0 : null
         pushToStore({store:"display", ref:`blocks`, data:payload})
     
         useApp.setState({ custom: { activeTargeter:payload }})

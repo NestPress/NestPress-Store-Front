@@ -46,7 +46,9 @@ const Query: React.FC<Props> = ({ attrs, children }) => {
     
   return (
     <div className={`block ${attrs.classes}`}>
-    {targeter && <div className="p-1 bg-gray-600 text-white">QUERY {attrs.refName}</div>}
+    {targeter && <div 
+      style={{textShadow:'0 0 3px #fff, 0 0 3px #fff, 0 0 3px #fff',background:`url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAADCAYAAABWKLW/AAAAHklEQVQYV2NkYGBgmDlz5v/09HRGRhgDJMgIImCyAN0lCs70MCQkAAAAAElFTkSuQmCC) repeat`}}
+      className="p-1 text-black text-xs">Query ref: {attrs.refName}</div>}
     {children}
     </div>
   );

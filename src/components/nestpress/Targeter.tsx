@@ -11,6 +11,7 @@ interface Props {
 export const Targeter: React.FC<Props> = ({item, type, level = 0}) => {
   const panel = useBlocks((state) => state.panel);
   const router = useRouter();
+  const r = getFromStore({store:"router",ref:"slugPath"})
   const targeter = getFromStore({store:"custom", ref:"activeTargeter"})
 
   const a = 'absolute w-full left-0',
@@ -34,7 +35,6 @@ export const Targeter: React.FC<Props> = ({item, type, level = 0}) => {
     e.stopPropagation();
     useBlocks.setState({ panel: "block"})
     setToStore({store:"custom",ref:`activeTargeter`, data:item})
-    const r = getFromStore({store:"router",ref:"slugPath"})
     router.push(`${r.join('/')}#${item.id}`)
   }
 
@@ -49,7 +49,7 @@ export const Targeter: React.FC<Props> = ({item, type, level = 0}) => {
         style={{
           border:'2px solid #000',
           left:`${targeter.id === item.id ? 20 : 0}px`,
-          zIndex:`${level * 1000}`,
+          zIndex:`${1000 + level}`,
           top:'-28px',
           backgroundColor: targeter.id === item.id ? cardColor[0] : cardColor[1],
         }}>{item.block.split('/')[1]}:{level}</div>}
@@ -60,8 +60,10 @@ export const Targeter: React.FC<Props> = ({item, type, level = 0}) => {
         onClick={(e) => click(e, item)}
         style={{ 
           zIndex: 999, border:c, 
+          
+          outline: targeter.id === item.id && '2px solid black',
+          borderLeft: `${item.post == r[1] ? "7px solid #99eeee55" : item.attrs.handler ? "1px solid orange" : "none"}`,
           border: `${item.attrs.handler ? "1px solid orange" : "none"}`, 
-          outline: targeter.id === item.id && '2px solid black' 
         }}> 
       </div>
     </>  

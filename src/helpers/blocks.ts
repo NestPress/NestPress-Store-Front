@@ -84,11 +84,16 @@ export const getNestedChildren = (arr: any, parent: string, withFirst: boolean) 
   Its important if to want to copy blocks
 */
 export const prepareBlocksToClone = (blocks, dataToParse = {}) => {
-  var text = JSON.stringify(blocks)
-  blocks.map(el=>{
-    text = text.replaceAll(el.id, uuidv4())
-  })
-  return JSON.parse(text);
+  if(blocks && blocks.length >= 1){
+    var text = JSON.stringify(blocks)
+    blocks.map(el=>{
+      text = text.replaceAll(el.id, uuidv4())
+    })
+    return JSON.parse(text);
+  }else{
+    return blocks
+  }
+  
 } 
 
 export const targetingAndIndexingBlocks = (item, parentItem) =>{
@@ -97,7 +102,7 @@ export const targetingAndIndexingBlocks = (item, parentItem) =>{
     item = {...item, childrenSlots:[]}
   }
   if(parentItem?.block === 'data/ListData'){
-    parentItem?.childrenSlots.push(parentItem.childrenSlots.length)
+    parentItem?.childrenSlots?.push(parentItem.childrenSlots.length)
     item = {...item, dataTarget: parentItem.attrs.dataTarget, queryIndex: parentItem.childrenSlots.length}
   }
   if(parentItem?.block === 'data/PlainData'){
