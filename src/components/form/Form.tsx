@@ -20,8 +20,6 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
   const addAction = useActions((state) => state.addAction);
   const form = getNestedChildren(blocks, attrs.id)
 
-
-
   getFromStore({ref:attrs.refName, store:"forms"}) 
     ? null 
     : setStore({

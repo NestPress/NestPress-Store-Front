@@ -1,3 +1,7 @@
+/* TODO fix type */
+// @ts-ignore
+// @ts-nocheck
+
 import { setToStore, getFromStore, pushToStore } from "store";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -12,11 +16,9 @@ export const runCommands = (cmd: []) => {
       }else{
         commands.storeRef = findStorage(c[j])
         commands.dataRef = getFromStore(commands.storeRef)
-
       }
     }
   }
-       // console.log(getFromStore({store:"custom"}),getFromStore({store:"forms"}))
 };
 
 /* 

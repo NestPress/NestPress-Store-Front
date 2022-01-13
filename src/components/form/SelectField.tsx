@@ -2,10 +2,9 @@
 // @ts-ignore
 // @ts-nocheck
 import { memo, useState } from "react";
-import { useApp, useQueries } from "store";
-import { fieldHead, findOutByBlock, parseBlockAttrs } from "helpers"
+import { useApp } from "store";
+import { parseBlockAttrs, fieldHead } from "helpers"
 
-// https://blog.logrocket.com/building-a-custom-dropdown-menu-component-for-react-e94f02ced4a1/
 import { FiChevronDown, FiX } from "react-icons/fi";
 import { categoryType } from "types/layout";
 
@@ -16,7 +15,7 @@ interface Props {
 
 const SelectField: React.FC<Props> = ({attrs, children}) => {
   
-  attrs = attrs.dataTarget ? parseBlockAttrs(attrs, useQueries) : attrs
+  attrs = attrs.dataTarget ? parseBlockAttrs(attrs) : attrs
   const {blocks, updateData, ref} = fieldHead(useApp, attrs)
 
   if(attrs.default && ref){
@@ -26,7 +25,7 @@ const SelectField: React.FC<Props> = ({attrs, children}) => {
   const [active, setActive] = useState(false);
   const [activeValue, setActiveValue] = useState(attrs.value);
   return (
-    <div className={`${attrs.classes}`}>
+    <div className={`block ${attrs.classes}`}>
       {active ? (
         <div
           onClick={() => {
@@ -47,7 +46,7 @@ const SelectField: React.FC<Props> = ({attrs, children}) => {
           value={activeValue}
           onChange={(e)=>{ 
             setActiveValue(e.target.value)
-            updateForm({ref:ref, path:attrs.outputValue, data:e.target.value}) 
+            updateData({ref:ref, path:attrs.outputValue, data:e.target.value, store:"forms"}) 
           }}
         />
         {/* dropdownicon */}
@@ -69,7 +68,7 @@ const SelectField: React.FC<Props> = ({attrs, children}) => {
                     onClick={() => {
                       setActiveValue(el.value);
                       setActive(!active);
-                      updateForm({ref:ref, path:attrs.outputValue, data:el.value}) 
+                      updateData({ref:ref, path:attrs.outputValue, data:el.value, store:"forms"}) 
                     }}
                     className="w-64 px-3 py-1 leading-8 border-b hover:bg-gray-100"
                   >

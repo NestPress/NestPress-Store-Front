@@ -1,3 +1,7 @@
+/* TODO fix type */
+// @ts-ignore
+// @ts-nocheck
+
 // https://spacebro.io/articles/fullcalendar-nextjs-10-higher
 import FullCalendar from "@fullcalendar/react";
 import interactionPlugin from "@fullcalendar/interaction";

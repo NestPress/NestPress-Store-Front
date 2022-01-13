@@ -16,8 +16,12 @@ export const downloadObjectAsJson = (exportObj: any, exportName: any) => {
 
 export const interpolate = (t, c) => {
   return t.replace(/\${([^}]+)}/g,
-    (m,p)=>p.split('.').reduce((a,f)=>a?a[f]:undefined,c)??m);
+    (m,p)=>p.split('.').reduce((a,f) => 
+      a ? a[f] == 'undefined' ? '' : a[f] : undefined,c) ?? '');
 }
+// function interpolate(t, c){
+//   return t.replace(/\${([^}]+)}/g,(m,p)=>p.split('.').reduce((a,f)=>a?a[f]:undefined,c)??'');
+// }
 
 export const getBy = (ob: any, path: string) => {
   const p = path.split(".");

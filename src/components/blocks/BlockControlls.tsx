@@ -16,6 +16,10 @@ export const BlockControlls: React.FC = () => {
   const targeter = useApp((state) => state.custom.activeTargeter);
   const blocks = useApp((state) => state.display.blocks);
   const replace = useBlocks((state) => state.replace);
+  const clickAndDrop = () => {
+    setToStore({store:'custom',ref:`activeTargeter.drop`, data:true})
+    setToStore({store:'custom',ref:`blocksCopy`, data:true})
+  }
   const swapBlocks = (_in) => {
 
     const item = itemById({store:'display',ref:'blocks.id', data:targeter.id})
@@ -300,7 +304,7 @@ export const BlockControlls: React.FC = () => {
           
           <button
             className={buttonClass}
-            onClick={(e) => useBlocks.setState({ replace: true })}
+            onClick={(e) => clickAndDrop()}
           >
             <FiExternalLink />
             <span className="ml-2">Click and drop</span>

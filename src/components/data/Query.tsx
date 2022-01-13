@@ -4,7 +4,7 @@
 
 import { useQuery, gql } from '@apollo/client';
 import { useApp, setToStore, pushToStore} from "store";
-import { buildVariables, parseBlockAttrs } from "components/blocks/helpers/blocks"
+import { buildVariables, parseBlockAttrs } from "helpers"
 import { useRouter, useHistory } from "next/router";
 
 
@@ -12,6 +12,8 @@ interface Props {
   attrs: any;
 }
 const Query: React.FC<Props> = ({ attrs, children }) => {
+  attrs = parseBlockAttrs(attrs) 
+  console.log('query',attrs)
   const router = useRouter()
   const slugPath = router.query?.slugPath || ["Page", "home"];
   const targeter = useApp((state) => state.custom.activeTargeter);
@@ -41,7 +43,7 @@ const Query: React.FC<Props> = ({ attrs, children }) => {
       const { queryLoading, queryError, data, refetch } = useQuery(QUERY_GQL, res);
     }
   } catch (error) { console.error('query error:',error) }
-  
+    
   return (
     <div className={`block ${attrs.classes}`}>
     {targeter && <div className="p-1 bg-gray-600 text-white">QUERY {attrs.refName}</div>}

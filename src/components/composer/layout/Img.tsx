@@ -7,12 +7,7 @@ const Img: React.FC<Props> = memo(({ attrs,  children}) => {
   return (
     <div>
       <Image 
-  	    className={`
-  	      ${attrs.colspan ? colspan[attrs.colspan] : null} 
-  	      ${attrs.rowspan ? rowspan[attrs.rowspan] : null} 
-  	      ${attrs.border ? attrs.border : null} 
-  	      ${attrs.rounded ? attrs.rounded : null} 
-  	    `}
+  	    
         
       	layout={attrs.imglayout ? attrs.imglayout : "fill"}
       	objectFit={attrs.objectfit}

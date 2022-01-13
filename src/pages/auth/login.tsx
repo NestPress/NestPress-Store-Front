@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import gql from "graphql-tag";
 import { NextPage } from "next";
 import React, { useEffect, useState } from "react";
-import { useForms } from "store";
+
 
 type Props = {};
 

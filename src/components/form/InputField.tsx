@@ -1,12 +1,17 @@
+/* TODO fix type */
+// @ts-ignore
+// @ts-nocheck
+
 import { memo } from "react";
-import { useApp, useQueries } from "store";
-import { fieldHead, findOutByBlock, parseBlockAttrs } from "helpers"
+import { parseBlockAttrs, fieldHead } from "helpers"
+import { useApp } from "store";
+
 interface Props {
   attrs: any;
 }
 const InputField: React.FC<Props> = memo(({ attrs, children }) => {
   
-  attrs = attrs.dataTarget ? parseBlockAttrs(attrs, useQueries) : attrs
+  attrs = attrs.dataTarget ? parseBlockAttrs(attrs) : attrs
   const {blocks, updateData, ref} = fieldHead(useApp, attrs)
 
   if(attrs.default && ref){

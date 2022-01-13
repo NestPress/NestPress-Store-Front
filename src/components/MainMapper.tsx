@@ -11,15 +11,13 @@ import { targetingAndIndexingBlocks } from "helpers"
 /* TODO fix type */
 // @ts-ignore: Unreachable code error
 export const MainMapper: React.FC<Props> = memo(
-  ({ blocks, parentId = 0, level = 0, parentItem}: TreeProps) => {
+  ({ blocks, parentId = "0", level = 0, parentItem}: TreeProps) => {
     const items = blocks.filter((el) => el.parentId === parentId);
     if (!items.length) return null;
     
     const components = useApp((state) => state.components);
     const setStore = useApp((state) => state.setStore);
     const targeter = getFromStore({store:"custom", ref:"activeTargeter"})
-
-
 
     return (
       <>

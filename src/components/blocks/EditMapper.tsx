@@ -11,7 +11,7 @@ import { targetingAndIndexingBlocks } from "helpers"
 /* TODO fix type */
 // @ts-ignore: Unreachable code error
 export const EditMapper: React.FC<Props> = memo(
-  ({ blocks, parentId = 0, level = 0, parentItem}: TreeProps) => {
+  ({ blocks, parentId = "0", level = 0, parentItem}: TreeProps) => {
     const items = blocks.filter((el) => el.parentId === parentId);
     if (!items.length) return null;
     
