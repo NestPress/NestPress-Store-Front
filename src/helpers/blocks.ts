@@ -29,20 +29,24 @@ export const parseBlockAttrs = (attrs:any) => {
 */
 export const prepareBlocks = (list:any, slugPath:string) => {
   const outBlocks = []; const handlersBlocks = {};
-  // First iterator
-  const i = 0, j = 0, len_i = list.length;
-  while (i < len_i) {
-    list[i].parentId === "0" ? handlersBlocks[list[i].post] = {...list[i], i} : null
-    outBlocks[i] = { ...list[i] };
-    i++
+  if(slugPath[0] == 'Page' || slugPath[0] == 'Panel'){
+     // First iterator
+    const i = 0, j = 0, len_i = list.length;
+    while (i < len_i) {
+      list[i].parentId === "0" ? handlersBlocks[list[i].post] = {...list[i], i} : null
+      outBlocks[i] = { ...list[i] };
+      i++
+    }
+    setToStore({store:"custom",ref:`handlersBlocks`, data:handlersBlocks})
+    // Second iterator
+    while (j < len_i) {
+      list[j]?.attrs?.handler ? outBlocks[handlersBlocks[slugPath[1]]?.i]?.parentId = list[j].id : null
+      j++
+    }
+    list = outBlocks;
   }
-  setToStore({store:"custom",ref:`handlersBlocks`, data:handlersBlocks})
-  // Second iterator
-  while (j < len_i) {
-    list[j]?.attrs?.handler ? outBlocks[handlersBlocks[slugPath[1]]?.i]?.parentId = list[j].id : null
-    j++
-  }
-  return outBlocks
+ 
+  return list
 }
 /* 
   find parent by block name
