@@ -63,11 +63,11 @@ export const findOutByBlock = (regBlocks:any, currentId:number, blockName:string
 /* 
   get childrens
 */
-export const getNestedChildren = (arr: any, parent: string, withFirst: boolean) => {
+export const getNestedChildren = (arr: any, id: string, withFirst: boolean) => {
     const out: any = [];
-    withFirst &&  out.push(arr?.filter((x:any) => x.id === parent)[0]);
+    withFirst &&  out.push(arr?.filter((x:any) => x.id === id)[0]);
     for (const i in arr) {
-      if (arr[i].parentId === parent) {
+      if (arr[i].parentId === id) {
         const children = getNestedChildren(arr, arr[i].id, false);
         if (children.length) {
           children.map((el: any) => out.push(el));
@@ -78,7 +78,32 @@ export const getNestedChildren = (arr: any, parent: string, withFirst: boolean) 
     return out;
   };
 
-
+export const getSliblings = (blocks: any, currentBlock: string,) => {
+    const prepBlocks = []
+    const out = {
+      item:{},
+      itemLeft:{},
+      itemRight:{}
+    }
+    for (const i in blocks) {
+      if(blocks[i].parentId == currentBlock.parentId){
+        prepBlocks.push({
+          ...blocks[i], 
+          index:parseInt(i), 
+          current:blocks[i].id==currentBlock.id ? true : false
+        }) 
+      }
+    }
+    for (const i in prepBlocks) {
+      if(prepBlocks[i].current){
+        out.index = prepBlocks[i].index
+        out.item = prepBlocks[i]
+        out.itemLeft = prepBlocks[parseInt(i)-1] 
+        out.itemRight = prepBlocks[parseInt(i)+1] 
+      }
+    }
+    return out
+}
 /* 
   Get blocks and change ids to unique
   Its important if to want to copy blocks

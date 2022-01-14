@@ -48,6 +48,7 @@ export const Targeter: React.FC<Props> = ({item, type, level = 0}) => {
           cursor-pointer absolute shadow text-white p-1 flex items-center text-xs block-edit-handler`}
         style={{
           border:'2px solid #000',
+          boxShadow:'0 -2px 0 #fff, 2px -2px 0 #fff, -2px -2px 0 #fff',
           left:`${targeter.id === item.id ? 20 : 0}px`,
           zIndex:`${1000 + level}`,
           top:'-28px',
@@ -60,7 +61,6 @@ export const Targeter: React.FC<Props> = ({item, type, level = 0}) => {
         onClick={(e) => click(e, item)}
         style={{ 
           zIndex: 999, border:c, 
-          
           outline: targeter.id === item.id && '2px solid black',
           borderLeft: `${item.post == r[1] ? "7px solid #99eeee55" : item.attrs.handler ? "1px solid orange" : "none"}`,
           border: `${item.attrs.handler ? "1px solid orange" : "none"}`, 

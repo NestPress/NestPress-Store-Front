@@ -7,7 +7,7 @@ import { BlocksHeader, MainTabs } from "components/blocks";
 import { useApp, useBlocks, setToStore, removeById, itemById } from "store";
 import { useMutation } from '@apollo/client';
 import { UPDATE_BLOCK, UPDATE_BLOCKS, DELETE_BLOCK } from "components/blocks/gql/composer"
-
+import { getSliblings } from "helpers"
 import { getNestedChildren } from 'components/blocks/helpers/blocks'
 import { LabelNameValue, DataTarget, QueryField, TagsField, InputField, ImgObjectFit, ImgLayout, TextareaField, KeyValueField, NumberField } from "components/blocks/blockControllsFolder"
 
@@ -24,58 +24,37 @@ export const BlockControlls: React.FC = () => {
   }
   const swapBlocks = (_in) => {
 
-    const item = itemById({store:'display',ref:'blocks.id', data:targeter.id})
-    
+    // const item = itemById({store:'display',ref:'blocks.id', data:targeter.id})
+    const item = getSliblings(blocks,targeter)
+    const out = []
 
     if( _in.mode == 'up'){
-      if(targeter.parentId == item.itemLeft.parentId){
-        setToStore({store:'display',ref:`blocks.${item.index-1}`, data:{...targeter, order:item.itemLeft.order}})
-        setToStore({store:'display',ref:`blocks.${item.index}`, data:{...item.itemLeft, order:item.item.order}})
+      if(item.itemLeft){
+  
+        const update = [{...targeter, order:item.itemLeft.order}, {...item.itemLeft, order:item.item.order}]
+        delete update[0].__typename;
+        delete update[1].current; delete update[1].index; delete update[1].__typename;
+        // console.log(update)
+        setToStore({store:'display',ref:`blocks.${item.itemLeft.index}`, data:update[0]})
+        setToStore({store:'display',ref:`blocks.${item.index}`, data:update[1]})
+
         updateBlocks({ 
-          variables: {input: { blocks: [
-            {
-              attrs: targeter.attrs,
-              block: targeter.block,
-              id: targeter.id,
-              parentId: targeter.parentId.toString(),
-              post: targeter.post,
-              order:item.itemLeft.order
-            },
-            { 
-              attrs: item.itemLeft.attrs,
-              block: item.itemLeft.block,
-              id: item.itemLeft.id,
-              parentId: item.itemLeft.parentId.toString(),
-              post: item.itemLeft.post,
-              order:item.item.order
-            }
-          ]}}
+          variables: {input: { blocks: update}}
         }).catch(error => console.log(error.message));
       }
     }
     if( _in.mode == 'down'){
-      if(targeter.parentId == item.itemRight.parentId){
-        setToStore({store:'display',ref:`blocks.${parseInt(item.index)+1}`, data:{...targeter, order:item.itemRight.order}})
-        setToStore({store:'display',ref:`blocks.${item.index}`, data:{...item.itemRight, order:item.item.order}})
+      if(item.itemRight){
+
+        const update = [{...targeter, order:item.itemRight.order}, {...item.itemRight, order:item.item.order}]
+        console.log(update)
+        delete update[0].__typename;
+        delete update[1].current; delete update[1].index; delete update[1].__typename;
+        setToStore({store:'display',ref:`blocks.${item.itemRight.index}`, data:update[0]})
+        setToStore({store:'display',ref:`blocks.${item.index}`, data:update[1]})
+        
         updateBlocks({ 
-          variables: {input: { blocks: [
-            {
-              attrs: targeter.attrs,
-              block: targeter.block,
-              id: targeter.id,
-              parentId: targeter.parentId.toString(),
-              post: targeter.post,
-              order:item.itemRight.order
-            },
-            { 
-              attrs: item.itemRight.attrs,
-              block: item.itemRight.block,
-              id: item.itemRight.id,
-              parentId: item.itemRight.parentId.toString(),
-              post: item.itemRight.post,
-              order:item.item.order
-            }
-          ]}}
+          variables: {input: { blocks: update}}
         }).catch(error => console.log(error.message));
       }
     }
