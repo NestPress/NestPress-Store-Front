@@ -33,7 +33,7 @@ const afterwareLink = new ApolloLink((operation, forward) => {
 });
 
 const httpLink = createHttpLink({
-  uri: `${NEXT_PUBLIC_API_URL}`,
+  uri: `${process.env.NEXT_PUBLIC_API_URL}`,
   credentials: "same-origin",
 });
 
