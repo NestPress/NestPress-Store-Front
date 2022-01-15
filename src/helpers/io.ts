@@ -2,25 +2,6 @@
 // @ts-ignore
 // @ts-nocheck
 
-export const get = (ob: any, path: string) => {
-  const p = path.split(".");
-  for (let i = 0; i < p.length; i++) {
-    ob = ob?.[p[i]];
-  }
-  return ob;
-};
-
-export const set = (ob: any, value: any, path: string) => {
-  path = path.split(".");
-  for (let i = 0; i < path.length - 1; i++) {
-    ob?.[path[i]] ? null : (ob[path[i]] = {});
-    ob = ob?.[path[i]];
-  }
-  // TODO The left-hand side of an assignment expression may not be an optional property access
-  // @ts-ignore: Unreachable code error
-  ob?.[path[i]] = value;
-};
-
 export const downloadObjectAsJson = (exportObj: any, exportName: any) => {
   const dataStr =
     "data:text/json;charset=utf-8," +
@@ -33,9 +14,30 @@ export const downloadObjectAsJson = (exportObj: any, exportName: any) => {
   downloadAnchorNode.remove();
 };
 
+/* Interpolate
+https://gist.github.com/smeijer/6580740a0ff468960a5257108af1384e*/
 export const interpolate = (t, c) => {
   return t.replace(/\${([^}]+)}/g,
-    (m,p)=>p.split('.').reduce((a,f)=>a?a[f]:undefined,c)??m);
+    (m,p)=>p.split('.').reduce((a,f) => 
+      a ? a[f] == 'undefined' ? '' : a[f] : undefined,c) ?? '');
 }
 
+
+export const getBy = (ob: any, path: string) => {
+  const p = path.split(".");
+  for (let i = 0; i < p.length; i++) {
+    ob = ob?.[p[i]];
+  }
+  return ob;
+};
+
+export const setBy = (obj, path, val) => {
+  path.split && (path=path.split('.'));
+  var i=0, l=path.length, t=obj, x, k;
+  while (i < l) {
+    k = path[i++];
+    if (k === '__proto__' || k === 'constructor' || k === 'prototype') break;
+    t = t[k] = (i === l) ? val : (typeof(x=t[k])===typeof(path)) ? x : (path[i]*0 !== 0 || !!~(''+path[i]).indexOf('.')) ? {} : [];
+  }
+}
 

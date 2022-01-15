@@ -3,21 +3,22 @@
 // @ts-nocheck
 import { useRouter, useHistory } from "next/router"; 
 import { FiEdit } from "react-icons/fi";
-import { useBlocks } from "store/blocksStore";
+import { useApp, getFromStore, setToStore } from "store";
 
 export const BottomBar: React.FC = () => {
   const router = useRouter()
-  const slugPath = router.query?.slugPath || ["Page", "home"];
+  const r = getFromStore({store:"router",ref:"slugPath"})
+  
   return (
-    <div className="sticky border-t bottom-0 w-full bg-pink-500 text-white flex items-center">
+    <div style={{zIndex:2000}} className="sticky border-t bottom-0 w-full bg-pink-500 text-white flex items-center">
       <div className="p-2 border-r ">NP NestPress</div>    
       <div
         onClick={e=>{
-          useBlocks.setState({ preview: true });
-          router.push(['composer',...slugPath].join('/'))
+          setToStore({store:"custom",ref:`activeTargeter`, data:true})
+          router.push(['composer',...r].join('/'))
         }} 
         className="p-3 border-r underline text-xs cursor-pointer flex items-center gap-1">
-        <FiEdit/>Open {slugPath[1]} {slugPath[0]} with composer
+        <FiEdit/>Open {r[1]} {r[0]} with composer
       </div>    
     </div>
   );

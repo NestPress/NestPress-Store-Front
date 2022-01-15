@@ -3,9 +3,8 @@
 // @ts-nocheck
 import { memo } from "react";
 import { useQuery, gql } from '@apollo/client';
-import { get, set } from "helpers/io"
 import { useQueries } from "store";
-import { buildVariables } from "components/blocks/helpers/blocks"
+import { buildVariables, get, set  } from "components/blocks/helpers/blocks"
 import { useRouter, useHistory } from "next/router";
 
 interface Props {

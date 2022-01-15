@@ -1,6 +1,8 @@
+/* TODO fix type */
+// @ts-ignore
+// @ts-nocheck
 import { useQuery, gql } from '@apollo/client';
-import { get } from "helpers/io"
-import { getNestedChildren } from "components/blocks/helpers/blocks"
+import { getNestedChildren, get } from "components/blocks/helpers/blocks"
 import { useBlocks } from "store";
 import { v4 as uuidv4 } from 'uuid';
 interface Props {

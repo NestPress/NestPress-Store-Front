@@ -14,13 +14,13 @@ export const JsonView = ({
   const isDataArray = Array.isArray(data);
   return (
     <div
-      className={`ml-1 border-l text-xs`}
+      className={`text-xs mx-1 `}
     >
       <span
         className=""
         onClick={() => setIsToggled(!isToggled)}
       />
-      {name ? <div className={`key p-1 border-b bg-gray-100  text-gray-700 ${isDataArray && "inline leading-6"}`}>{name}:</div> : <span></span>}
+      {name ? <div className={`key p-1 border-b mt-1 text-gray-700 ${isDataArray && "inline leading-6"}`}>{name}:</div> : <span></span>}
 
       {
        data && Object.keys(data).map((v, i, a) =>
@@ -36,9 +36,9 @@ export const JsonView = ({
          : 
           <p
             key={`${name}-${v}-${i}`} 
-            className={`p-1 border-b ${isDataArray && "inline leading-6"}`}
+            className={`p-1 pl-3 border-b my-px ${isDataArray && "inline rounded leading-6 border  mx-px"}`}
           >
-            {isDataArray ? '' : <span className="key">{v}: </span>}
+            {isDataArray ? '' : <span className="key ">{v}: </span>}
             <span className="text-blue-800 cursor-pointer hover:underline">{data[v]}</span>
           </p>
       )

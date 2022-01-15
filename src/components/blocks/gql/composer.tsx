@@ -44,6 +44,20 @@ export const UPDATE_BLOCK = gql`
     }
   }
 `
+
+export const UPDATE_BLOCKS = gql`
+  mutation updateBlocks(
+    $input: UpdateBlocksInput!
+  ){
+    updateBlocks(
+      input: $input
+    ){
+      id
+      order
+    }
+  }
+`
+
 export const GET_BLOCKS = gql`
   query getBlocks(
     $query: String

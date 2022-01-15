@@ -29,13 +29,22 @@ html {
 .dark-text{
   @apply text-gray-700;
 }
-
+.block{
+  position: relative;
+}
 .block-editable{
+  min-height: 20px;
+  min-width: 20px;
+}
+.block-editable:hover{
+  outline: 1px solid #00000040;
+}
+/*.block-editable{
   position: relative;
   min-height: 20px;
   min-width: 20px;
   outline: 1px dotted #00000020;
- /* border-left: 22px solid #ffffff11;*/
+
 }
 .block-editable:hover{
   outline: 1px solid #00000060;
@@ -48,7 +57,7 @@ html {
 }
 .block-editable:hover > .block-edit-handler{
   visibility: visible;
-}
+}*/
 
 
 

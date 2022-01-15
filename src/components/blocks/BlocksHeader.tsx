@@ -1,10 +1,13 @@
 import { FiEyeOff, FiEye, FiChevronLeft } from "react-icons/fi";
-import { useBlocks } from "store/blocksStore";
+import { useBlocks, useApp, getFromStore } from "store";
+import { useRouter } from "next/router"
 interface Props {
   title?: string;
 }
 export const BlocksHeader: React.FC<Props> = ({title}) => {
-  const preview = useBlocks((state) => state.preview);
+  
+  const router = useRouter();
+  const rMix = Object.assign({}, getFromStore({store:"router"}), router.query)
   
   return (
     <div className="flex justify-between bg-pink-600 text-white">
@@ -16,18 +19,19 @@ export const BlocksHeader: React.FC<Props> = ({title}) => {
       </div>
       <div className="p-2 flex-1">Block: {title}</div>
       <div
-        onClick={(e) => useBlocks.setState({ preview: !preview })}
+        onClick={(e) => {
+          useApp.setState({ custom: { activeTargeter:false }})
+          // useBlocks.setState({ preview: false });
+          router.push(`/${rMix.slugPath[0]}/${rMix.slugPath[1]}`)}}
+
         className="border-l p-2 flex items-center cursor-pointer"
       >
-        {preview ? (
+        
           <div>
             <FiEye />
           </div>
-        ) : (
-          <div>
-            <FiEyeOff />
-          </div>
-        )}
+        
+          
       </div>
     </div>
   );

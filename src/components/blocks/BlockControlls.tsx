@@ -4,48 +4,91 @@
 
 import { FiCornerRightDown, FiArrowDown, FiArrowUp, FiExternalLink, FiArrowRight } from "react-icons/fi";
 import { BlocksHeader, MainTabs } from "components/blocks";
-import { useBlocks } from "store/blocksStore";
-import { useRouter } from "next/router";
-
+import { useApp, useBlocks, setToStore, removeById, itemById } from "store";
 import { useMutation } from '@apollo/client';
-import { UPDATE_BLOCK, DELETE_BLOCK } from "components/blocks/gql/composer"
-
+import { UPDATE_BLOCK, UPDATE_BLOCKS, DELETE_BLOCK } from "components/blocks/gql/composer"
+import { getSliblings } from "helpers"
 import { getNestedChildren } from 'components/blocks/helpers/blocks'
-import { LabelNameValue, DataTarget, QueryField, TagsField, InputField, ImgObjectFit, ImgLayout, TextareaField, KeyValueField, NumberField } from "components/blocks/blockControlls"
+import { LabelNameValue, DataTarget, QueryField, TagsField, InputField, ImgObjectFit, ImgLayout, TextareaField, KeyValueField, NumberField } from "components/blocks/blockControllsFolder"
 
 export const BlockControlls: React.FC = () => {
+  
 
-  const blocks = useBlocks((state) => state.blocks);
-  const block = () => blocks.find((x) => x.id === selectedBlockId);
-  const selectedBlockId = useBlocks((state) => state.selectedBlockId);
-  const swapBlocks = useBlocks((state) => state.swapBlocks)
-  const setBlockAttrs = useBlocks((state) => state.setBlockAttrs);
+
+  const targeter = useApp((state) => state.custom.activeTargeter);
+  const blocks = useApp((state) => state.display.blocks);
   const replace = useBlocks((state) => state.replace);
-  const removeBlock = useBlocks((state) => state.removeBlock);
-  const router = useRouter();
-  const slugPath = router.query?.slugPath || ["Page","home"];
+  const clickAndDrop = () => {
+    setToStore({store:'custom',ref:`activeTargeter.drop`, data:true})
+    setToStore({store:'custom',ref:`blocksCopy`, data:true})
+  }
+  const swapBlocks = (_in) => {
+
+    // const item = itemById({store:'display',ref:'blocks.id', data:targeter.id})
+    const item = getSliblings(blocks,targeter)
+    const out = []
+
+    if( _in.mode == 'up'){
+      if(item.itemLeft){
+  
+        const update = [{...targeter, order:item.itemLeft.order}, {...item.itemLeft, order:item.item.order}]
+        delete update[0].__typename;
+        delete update[1].current; delete update[1].index; delete update[1].__typename;
+        // console.log(update)
+        setToStore({store:'display',ref:`blocks.${item.itemLeft.index}`, data:update[0]})
+        setToStore({store:'display',ref:`blocks.${item.index}`, data:update[1]})
+
+        updateBlocks({ 
+          variables: {input: { blocks: update}}
+        }).catch(error => console.log(error.message));
+      }
+    }
+    if( _in.mode == 'down'){
+      if(item.itemRight){
+
+        const update = [{...targeter, order:item.itemRight.order}, {...item.itemRight, order:item.item.order}]
+        console.log(update)
+        delete update[0].__typename;
+        delete update[1].current; delete update[1].index; delete update[1].__typename;
+        setToStore({store:'display',ref:`blocks.${item.itemRight.index}`, data:update[0]})
+        setToStore({store:'display',ref:`blocks.${item.index}`, data:update[1]})
+        
+        updateBlocks({ 
+          variables: {input: { blocks: update}}
+        }).catch(error => console.log(error.message));
+      }
+    }
+
+  }
 
   const [updateBlock, { updateBlockData, updateBlockLoading, updateBlockError }] = useMutation(UPDATE_BLOCK, {
     onCompleted(updateBlockData) {
-     
       console.log('update', updateBlockData)
-
     },
     update: (cache) => {
       cache.evict({ id: "ROOT_QUERY", fieldName: "getBlocks" });
-      cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
+      // cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
+    }, 
+  });
+
+  const [updateBlocks, { updateBlocksData, updateBlocksLoading, updateBlocksError }] = useMutation(UPDATE_BLOCKS, {
+    onCompleted(updateBlocksData) {
+      console.log('update', updateBlocksData)
+    },
+    update: (cache) => {
+      cache.evict({ id: "ROOT_QUERY", fieldName: "getBlocks" });
+      // cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
     }, 
   });
 
   const [deleteBlock, { deleteBlockData, deleteBlockLoading, deleteBlockError }] = useMutation(DELETE_BLOCK, {
     onCompleted(deleteBlockData) {
-      // console.log('delete', deleteBlockData)
-      removeBlock(deleteBlockData.deleteBlock);
+      removeById({store:'display',ref:'blocks.id', data:targeter.id})
       useBlocks.setState({ panel: "mainPanel" })
     },
     update: (cache) => {
       cache.evict({ id: "ROOT_QUERY", fieldName: "getBlocks" });
-      cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
+      // cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
     }
   });
 
@@ -55,28 +98,23 @@ export const BlockControlls: React.FC = () => {
     "flex items-center bg-red-400 w-full p-2 rounded  text-white hover:bg-blue-500";
   
   const res = (res) => {
-    res.mutation ? saveData(res) : setBlockAttrs({...res,id:selectedBlockId})
+
+    if(res.mutation){
+      saveData(res) 
+    }else{
+      setToStore({store:"display",ref:`blocks.${blocks.findIndex((x) => x.id === targeter.id)}.attrs.${res.key}`, data:res.value})
+      setToStore({store:"custom",ref:`activeTargeter.attrs.${res.key}`, data:res.value})
+    }
     /* hack to rerender after first loading */
-    router.push(`${slugPath[0]}/${slugPath[1]}/${Math.floor(Math.random() * 9999)}`)
+    // router.push(`${slugPath[0]}/${slugPath[1]}/${Math.floor(Math.random() * 9999)}`)
+  
   }
 
   function saveData(res){
-      const refBlock = block();
+      const refBlock = targeter;
       const copy = JSON.parse(JSON.stringify(refBlock.attrs))
       copy[res.key] = res.value
-      
-      /* -------------------------- */
-      /* build paths to shortcodes */
 
-      // if(typeof res.value === 'string'){
-      //   const matches = res.value.match(/(?<=\$\{).+?(?=\})/g);
-      //   if(matches?.length > 0){
-      //     copy['shortcodes'][res.key] = matches
-      //   }else{
-      //     copy['shortcodes']?.[res.key] ? delete copy['shortcodes'][res.key] : null
-      //   }
-      // }
-      
       /* TODO - for queries variables */
       if(typeof res.value === 'object'){
         console.log('start update object', res.key, res.value, copy)
@@ -93,37 +131,41 @@ export const BlockControlls: React.FC = () => {
             attrs:copy
           }
         }
-      }).catch(error => {
-        // if (error.networkError) {
-        //   getNetworkErrors(error).then(console.log)
-        // } else {
-          console.log(error.message)
-        //}
-      });
+      }).catch(error => console.log(error.message));
     }
-
-
 
   return (
     <div style={{height:"100vh", overflowX:"scroll"}}>
       <MainTabs/>
-      <BlocksHeader title={block()?.block || ""} />
-      <div className='grid grid-cols-2 text-xs gap-1 p-2'>
-      <div className="py-1 col-span-2">ID:</div>
-        <div className="col-span-2 bg-gray-100 p-1 border">
-          {block()?.id || ""}
+      <BlocksHeader title={targeter?.block || ""} />
+      <div className='grid grid-cols-10 text-xs px-2 pt-2'>
+        <div className="col-span-2 p-px border-t border-l">ID</div>
+        <div className="col-span-8 p-px border-t border-r border-l bg-gray-100 ">
+          {targeter?.id || ""}
         </div>
-        <div className="py-1 col-span-2">ParentID:</div>
-        <div className="col-span-2 bg-gray-100 p-1 border">
-          {block()?.parentId || ""}
+        <div className="col-span-2 p-px border-t border-l ">ParentID</div>
+        <div className="col-span-8 p-px border-t border-r bg-gray-100">
+          {targeter?.parentId || ""}
         </div>
+
+        <div className="col-span-2 p-px border-t border-l border-b">Post</div>
+        <div className="col-span-3 p-px border-t border-l border-b bg-gray-100">
+          {targeter?.post || ""}
+        </div>
+
+        <div className="col-span-2 p-px border-t border-l border-b">Order</div>
+        <div className="col-span-3 p-px border bg-gray-100">
+          {targeter?.order || ""}
+        </div>
+
       </div>
+      
 
       <div className="col-span-2 p-2 mt-2 text-xs font-bold bg-gray-200">Attributes</div>
 
       <div className={`${updateBlockLoading ? 'pointer-events-none' : null}  grid grid-cols-2 text-xs gap-1 px-2`}>
         
-        {Object.keys(block()?.attrs || {}).map((key, index) => {
+        {Object.keys(targeter?.attrs || {}).map((key, index) => {
           return !replace ? (
             <div key={index} className={` ${ 
                 key !== "width" &&
@@ -142,20 +184,20 @@ export const BlockControlls: React.FC = () => {
                 key === "width" ||
                 key === "height" 
                 ) && (
-                <NumberField key={`nbr-${index}`} keyName={key} res={res} block={block()} />
+                <NumberField key={`nbr-${index}`} keyName={key} res={res} block={targeter} />
               )}
 
               {
                 /* Print textarea controll */ 
                 (key === "text" ||  key === "mutation") && (
-                <TextareaField key={`txa-${index}`} keyName={key} res={res} block={block()}/>
+                <TextareaField key={`txa-${index}`} keyName={key} res={res} block={targeter}/>
               )}
 
               {key === "imglayout" && (
-                <ImgLayout key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
+                <ImgLayout key={`bgc-${index}`} keyName={key} res={res} block={targeter}/>
               )}
               {key === "objectfit" && (
-                <ImgObjectFit key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
+                <ImgObjectFit key={`bgc-${index}`} keyName={key} res={res} block={targeter}/>
               )}
 
               {(
@@ -163,28 +205,24 @@ export const BlockControlls: React.FC = () => {
                 key === "consts" || 
                 key === "errorActions" || 
                 key === "successActions") && (
-                <KeyValueField key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
+                <KeyValueField key={`bgc-${index}`} keyName={key} res={res} block={targeter}/>
               )}
 
               {key === "classes" && (
-                <TagsField key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
+                <TagsField key={`bgc-${index}`} keyName={key} res={res} block={targeter}/>
               )}
 
               {key === "query" && (
-                <QueryField key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
+                <QueryField key={`bgc-${index}`} keyName={key} res={res} block={targeter}/>
               )}
 
               {key === "dataTarget" && (
-                <DataTarget key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
+                <DataTarget key={`bgc-${index}`} keyName={key} res={res} block={targeter}/>
               )}
 
               {key === "options" && (
-                <LabelNameValue key={`bgc-${index}`} keyName={key} res={res} block={block()}/>
+                <LabelNameValue key={`bgc-${index}`} keyName={key} res={res} block={targeter}/>
               )}
-
-              
-
-              
 
               {key !== "text" &&
                 key !== "mutation" &&
@@ -204,7 +242,7 @@ export const BlockControlls: React.FC = () => {
  
                 
                (
-                  <InputField key={`brd-${index}`} keyName={key} res={res}  block={block()}/>
+                  <InputField key={`brd-${index}`} keyName={key} res={res}  block={targeter}/>
                 )}
             </div>
           ) : null;
@@ -247,7 +285,7 @@ export const BlockControlls: React.FC = () => {
           
           <button
             className={buttonClass}
-            onClick={(e) => useBlocks.setState({ replace: true })}
+            onClick={(e) => clickAndDrop()}
           >
             <FiExternalLink />
             <span className="ml-2">Click and drop</span>
@@ -259,16 +297,9 @@ export const BlockControlls: React.FC = () => {
               useBlocks.setState({ panel: "mainPanel" });
               deleteBlock({ 
                 variables: {
-                  id: selectedBlockId,
+                  id: targeter.id,
                 }
-              }).catch(error => {
-                // if (error.networkError) {
-                //   getNetworkErrors(error).then(console.log)
-                // } else {
-                  console.log(error.message)
-                //}
-              });
-
+              }).catch(error => console.log(error.message));
             }}
           >
             <FiExternalLink />

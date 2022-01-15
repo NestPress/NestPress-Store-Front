@@ -1,5 +1,13 @@
+/* TODO fix type */
+// @ts-ignore
+// @ts-nocheck
+
 // TODO
 // https://www.npmjs.com/package/gql-query-builder
+import { pushToStore, useApp, getFromStore , setToStore} from "store";
+import { useState } from "react";
+import { useLazyQuery, gql } from '@apollo/client';
+import { buildVariables } from "components/blocks/helpers/blocks"
 
 interface Props {
   keyName: string;
@@ -7,6 +15,17 @@ interface Props {
   block: any
 }
 export const QueryField: React.FC<Props> = ({ keyName, res, block }) => {
+     
+  const targeter = useApp((state) => state.custom.activeTargeter);
+  const QUERY_GQL = targeter.attrs.query ? gql `${targeter.attrs.query}` : gql `query {a: Boolean}`
+  const qres = {}
+  // targeter.attrs.variables ? qres.variables = buildVariables(targeter.attrs.variables) : null
+  const [ myQuery, { queryLoading, data } ] = useLazyQuery(QUERY_GQL, {variables:buildVariables(targeter.attrs.variables)}) ;  
+
+  if (data) {
+    setToStore({store:"queries", ref:`${targeter.attrs.refName || targeter.attrs.id}`, data:data})
+  }
+
   const update = (value) => {
     res({ key: keyName, value: value, mutation: false});
     res({ key: keyName, value: value, mutation: true});
@@ -51,7 +70,7 @@ export const QueryField: React.FC<Props> = ({ keyName, res, block }) => {
   }`)} 
           className="text-indigo-600 cursor-pointer hover:underline pl-1">getPost</span> 
         <span 
-          onClick={e=>update(``)} 
+          onClick={e=>update('')} 
           className="text-indigo-600 cursor-pointer hover:underline pl-1">clear</span> 
       </div>
       <textarea
@@ -68,7 +87,9 @@ export const QueryField: React.FC<Props> = ({ keyName, res, block }) => {
         className="col-span-3 border p-1 w-full"
         value={block?.attrs[keyName]}
       />
-      <div className="border-b py-1">After change query <span className="text-indigo-600 cursor-pointer hover:underline" onClick={e=>window.location.reload(false)}>restart app</span> to refetch all components. (We working to fix this :)</div>
+      <div className="border-b py-1">
+        After change <span className="text-indigo-600 cursor-pointer hover:underline" 
+        onClick={e=>myQuery()}>restart query</span> to refetch components.</div>
     </>
   );
 };

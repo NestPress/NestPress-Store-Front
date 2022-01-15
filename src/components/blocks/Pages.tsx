@@ -4,7 +4,7 @@
 // https://tailwindcss-custom-forms.netlify.app/
 import { FiFile, FiAnchor } from "react-icons/fi";
 import { useRouter } from "next/router";
-import { useBlocks } from "store/blocksStore";
+import { useBlocks,useApp } from "store";
 import { slugify } from "components/blocks/helpers/blocks";
 import { useQuery, useMutation} from '@apollo/client';
 import { FILTER_POSTS , CREATE_POST, CREATE_BLOCK } from "components/blocks/gql/composer"
@@ -45,6 +45,8 @@ export const Pages: React.FC = () => {
   /* mutation */
   const [addNewPost, { addNewPostData, addNewPostLoading, addNewPostError }] = useMutation(CREATE_POST, {
     onCompleted(addNewPostData) {
+
+      useApp.setState({ display: {blocks: []}});
 
       useBlocks.setState({ message: ''})
       useBlocks.setState({ composerTab: "page" });

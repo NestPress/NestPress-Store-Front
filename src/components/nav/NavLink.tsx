@@ -1,18 +1,21 @@
+/* TODO fix type */
+// @ts-ignore
+// @ts-nocheck
 import Link from "next/link";
-import { shortcode } from "components/blocks/helpers/blocks"
-import { useQueries } from "store";
+import { memo } from "react";
+import { parseBlockAttrs } from "helpers"
 interface Props {
   attrs: any;
 }
-const NavLink: React.FC<Props> = ({ attrs, children }) => {
-  const queries = useQueries((state) => state.queries)?.[attrs.queryRef]?.[attrs.queryIndex-1];
+const NavLink: React.FC<Props> = memo(({ attrs, children }) => {
+  attrs = attrs.dataTarget ? parseBlockAttrs(attrs) : attrs
   return (
-    <Link href={typeof queries === 'object' ? shortcode('to', attrs, queries) : attrs.to}>
+    <Link href={attrs.to}>
       <a className={`block items-center hover:underline ${attrs.classes}`}>
-        {attrs.title ? <span>{typeof queries === 'object' ? shortcode('title', attrs, queries) : attrs.title}</span> : null}
+        {attrs.title ? <span>{attrs.title}</span> : null}
         {children}
       </a>
     </Link>
   );
-};
+});
 export default NavLink;

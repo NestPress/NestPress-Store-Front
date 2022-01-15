@@ -1,7 +1,7 @@
 /* TODO fix type */
 // @ts-ignore
 // @ts-nocheck
-import { useForms, useQueries, useActions } from "store";
+import { useForms, useQueries, useActions , useApp} from "store";
 import { FiDatabase } from "react-icons/fi";
 import JSONViewer from 'react-json-viewer';
 import { JsonView } from "components/blocks";
@@ -10,10 +10,10 @@ import React, { useState } from "react";
 
 export const Data: React.FC = () => {
   
-  const forms = useForms((state) => state.forms);
-  const queries = useQueries((state) => state.queries);
-  const pageData = useForms((state) => state.pageData);
-  const globalData = useForms((state) => state.globalData);
+  const forms = useApp((state) => state.forms);
+  const queries = useApp((state) => state.queries);
+  const router = useApp((state) => state.router);
+  const custom = useApp((state) => state.custom);
   const actions = useActions((state) => state.actions);
 
   const [active, setActive] = useState('');
@@ -38,15 +38,20 @@ export const Data: React.FC = () => {
         <div className="p-2 border-b cursor-pointer" 
           onClick={e => setActive(active==='queries' ? '' : 'queries')}>Queries data</div>
         {active==='queries' && <JsonView data={queries} />}
+        
         <div className="p-2 border-b cursor-pointer" 
           onClick={e => setActive(active==='forms' ? '' : 'forms')}>Forms data</div>
         {active==='forms' && <JsonView data={forms} />}
+
         <div className="p-2 border-b cursor-pointer" 
-          onClick={e => setActive(active==='page' ? '' : 'page')}>Page data</div>
-        {active==='page' && <JsonView data={pageData} />}
-        <div className="p-2 border-b cursor-pointer" 
-          onClick={e => setActive(active==='global' ? '' : 'global')}>Global data</div>
-        {active==='global' && <JsonView data={globalData} />}
+          onClick={e => setActive(active==='router' ? '' : 'router')}>Router</div>
+        {active==='router' && <JsonView data={router} />}
+
+         <div className="p-2 border-b cursor-pointer" 
+          onClick={e => setActive(active==='custom' ? '' : 'custom')}>Custom</div>
+        {active==='custom' && <JsonView data={custom} />}
+
+
       </div>
       <div className="p-2 border-b bg-pink-600 text-white" >
         Actions

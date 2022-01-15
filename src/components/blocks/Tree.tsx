@@ -22,8 +22,6 @@ export const Tree: React.FC<Props> =
     const block = () => blocks.find((x) => x.id === selectedBlockId);
     const preview = useBlocks((state) => state.preview);
 
-   
-
     return (
       <>
         {items.map((item, i) => {

@@ -1,5 +1,5 @@
 import { useBlocks } from "store/blocksStore";
-import { Page, Pages, Reusable, Settings, Users, MainTabs, Data } from "components/blocks";
+import { Page, Pages, Reusable, Settings, Users, MainTabs, Data, KeyCopy } from "components/blocks";
 
 export const MainPanel: React.FC = () => {
   const composerTab = useBlocks((state) => state.composerTab);
@@ -11,7 +11,8 @@ export const MainPanel: React.FC = () => {
       {composerTab === "users" && <Users />}
       {composerTab === "reusable" && <Reusable />}
       {composerTab === "data" && <Data />}
-      {composerTab === "settings" && <Settings />}      
+      {composerTab === "settings" && <Settings />}  
+      {composerTab === "keyCopy" && <KeyCopy />}      
     </div>
   );
 };

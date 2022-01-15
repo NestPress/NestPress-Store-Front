@@ -1,7 +1,11 @@
+/* TODO fix type */
+// @ts-ignore
+// @ts-nocheck
+
 import { useBlocks, useQueries } from "store";
 import { FiChevronDown,  FiChevronUp} from "react-icons/fi";
 import { JsonView } from "components/blocks";
-import { get, set } from "helpers/io"
+import { get, set } from "components/blocks/helpers/blocks"
 
 interface Props {
   item: any;
