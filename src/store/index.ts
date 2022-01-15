@@ -1,5 +1,5 @@
 export * from "./blocksStore";
-// export * from "./formsStore";
-// export * from "./queriesStore";
+export * from "./_formsStore";
+export * from "./_queriesStore";
 export * from "./actionsStore";
 export * from "./appStore";
