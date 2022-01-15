@@ -8,7 +8,7 @@ import { Upload } from "components/blocks"
 import { useApp } from "store";
 import { downloadObjectAsJson } from "components/blocks/helpers/blocks";
 import { useQuery } from '@apollo/client';
-import { FILTER_POSTS } from "components/blocks/gql/composer"
+import { FILTER_POSTS, GET_BLOCKS } from "components/blocks/gql/composer"
 import { useState } from "react";
 
 export const Settings: React.FC = () => {
@@ -29,14 +29,24 @@ export const Settings: React.FC = () => {
   const { loading, error, data, refetch } = useQuery(FILTER_POSTS,{
     variables: { 
       filter:{
-        postType:{
-          in: ['Layout','Page']
-        }
+        postType:{ in: ['Layout','Page'] }
       }
     },
   });
+  // const [getBlocks, { loading, error, data }] = useLazyQuery(GET_BLOCKS);
 
- console.log('data',data)
+  const idata = [{foo:"bar"},{foo:"bar"},{foo:"bar"}];
+  let iteratorCount = 0;
+  const iterator = (a) => {
+    getBlocks({ variables: { filter:{
+        post:{
+          in: ['Layout','Page']
+        }
+      } } })
+    iteratorCount < a.length-1 ? setTimeout(()=>iterator(a, iteratorCount++), 1000) : false    
+  }
+    
+    iterator(idata)
   return (
     
       <div>

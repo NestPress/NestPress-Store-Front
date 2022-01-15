@@ -61,6 +61,7 @@ export const LayoutBlocks: React.FC = ({type}) => {
             attrs: {
               handler:"",
               classes: "",
+              styles:{}
             },
           })
         }

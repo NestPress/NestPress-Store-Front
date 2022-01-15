@@ -204,6 +204,7 @@ export const BlockControlls: React.FC = () => {
                 key === "variables" || 
                 key === "consts" || 
                 key === "errorActions" || 
+                key === "styles" ||
                 key === "successActions") && (
                 <KeyValueField key={`bgc-${index}`} keyName={key} res={res} block={targeter}/>
               )}
@@ -239,6 +240,8 @@ export const BlockControlls: React.FC = () => {
                 key !== "successActions" &&
                 key !== "childrenSlots" &&
                 key !== "dataTarget" &&
+                key !== "styles" &&
+                
  
                 
                (
