@@ -33,8 +33,7 @@ const afterwareLink = new ApolloLink((operation, forward) => {
 });
 
 const httpLink = createHttpLink({
-  uri: "http://localhost:3000/shop-api",
-  // uri: `${process.env.REACT_APP_API_URL}admin-api`,
+  uri: `${NEXT_PUBLIC_API_URL}`,
   credentials: "same-origin",
 });
 
