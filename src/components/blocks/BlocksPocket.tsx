@@ -3,11 +3,13 @@
 // @ts-nocheck
 // import { useBlocks } from "store/blocksStore";
 // import { BlockControlls, InsertBlock, MainPanel } from "components/blocks";
-import { useBlocks, useApp} from "store";
+import { useBlocks, useApp, setToStore, getFromStore} from "store";
 import { FiGrid, FiType, FiClipboard ,FiSave, FiHash, FiDatabase, FiLink, FiImage } from "react-icons/fi";
- 
+ import { useRouter } from "next/router";
 
 export const BlocksPocket: React.FC = () => {
+   const router = useRouter();
+  const slugPath = router.query?.slugPath || ["Page","home"];
   const blocks = useApp((state) => state.display.blocks) || [];
   const selectedBlockId = useBlocks((state) => state.selectedBlockId);
   const itemClass = 'text-xs p-1.5 border-b hover:bg-gray-100 grid grid-cols-10 gap-1'
@@ -20,10 +22,14 @@ export const BlocksPocket: React.FC = () => {
         <div className="flex-1 text-center p-2.5 border-r border-t bg-gray-50">Blocks</div>
         <div className="flex-1 text-center p-2.5">Pages</div>
       </div>
-      {blocks.map(el => <div 
+      {blocks.map(el => el.post == slugPath[1] && <div 
         onClick={e=>{
-          useBlocks.setState({ selectedBlockId: el.id });
           useBlocks.setState({ panel: "block" });
+
+          setToStore({store:"custom", ref:`activeTargeter`, data:el})
+        
+          //console.log( el, getFromStore({store:"custom", ref:"activeTargeter"}))
+          router.push(`/composer/${slugPath.join('/')}#${el.id}`)
         }} 
         className={`${itemClass} ${el.id === selectedBlockId ? 'bg-indigo-100' : null }`}>
           <div className="col-span-1 flex items-center">

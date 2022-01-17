@@ -63,8 +63,8 @@ export const FormBlocks: React.FC = ({type}) => {
               mutation: "",
               refName: prefix.id,
               consts:{},
-              successActions:{},
-              errorActions:{},
+              successActions:[],
+              errorActions:[],
               classes: ""
             },
           })

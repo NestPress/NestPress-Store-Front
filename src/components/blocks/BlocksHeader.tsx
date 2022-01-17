@@ -1,5 +1,5 @@
 import { FiEyeOff, FiEye, FiChevronLeft } from "react-icons/fi";
-import { useBlocks, useApp, getFromStore } from "store";
+import { useBlocks, useApp, getFromStore, setToStore } from "store";
 import { useRouter } from "next/router"
 interface Props {
   title?: string;
@@ -20,7 +20,8 @@ export const BlocksHeader: React.FC<Props> = ({title}) => {
       <div className="p-2 flex-1">Block: {title}</div>
       <div
         onClick={(e) => {
-          useApp.setState({ custom: { activeTargeter:false }})
+          // useApp.setState({ custom: { activeTargeter:false }})
+          setToStore({'store':'custom',ref:'activeTargeter', data:false})
           // useBlocks.setState({ preview: false });
           router.push(`/${rMix.slugPath[0]}/${rMix.slugPath[1]}`)}}
 

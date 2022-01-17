@@ -4,7 +4,7 @@
 import { useMutation } from '@apollo/client';
 import { FiGrid, FiType, FiImage, FiMonitor } from "react-icons/fi";
 import { v4 as uuidv4 } from 'uuid';
-import { getFromStore, useApp, pushToStore, useBlocks } from "store";
+import { getFromStore, useApp, pushToStore, useBlocks, setToStore } from "store";
 import { CREATE_BLOCK } from "components/blocks/gql/composer"
 interface Props {
   type: string;
@@ -34,10 +34,9 @@ export const LayoutBlocks: React.FC = ({type}) => {
     onCompleted(data) {
         
         const payload = Object.assign({},data.createBlock) 
-        // payload.parentId === "0" ? payload.parentId = 0 : null
         pushToStore({store:"display", ref:`blocks`, data:payload})
-    
-        useApp.setState({ custom: { activeTargeter:payload }})
+        setToStore({store:"display", ref:`activeTargeter`, data:payload})
+
         useBlocks.setState({ panel: "block", composerTab: null });
 
     }, 

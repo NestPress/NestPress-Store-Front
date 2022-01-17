@@ -92,14 +92,17 @@ const ComposerPage: React.FC = () => {
       // }).catch(error => console.log(error.message));
   })}>
     
-    <div className="font-bold text-base text-gray-500 border-b border-gray-300 bg-white mb-0.5 flex items-center">
+    <div
+      style={{marginLeft: blocksPocket ? "18rem" : "0px"}} 
+      className="font-bold text-base text-gray-500 border-b border-gray-300 bg-white mb-0.5 flex items-center">
       <div
         onClick={e=>useBlocks.setState({ blocksPocket: !blocksPocket })} 
         className="border-r p-3.5  hover:bg-gray-100 cursor-pointer">
         {blocksPocket ? <FiChevronLeft/> : <FiGitPullRequest/>}
       </div>
       <div onClick={e=>{
-          useApp.setState({ custom: { activeTargeter:false }})
+          // useApp.setState({ custom: { activeTargeter:false }})
+          setToStore({store:"display", ref:`activeTargeter`, data:false})
           // useBlocks.setState({ preview: false });
           router.push(`/${rMix.slugPath[0]}/${rMix.slugPath[1]}`)
         }} className="flex flex-1 items-center hover:bg-gray-100 p-2.5 cursor-pointer ">
@@ -111,7 +114,10 @@ const ComposerPage: React.FC = () => {
 
 
     <div style={{zIndex:2000}}><Composer /></div>
-    <div style={{marginRight:'330px', marginLeft:"10px", marginTop:"10px"}}>
+    <div style={{
+      marginLeft: blocksPocket ? "18rem" : "10px", 
+      marginRight:'330px', 
+      marginTop:"10px"}}>
       { blocks.length > 0 && <EditMapper blocks={blocks} /> }
     </div>
     {blocksPocket && <div style={{zIndex:10000,position:'relative'}}><BlocksPocket /></div>}

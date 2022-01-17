@@ -18,7 +18,6 @@ const ListData: React.FC<Props> = memo(({ attrs, children }) => {
        {Array.isArray(targetedList) ? targetedList.map((el,i)=><>
         {(length-1 === i ) || !targeter ? children : <span key={i}
           className="p-1 m-px text-xs bg-pink-500 text-white">List el. {i}</span>}</>):children}
-        
     </div>
   );
 });

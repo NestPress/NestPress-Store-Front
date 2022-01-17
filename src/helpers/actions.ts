@@ -4,9 +4,11 @@
 
 import { setToStore, getFromStore, pushToStore } from "store";
 import { v4 as uuidv4 } from 'uuid';
+import { interpolate } from 'helpers'
 
-export const runCommands = (cmd: []) => {
-  const cmdList = ['SET','PUSH','FIND', 'UID']
+export const runCommands = (cmd: [], router:any) => {
+  const cmdList = ['SET','PUSH','FIND', 'UID', 'RELOAD']
+  commands.router = router;
   for (const i in cmd) {  
     const c = cmd[i].split('>')
     for (const j in c) { 
@@ -42,6 +44,7 @@ export const findStorage = (val) => {
 const commands = {
   dataRef:{},
   storeRef:{},
+  router:{},
   SET:(_in) => {
     setToStore( {data:commands.dataRef, ...findStorage(_in.next)})
   },
@@ -53,5 +56,8 @@ const commands = {
   }, 
   UID:(_in) => {
     commands.dataRef = uuidv4();
-  }, 
+  },
+  RELOAD:(_in) => {
+    commands.router.push(findStorage(_in.params[1]).ref)
+  },
 }

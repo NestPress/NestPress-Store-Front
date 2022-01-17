@@ -56,7 +56,7 @@ export const findOutByBlock = (regBlocks:any, currentId:number, blockName:string
     if(block?.parentId == 0){
       return false
     }else{
-      return block?.block === blockName ? block : findOutByBlock(regBlocks, block.parentId, blockName) 
+      return block?.block === blockName ? block : findOutByBlock(regBlocks, block?.parentId, blockName) 
     }
   }
 
@@ -127,7 +127,7 @@ export const targetingAndIndexingBlocks = (item, parentItem) =>{
     item = {...item, childrenSlots:[]}
   }
   if(parentItem?.block === 'data/ListData'){
-    parentItem?.childrenSlots?.push(parentItem.childrenSlots.length)
+    try{parentItem?.childrenSlots?.push(parentItem.childrenSlots.length)} catch (error) {}
     item = {...item, dataTarget: parentItem.attrs.dataTarget, queryIndex: parentItem.childrenSlots.length}
   }
   if(parentItem?.block === 'data/PlainData'){
@@ -153,6 +153,18 @@ export const buildVariables = (variables) => {
   return out
 }
 
+export const sanitBlock = (block) => {
+  const out = {
+          id: block.id,
+          post: block.post,
+          parentId: block.parentId,
+          block: block.block,
+          attrs:block.attrs,
+          order:block.order,
+        }
+  
+  return out
+}
 
 
 

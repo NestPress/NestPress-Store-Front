@@ -40,7 +40,7 @@ export const Targeter: React.FC<Props> = ({item, type, level = 0}) => {
 
   return (
     <>
-      {(targeter.id === item.id || targeter.parentId === item.id) && <div 
+      {(targeter?.id === item.id || targeter?.parentId === item.id) && <div 
         key={`b-${item.id}`}
         onClick={(e) => click(e, item)}
         className={`
@@ -61,7 +61,7 @@ export const Targeter: React.FC<Props> = ({item, type, level = 0}) => {
         onClick={(e) => click(e, item)}
         style={{ 
           zIndex: 999, border:c, 
-          outline: targeter.id === item.id && '2px solid black',
+          outline: targeter?.id === item.id && '2px solid black',
           borderLeft: `${item.post == r[1] ? "7px solid #99eeee55" : item.attrs.handler ? "1px solid orange" : "none"}`,
           border: `${item.attrs.handler ? "1px solid orange" : "none"}`, 
         }}> 

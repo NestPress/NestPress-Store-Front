@@ -7,9 +7,9 @@ import { BlocksHeader, MainTabs } from "components/blocks";
 import { useApp, useBlocks, setToStore, removeById, itemById } from "store";
 import { useMutation } from '@apollo/client';
 import { UPDATE_BLOCK, UPDATE_BLOCKS, DELETE_BLOCK } from "components/blocks/gql/composer"
-import { getSliblings } from "helpers"
+import { getSliblings, sanitBlock } from "helpers"
 import { getNestedChildren } from 'components/blocks/helpers/blocks'
-import { LabelNameValue, DataTarget, QueryField, TagsField, InputField, ImgObjectFit, ImgLayout, TextareaField, KeyValueField, NumberField } from "components/blocks/blockControllsFolder"
+import { LabelNameValue, DataTarget, QueryField, EnumField, TagsField, InputField, ImgObjectFit, ImgLayout, TextareaField, KeyValueField, NumberField } from "components/blocks/blockControllsFolder"
 
 export const BlockControlls: React.FC = () => {
   
@@ -32,14 +32,11 @@ export const BlockControlls: React.FC = () => {
       if(item.itemLeft){
   
         const update = [{...targeter, order:item.itemLeft.order}, {...item.itemLeft, order:item.item.order}]
-        delete update[0].__typename;
-        delete update[1].current; delete update[1].index; delete update[1].__typename;
-        // console.log(update)
-        setToStore({store:'display',ref:`blocks.${item.itemLeft.index}`, data:update[0]})
-        setToStore({store:'display',ref:`blocks.${item.index}`, data:update[1]})
+        setToStore({store:'display',ref:`blocks.${item.itemLeft.index}`, data:sanitBlock(update[0])})
+        setToStore({store:'display',ref:`blocks.${item.index}`, data:sanitBlock(update[1])})
 
         updateBlocks({ 
-          variables: {input: { blocks: update}}
+          variables: {input: { blocks: [sanitBlock(update[0]), sanitBlock(update[1])]}}
         }).catch(error => console.log(error.message));
       }
     }
@@ -47,14 +44,11 @@ export const BlockControlls: React.FC = () => {
       if(item.itemRight){
 
         const update = [{...targeter, order:item.itemRight.order}, {...item.itemRight, order:item.item.order}]
-        console.log(update)
-        delete update[0].__typename;
-        delete update[1].current; delete update[1].index; delete update[1].__typename;
-        setToStore({store:'display',ref:`blocks.${item.itemRight.index}`, data:update[0]})
-        setToStore({store:'display',ref:`blocks.${item.index}`, data:update[1]})
+        setToStore({store:'display',ref:`blocks.${item.itemRight.index}`, data:sanitBlock(update[0])})
+        setToStore({store:'display',ref:`blocks.${item.index}`, data:sanitBlock(update[1])})
         
         updateBlocks({ 
-          variables: {input: { blocks: update}}
+          variables: {input: { blocks: [sanitBlock(update[0]), sanitBlock(update[1])]}}
         }).catch(error => console.log(error.message));
       }
     }
@@ -203,10 +197,14 @@ export const BlockControlls: React.FC = () => {
               {(
                 key === "variables" || 
                 key === "consts" || 
-                key === "errorActions" || 
-                key === "styles" ||
-                key === "successActions") && (
+                key === "styles" ) && (
                 <KeyValueField key={`bgc-${index}`} keyName={key} res={res} block={targeter}/>
+              )}
+
+              {(
+                key === "errorActions" || 
+                key === "successActions") && (
+                <EnumField key={`bgc-${index}`} keyName={key} res={res} block={targeter}/>
               )}
 
               {key === "classes" && (
