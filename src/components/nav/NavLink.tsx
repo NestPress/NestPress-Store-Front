@@ -3,12 +3,12 @@
 // @ts-nocheck
 import Link from "next/link";
 import { memo } from "react";
-import { parseBlockAttrs } from "helpers"
+import { parseBlockAttrs } from "helpers";
 interface Props {
   attrs: any;
 }
 const NavLink: React.FC<Props> = memo(({ attrs, children }) => {
-  attrs = attrs.dataTarget ? parseBlockAttrs(attrs) : attrs
+  attrs = attrs.dataTarget ? parseBlockAttrs(attrs) : attrs;
   return (
     <Link href={attrs.to}>
       <a className={`block items-center hover:underline ${attrs.classes}`}>
