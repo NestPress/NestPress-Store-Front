@@ -17,6 +17,7 @@
     "@fullcalendar/interaction": "^5.10.1",
     "@fullcalendar/react": "^5.10.1",
     "@fullcalendar/timegrid": "^5.10.1",
+    "apollo-upload-client": "^17.0.0",
     "autoprefixer": "^10.4.0",
     "graphql": "^16.0.0",
     "immer": "^9.0.6",
@@ -30,8 +31,8 @@
     "postcss-preset-env": "^6.7.0",
     "react": "@latest",
     "react-dom": "^17.0.2",
-    "react-mapbox-gl": "^5.1.1",
     "react-icons": "^4.3.1",
+    "react-mapbox-gl": "^5.1.1",
     "tailwindcss": "^2.2.19",
     "uuid": "^8.3.2",
     "zustand": "^3.6.2"
