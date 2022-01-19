@@ -1,5 +1,4 @@
 import {
-  useApp,
   setToStore,
   getFromStore,
   useBlocks,
@@ -48,12 +47,12 @@ export const keysHandler = (
         }
         const blocks = getFromStore({ store: "display", ref: `blocks` });
         const reorderBlocks: {
-          insert: any[],
-          update: any[]
+          insert: any[];
+          update: any[];
         } = {
           insert: [],
           update: [],
-        }
+        };
         for (const i in blocks) {
           if (blocks[i].post == targeter.post) {
             const set = {
@@ -72,17 +71,6 @@ export const keysHandler = (
           }
         }
         return res(reorderBlocks);
-
-        // const order = toPaste[0].order;
-        // const blocksToSave = toPaste.map(el=>{return{
-        //   id: el.id,
-        //   parentId: el.parentId,
-        //   attrs: el.attrs,
-        //   block: el.block,
-        //   post: slugPath[1],
-        //   order:order++
-        // }})
-        // addNewBlocks({variables:{input:{blocks:blocksToSave}}})
       }
     } else if (key == 67 && ctrl) {
       // CTRL + C
