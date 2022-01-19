@@ -2,20 +2,20 @@
 // @ts-ignore
 // @ts-nocheck
 // https://tailwindcss-custom-forms.netlify.app/
+import { useMutation } from "@apollo/client";
 
 import { Upload } from "components/nestpress";
 
+import { CREATE_ASSET } from "components/blocks/gql/composer";
 
 export const Users: React.FC = () => {
-  
- 
+  const [createAsset] = useMutation(CREATE_ASSET);
+  const createFile = (file) => {
+    createAsset({ variables: { input: [{ file }] } });
+  };
 
   const buttonClass =
     " bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500";
-
-  const checkFile = (c, f) => {
-    console.log(c,f)
-  }
 
   return (
     <div className="text-sm">
@@ -28,7 +28,7 @@ export const Users: React.FC = () => {
           {/*<FiAnchor />*/}
           <span className="ml-2">Upload new asset</span>
         </div>
-        <Upload res={(c,f)=>checkFile(c,f)}/>
+        <Upload res={createFile} />
       </div>
     </div>
   );

@@ -6,6 +6,12 @@ import {
 } from "@apollo/client";
 // import { UserState, useUser } from "store/userStore";
 import { setContext } from "@apollo/client/link/context";
+import { createUploadLink } from "apollo-upload-client";
+
+const uploadLink = createUploadLink({
+  uri: `${process.env.NEXT_PUBLIC_API_URL}`,
+  credentials: "same-origin",
+});
 
 const authLink = setContext((_, { headers }) => {
   const userStorage = localStorage.getItem("user-storage");
@@ -32,13 +38,8 @@ const afterwareLink = new ApolloLink((operation, forward) => {
   });
 });
 
-const httpLink = createHttpLink({
-  uri: `${process.env.NEXT_PUBLIC_API_URL}`,
-  credentials: "same-origin",
-});
-
 const client = new ApolloClient({
-  link: afterwareLink.concat(authLink).concat(httpLink),
+  link: afterwareLink.concat(authLink).concat(uploadLink),
   cache: new InMemoryCache(),
 });
 
