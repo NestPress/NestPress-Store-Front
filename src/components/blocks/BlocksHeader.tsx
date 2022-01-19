@@ -20,19 +20,14 @@ export const BlocksHeader: React.FC<Props> = ({title}) => {
       <div className="p-2 flex-1">Block: {title}</div>
       <div
         onClick={(e) => {
-          // useApp.setState({ custom: { activeTargeter:false }})
           setToStore({'store':'custom',ref:'activeTargeter', data:false})
-          // useBlocks.setState({ preview: false });
-          router.push(`/${rMix.slugPath[0]}/${rMix.slugPath[1]}`)}}
-
+          router.push(`/${rMix.slugPath.join('/')}`)
+        }}
         className="border-l p-2 flex items-center cursor-pointer"
       >
-        
           <div>
             <FiEye />
-          </div>
-        
-          
+          </div>  
       </div>
     </div>
   );

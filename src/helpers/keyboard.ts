@@ -18,7 +18,6 @@ export const keysHandler = (
   if (!document.activeElement) {
     return null;
   }
-
   if (
     document.activeElement.tagName !== "INPUT" &&
     document.activeElement.tagName !== "TEXTAREA"

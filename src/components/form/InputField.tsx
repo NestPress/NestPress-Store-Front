@@ -3,19 +3,23 @@
 // @ts-nocheck
 
 import { memo } from "react";
-import { parseBlockAttrs, fieldHead } from "helpers"
+import { parseBlockAttrs, fieldHead } from "helpers";
 import { useApp } from "store";
 
 interface Props {
   attrs: any;
 }
 const InputField: React.FC<Props> = memo(({ attrs, children }) => {
-  
-  attrs = attrs.dataTarget ? parseBlockAttrs(attrs) : attrs
-  const {blocks, updateData, ref} = fieldHead(useApp, attrs)
+  attrs = attrs.dataTarget ? parseBlockAttrs(attrs) : attrs;
+  const { updateData, ref } = fieldHead(useApp, attrs);
 
-  if(attrs.default && ref){
-    updateData({ref:ref, path:attrs.outputValue, data:attrs.default, store:"forms"})
+  if (attrs.default && ref) {
+    updateData({
+      ref: ref,
+      path: attrs.outputValue,
+      data: attrs.default,
+      store: "forms",
+    });
   }
 
   return (
@@ -28,8 +32,15 @@ const InputField: React.FC<Props> = memo(({ attrs, children }) => {
         className="bg-white p-3 rounded-sm w-full text-gray-500 text-sm border mt-1"
         type={attrs.type || "text"}
         defaultValue={attrs.default}
-        onChange={(e)=>{ 
-          ref ? updateData({ref:ref, path:attrs.outputValue, data:e.target.value, store:"forms"}) : null
+        onChange={(e) => {
+          ref
+            ? updateData({
+                ref: ref,
+                path: attrs.outputValue,
+                data: e.target.value,
+                store: "forms",
+              })
+            : null;
         }}
       />
       {children}

@@ -87,9 +87,6 @@ const ComposerPage: React.FC = () => {
           variables: {input: { blocks: res.update}}
         }).catch(error => console.log(error.message));
       }
-      // updateBlocks({ 
-      //   variables: {input: { blocks: res}}
-      // }).catch(error => console.log(error.message));
   })}>
     
     <div
@@ -101,10 +98,8 @@ const ComposerPage: React.FC = () => {
         {blocksPocket ? <FiChevronLeft/> : <FiGitPullRequest/>}
       </div>
       <div onClick={e=>{
-          // useApp.setState({ custom: { activeTargeter:false }})
           setToStore({store:"display", ref:`activeTargeter`, data:false})
-          // useBlocks.setState({ preview: false });
-          router.push(`/${rMix.slugPath[0]}/${rMix.slugPath[1]}`)
+          router.push(`/${rMix.slugPath.join('/')}`)
         }} className="flex flex-1 items-center hover:bg-gray-100 p-2.5 cursor-pointer ">
         <FiFile/>
         <div key={router.asPath} className="ml-1 flex-1">{rMix.slugPath[1]}</div>

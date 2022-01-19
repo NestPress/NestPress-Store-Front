@@ -23,8 +23,8 @@ export const KeyValueField: React.FC<Props> = ({ keyName, res,  block }) => {
       <div className="border-b">
         {Object.keys(block?.attrs[keyName]).map(function(key, index) {
           return <div className="grid grid-cols-7  border-t">
-            <div className="border-l border-r p-1 col-span-3 overflow-hidden">{key}</div>
-            <div className="border-r p-1 underline text-blue-800 col-span-3 overflow-hidden">{block?.attrs[keyName][key]}</div>
+            <textarea style={{resize:"none"}} className="border-l border-r p-1 col-span-3 overflow-hidden h-6">{key}</textarea>
+            <textarea style={{resize:"none"}} className="border-r p-1 underline text-blue-800 col-span-3 overflow-hidden h-6">{block?.attrs[keyName][key]}</textarea>
             <div
               onClick={e=>{
                 const out = Object.assign({},block?.attrs[keyName])

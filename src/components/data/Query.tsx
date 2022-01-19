@@ -13,7 +13,6 @@ interface Props {
 }
 const Query: React.FC<Props> = ({ attrs, children }) => {
   attrs = parseBlockAttrs(attrs) 
-  console.log('query',attrs)
   const router = useRouter()
   const slugPath = router.query?.slugPath || ["Page", "home"];
   const targeter = useApp((state) => state.custom.activeTargeter);
@@ -26,14 +25,15 @@ const Query: React.FC<Props> = ({ attrs, children }) => {
         onCompleted(resData) {
           /* stated query result */
           setToStore({store:"queries", ref:`${attrs.refName || attrs.id}`, data:resData})
+          router.push(`${slugPath.join('/')}/${Math.floor(Math.random() * 9999)}`)
           pushToStore({store:"display", ref:"blocks", data:{
             id:Math.floor(Math.random() * 9999),
-            parentId:0,
+            parentId:"0",
             order:0,
-            post:'specjalisci',
-            block:"layout/Paragraph",
+            post:slugPath[1],
+            block:"formForm",
             attrs:{
-              text:`active Query parser for block ${attrs.refName || attrs.id}`, 
+              text:`active Query parser for block ${slugPath[1]} ${attrs.refName || attrs.id}`, 
               classes:"bg-green-400 p-2 text-white"
             }
           }})

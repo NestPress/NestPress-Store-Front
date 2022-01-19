@@ -1,9 +1,9 @@
 /* TODO fix type */
 // @ts-ignore
 // @ts-nocheck
-import { memo, useState } from "react";
+import { useState } from "react";
 import { useApp } from "store";
-import { parseBlockAttrs, fieldHead } from "helpers"
+import { parseBlockAttrs, fieldHead } from "helpers";
 
 import { FiChevronDown, FiX } from "react-icons/fi";
 import { categoryType } from "types/layout";
@@ -13,13 +13,17 @@ interface Props {
   attrs: any;
 }
 
-const SelectField: React.FC<Props> = ({attrs, children}) => {
-  
-  attrs = attrs.dataTarget ? parseBlockAttrs(attrs) : attrs
-  const {blocks, updateData, ref} = fieldHead(useApp, attrs)
+const SelectField: React.FC<Props> = ({ attrs, children }) => {
+  attrs = attrs.dataTarget ? parseBlockAttrs(attrs) : attrs;
+  const { blocks, updateData, ref } = fieldHead(useApp, attrs);
 
-  if(attrs.default && ref){
-    updateData({ref:ref, path:attrs.outputValue, data:attrs.default, store:"forms"})
+  if (attrs.default && ref) {
+    updateData({
+      ref: ref,
+      path: attrs.outputValue,
+      data: attrs.default,
+      store: "forms",
+    });
   }
 
   const [active, setActive] = useState(false);
@@ -35,18 +39,20 @@ const SelectField: React.FC<Props> = ({attrs, children}) => {
         ></div>
       ) : null}
       {attrs.label ? <label className="text-xs">{attrs.label}</label> : null}
-      <div
-        className={`relative w-full text-sm ${active ? "z-10" : null}`}
-      >
-        
+      <div className={`relative w-full text-sm ${active ? "z-10" : null}`}>
         <input
           className="bg-white p-2.5 pr-12 rounded-sm w-full border"
           type="text"
           placeholder={attrs.placeholder}
           value={activeValue}
-          onChange={(e)=>{ 
-            setActiveValue(e.target.value)
-            updateData({ref:ref, path:attrs.outputValue, data:e.target.value, store:"forms"}) 
+          onChange={(e) => {
+            setActiveValue(e.target.value);
+            updateData({
+              ref: ref,
+              path: attrs.outputValue,
+              data: e.target.value,
+              store: "forms",
+            });
           }}
         />
         {/* dropdownicon */}
@@ -60,7 +66,10 @@ const SelectField: React.FC<Props> = ({attrs, children}) => {
 
         {/* options*/}
         {active ? (
-          <ul style={{maxHeight:'340px'}} className="overflow-y-scroll w-full md:w-auto absolute text-left bg-white mt-1 rounded-sm flex flex-col right-0 cursor-pointer z-10">
+          <ul
+            style={{ maxHeight: "340px" }}
+            className="overflow-y-scroll w-full md:w-auto absolute text-left bg-white mt-1 rounded-sm flex flex-col right-0 cursor-pointer z-10"
+          >
             {attrs.options.length &&
               attrs.options.map((el: categoryType) => {
                 return (
@@ -68,7 +77,12 @@ const SelectField: React.FC<Props> = ({attrs, children}) => {
                     onClick={() => {
                       setActiveValue(el.value);
                       setActive(!active);
-                      updateData({ref:ref, path:attrs.outputValue, data:el.value, store:"forms"}) 
+                      updateData({
+                        ref: ref,
+                        path: attrs.outputValue,
+                        data: el.value,
+                        store: "forms",
+                      });
                     }}
                     className="w-64 px-3 py-1 leading-8 border-b hover:bg-gray-100"
                   >

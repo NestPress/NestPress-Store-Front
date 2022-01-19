@@ -4,24 +4,23 @@
 
 import { memo } from "react";
 import { useBlocks, useForms, useQueries } from "store";
-import { findOutByBlock } from "components/blocks/helpers/blocks"
-import { parseBlockAttrs } from "helpers"
+import { findOutByBlock } from "components/blocks/helpers/blocks";
+import { parseBlockAttrs } from "helpers";
 interface Props {
   attrs: any;
 }
 const MatchField: React.FC<Props> = memo(({ attrs, children }) => {
-  
-  attrs = attrs.dataTarget ? parseBlockAttrs(attrs, useQueries) : attrs
-  
+  attrs = attrs.dataTarget ? parseBlockAttrs(attrs, useQueries) : attrs;
+
   const blocks = useBlocks((state) => state.blocks);
   const updateForm = useForms((state) => state.updateForm);
-  const ref = findOutByBlock(blocks, attrs.id, 'form/Form')?.attrs?.refName
+  const ref = findOutByBlock(blocks, attrs.id, "form/Form")?.attrs?.refName;
 
-  if(attrs.default && ref){
-    updateForm({ref:ref, path:attrs.outputValue, data:attrs.default})
+  if (attrs.default && ref) {
+    updateForm({ ref: ref, path: attrs.outputValue, data: attrs.default });
   }
 
-  console.log('expression', attrs?.expr, ref)
+  console.log("expression", attrs?.expr, ref);
 
   return (
     <div className={`block ${attrs.classes}`}>
@@ -33,8 +32,14 @@ const MatchField: React.FC<Props> = memo(({ attrs, children }) => {
         className="bg-white p-3 rounded-sm w-full text-gray-500 text-sm border mt-1"
         type={attrs.type || "text"}
         defaultValue={attrs.default}
-        onChange={(e)=>{ 
-          ref ? updateForm({ref:ref, path:attrs.outputValue, data:e.target.value}) : null
+        onChange={(e) => {
+          ref
+            ? updateForm({
+                ref: ref,
+                path: attrs.outputValue,
+                data: e.target.value,
+              })
+            : null;
         }}
       />
       {children}
