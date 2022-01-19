@@ -2,10 +2,8 @@
 import { v4 as uuidv4 } from "uuid";
 import { setBy, interpolate, findStorage } from "helpers";
 import { useApp, getFromStore, setToStore } from "store";
+import { blockType, blocksType } from "types/blocks";
 
-/* 
-  templating ${} shordcodes by map query (depreciated)
-*/
 export const parseBlockAttrs = (attrs: any) => {
   const store = {
     forms: useApp((state) => state.forms),
@@ -30,8 +28,8 @@ export const parseBlockAttrs = (attrs: any) => {
 /* 
   handling layouts
 */
-export const prepareBlocks = (list: any, slugPath: string) => {
-  const outBlocks: any = [];
+export const prepareBlocks = (list: blocksType, slugPath: string) => {
+  const outBlocks: blocksType = [];
   const handlersBlocks: any = {};
   if (slugPath[0] == "Page" || slugPath[0] == "Panel") {
     // First iterator
@@ -52,9 +50,11 @@ export const prepareBlocks = (list: any, slugPath: string) => {
     });
     // Second iterator
     while (j < len_i) {
-      list[j]?.attrs?.handler
-        ? (outBlocks[handlersBlocks[slugPath[1]].i].parentId = list[j].id)
-        : null;
+      const out =
+        handlersBlocks[slugPath[1]]?.length > 0
+          ? outBlocks[handlersBlocks[slugPath[1]].i]
+          : null;
+      out && list[j]?.attrs?.handler ? (out.parentId = list[j].id) : null;
       j++;
     }
     list = outBlocks;
@@ -62,107 +62,32 @@ export const prepareBlocks = (list: any, slugPath: string) => {
 
   return list;
 };
-/* 
-  find parent by block name
-*/
-export const findOutByBlock: any = (
-  regBlocks: any,
-  currentId: number,
-  blockName: string
+
+export const targetingAndIndexingBlocks = (
+  block: blockType,
+  parentItem: any
 ) => {
-  const block: any = regBlocks.find((el: any) => el.id === currentId);
-  if (block?.parentId == 0) {
-    return false;
-  } else {
-    return block?.block === blockName
-      ? block
-      : findOutByBlock(regBlocks, block.parentId, blockName);
-  }
-};
-
-/* 
-  get childrens
-*/
-export const getNestedChildren = (arr: any, id: string, withFirst: boolean) => {
-  const out: any = [];
-  withFirst && out.push(arr?.filter((x: any) => x.id === id)[0]);
-  for (const i in arr) {
-    if (arr[i].parentId === id) {
-      const children = getNestedChildren(arr, arr[i].id, false);
-      if (children.length) {
-        children.map((el: any) => out.push(el));
-      }
-      out.push(arr[i]);
-    }
-  }
-  return out;
-};
-
-export const getSliblings = (blocks: any, currentBlock: any) => {
-  const prepBlocks = [];
-  const out = {
-    index: 0,
-    item: {},
-    itemLeft: {},
-    itemRight: {},
-  };
-  for (const i in blocks) {
-    if (blocks[i].parentId == currentBlock.parentId) {
-      prepBlocks.push({
-        ...blocks[i],
-        index: parseInt(i),
-        current: blocks[i].id == currentBlock.id ? true : false,
-      });
-    }
-  }
-  for (const i in prepBlocks) {
-    if (prepBlocks[i].current) {
-      out.index = prepBlocks[i].index;
-      out.item = prepBlocks[i];
-      out.itemLeft = prepBlocks[parseInt(i) - 1];
-      out.itemRight = prepBlocks[parseInt(i) + 1];
-    }
-  }
-  return out;
-};
-/* 
-  Get blocks and change ids to unique
-  Its important if to want to copy blocks
-*/
-export const prepareBlocksToClone = (blocks: any, dataToParse = {}) => {
-  if (blocks && blocks.length >= 1) {
-    var text = JSON.stringify(blocks);
-    blocks.map((el: any) => {
-      text = text.replaceAll(el.id, uuidv4());
-    });
-    return JSON.parse(text);
-  } else {
-    return blocks;
-  }
-};
-
-export const targetingAndIndexingBlocks = (item: any, parentItem: any) => {
-  if (item.block === "data/ListData") {
-    item = { ...item, childrenSlots: [] };
+  if (block.block === "data/ListData") {
+    block = { ...block, childrenSlots: [] };
   }
   if (parentItem?.block === "data/ListData") {
     parentItem?.childrenSlots?.push(parentItem.childrenSlots.length);
-    item = {
-      ...item,
+    block = {
+      ...block,
       dataTarget: parentItem.attrs.dataTarget,
       queryIndex: parentItem.childrenSlots.length,
     };
   }
   if (parentItem?.block === "data/PlainData") {
-    item = { ...item, dataTarget: parentItem.attrs.dataTarget };
+    block = { ...block, dataTarget: parentItem.attrs.dataTarget };
   }
   if (parentItem?.queryIndex) {
-    item = { ...item, queryIndex: parentItem?.queryIndex };
+    block = { ...block, queryIndex: parentItem?.queryIndex };
   }
   if (parentItem?.dataTarget) {
-    item = { ...item, dataTarget: parentItem?.dataTarget };
+    block = { ...block, dataTarget: parentItem?.dataTarget };
   }
-  return item;
+  return block;
 };
 
 /* 
