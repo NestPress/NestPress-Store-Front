@@ -1,6 +1,3 @@
-/* TODO fix type */
-// @ts-ignore
-// @ts-nocheck
 import { useState } from "react";
 import { useApp } from "store";
 import { parseBlockAttrs, fieldHead } from "helpers";

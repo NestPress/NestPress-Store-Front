@@ -7,7 +7,7 @@ import { useApp } from "store";
 interface Props {
   attrs: any;
 }
-const TextareaField: React.FC<Props> = ({ attrs, children }) => {
+const TextareaField: React.FC<Props> = memo(({ attrs, children }) => {
   attrs = attrs.dataTarget ? parseBlockAttrs(attrs) : attrs;
   const { blocks, updateData, ref } = fieldHead(useApp, attrs);
 
@@ -45,5 +45,5 @@ const TextareaField: React.FC<Props> = ({ attrs, children }) => {
       {children}
     </div>
   );
-};
+});
 export default TextareaField;

@@ -1,11 +1,8 @@
-/* TODO fix type */
-// @ts-ignore
-// @ts-nocheck
-
 import { memo } from "react";
 import { parseBlockAttrs, fieldHead } from "helpers";
 import { useApp } from "store";
 
+// TODO - add vlid types
 interface Props {
   attrs: any;
 }

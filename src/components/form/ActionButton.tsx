@@ -11,6 +11,8 @@ const ActionButton: React.FC<Props> = ({ attrs, children }) => {
     <button
       onClick={() => {
         runCommands([
+          // 'bg-red-100 p-4 text-xl>SET>display.blocks.0.attrs.classes',
+          // 'bar>SET>custom.foo',
           "display.blocks>FIND -id -3c951451-fc92-4310-8956-0bbda2820cd1>SET>custom.block>UID>SET>custom.block.id",
           "custom.block>PUSH>display.blocks",
         ]);
