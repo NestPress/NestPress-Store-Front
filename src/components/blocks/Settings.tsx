@@ -38,12 +38,12 @@ export const Settings: React.FC = () => {
   const idata = [{foo:"bar"},{foo:"bar"},{foo:"bar"}];
   let iteratorCount = 0;
   const iterator = (a) => {
-    getBlocks({ variables: { filter:{
-        post:{
-          in: ['Layout','Page']
-        }
-      } } })
-    iteratorCount < a.length-1 ? setTimeout(()=>iterator(a, iteratorCount++), 1000) : false    
+    // getBlocks({ variables: { filter:{
+    //     post:{
+    //       in: ['Layout','Page']
+    //     }
+    //   } } })
+    // iteratorCount < a.length-1 ? setTimeout(()=>iterator(a, iteratorCount++), 1000) : false    
   }
     
     iterator(idata)

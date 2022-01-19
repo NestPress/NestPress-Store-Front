@@ -136,6 +136,22 @@ export const DataBlocks: React.FC = ({type}) => {
       >
         Mini term schedule
       </button>
+
+      <button
+        className={buttonClass}
+        onClick={(e) =>
+          teachSetBlock({
+            ...prefix,
+            block: "data/MapBox",
+            attrs: {
+              token:"",
+              classes: ""
+            },
+          })
+        }
+      >
+        Map box
+      </button>
     </div>
   );
 };

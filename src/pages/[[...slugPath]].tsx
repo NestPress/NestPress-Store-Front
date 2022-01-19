@@ -115,7 +115,6 @@
 
 import { MainMapper } from "components/MainMapper";
 import { BottomBar } from "components/blocks";
-import { prepareBlocks } from "helpers";
 import { useQuery } from "@apollo/client";
 import { GET_BLOCKS } from "components/nestpress";
 import { useRouter } from "next/router";
@@ -150,7 +149,7 @@ const ComposerPage: React.FC = () => {
     onCompleted({ getBlocks: { list } } = data) {
       list?.length &&
         useApp.setState({
-          display: { blocks: prepareBlocks(list, rMix.slugPath) },
+          display: { blocks: list },
         });
     },
     optimisticResponse() {
@@ -160,7 +159,7 @@ const ComposerPage: React.FC = () => {
 
   return (
     <>
-      {blocks.length > 0 && <MainMapper blocks={blocks} />}
+      {blocks.length > 0 && <MainMapper blocks={blocks} router={rMix} />}
       <BottomBar />
     </>
   );

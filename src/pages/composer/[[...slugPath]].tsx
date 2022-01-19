@@ -54,7 +54,7 @@ const ComposerPage: React.FC = () => {
     onCompleted({ getBlocks: { list } } = data) {
       list?.length &&
         useApp.setState({
-          display: { blocks: prepareBlocks(list, rMix.slugPath) },
+          display: { blocks: list },
         });
     },
     optimisticResponse() {
@@ -146,7 +146,7 @@ const ComposerPage: React.FC = () => {
           marginTop: "10px",
         }}
       >
-        {blocks.length > 0 && <EditMapper blocks={blocks} />}
+        {blocks.length > 0 && <EditMapper blocks={blocks} router={rMix} />}
       </div>
       {blocksPocket && (
         <div style={{ zIndex: 10000, position: "relative" }}>
