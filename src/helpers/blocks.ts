@@ -63,6 +63,85 @@ export const prepareBlocks = (list: blocksType, slugPath: string) => {
   return list;
 };
 
+/* 
+  find parent by block name
+*/
+export const findOutByBlock: any = (
+  regBlocks: blocksType,
+  currentId: string,
+  blockName: string
+) => {
+  const block: any = regBlocks.find((el: blockType) => el.id === currentId);
+  if (block?.parentId == 0) {
+    return false;
+  } else {
+    return block?.block === blockName
+      ? block
+      : findOutByBlock(regBlocks, block.parentId, blockName);
+  }
+};
+
+/* 
+get childrens
+*/
+export const getNestedChildren = (arr: any, id: string, withFirst: boolean) => {
+  const out: any = [];
+  withFirst && out.push(arr?.filter((x: any) => x.id === id)[0]);
+  for (const i in arr) {
+    if (arr[i].parentId === id) {
+      const children = getNestedChildren(arr, arr[i].id, false);
+      if (children.length) {
+        children.map((el: any) => out.push(el));
+      }
+      out.push(arr[i]);
+    }
+  }
+  return out;
+};
+
+export const getSliblings = (blocks: blocksType, currentBlock: blockType) => {
+  const prepBlocks = [];
+  const out = {
+    index: 0,
+    item: {},
+    itemLeft: {},
+    itemRight: {},
+  };
+  for (const i in blocks) {
+    if (blocks[i].parentId == currentBlock.parentId) {
+      prepBlocks.push({
+        ...blocks[i],
+        index: parseInt(i),
+        current: blocks[i].id == currentBlock.id ? true : false,
+      });
+    }
+  }
+  for (const i in prepBlocks) {
+    if (prepBlocks[i].current) {
+      out.index = prepBlocks[i].index;
+      out.item = prepBlocks[i];
+      out.itemLeft = prepBlocks[parseInt(i) - 1];
+      out.itemRight = prepBlocks[parseInt(i) + 1];
+    }
+  }
+  return out;
+};
+/* 
+Get blocks and change ids to unique
+Its important if to want to copy blocks
+*/
+export const prepareBlocksToClone = (blocks: blocksType, dataToParse = {}) => {
+  if (blocks && blocks.length >= 1) {
+    var text = JSON.stringify(blocks);
+    blocks.map((el: blockType) => {
+      text = text.replaceAll(el.id, uuidv4());
+    });
+    return JSON.parse(text);
+  } else {
+    return blocks;
+  }
+};
+
 export const targetingAndIndexingBlocks = (
   block: blockType,
   parentItem: any
