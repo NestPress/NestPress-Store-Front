@@ -24,6 +24,7 @@ export const remapHandlers = (list: any) => {
     el.attrs.handler
       ? {
           ...el,
+          archiveId: el.id,
           id: interpolate(el.attrs.handler, {
             router: getFromStore({ store: "router" }),
           }).toLowerCase(),
