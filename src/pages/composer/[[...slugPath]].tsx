@@ -2,70 +2,46 @@
 // @ts-ignore
 // @ts-nocheck
 import { FiFile, FiGitPullRequest, FiChevronLeft } from "react-icons/fi";
-
 import { EditMapper, Composer, BlocksPocket } from "components/blocks";
-import { prepareBlocks, keysHandler } from "helpers";
+import { handlingLayouts, remapHandlers, keysHandler } from "helpers";
 import { useQuery } from "@apollo/client";
 import { GET_BLOCKS } from "components/nestpress";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { useApp, useBlocks, getFromStore, setToStore } from "store";
 import { CREATE_BLOCKS, UPDATE_BLOCKS } from "components/blocks/gql/composer";
 import { useMutation } from "@apollo/client";
+import { useRouter } from "next/router";
 
 const ComposerPage: React.FC = () => {
-  const selectedBlockId = useBlocks((state) => state.selectedBlockId);
   const blocksPocket = useBlocks((state) => state.blocksPocket);
-  const copiedBlocks = useBlocks((state) => state.copiedBlocks);
-  const composerTab = useBlocks((state) => state.composerTab);
-  const addBlock = useBlocks((state) => state.addBlock);
-  const preview = useBlocks((state) => state.preview);
   const targeter = useApp((state) => state.custom.activeTargeter);
-
   const router = useRouter();
-  const rMix = Object.assign(
-    {},
-    getFromStore({ store: "router" }),
-    router.query
-  );
-  const layout = `${rMix.slugPath[0].toLowerCase()}-layout`;
-  useApp.setState({ router: rMix });
-
-  // routing event use to change app data by routing way
-  useEffect(() => {
-    router.asPath === "/" ? router.push("/Page/home") : null;
-    if (!rMix.slugPath[1]) {
-      useApp.setState({ display: { blocks: [] } });
-    }
-  }, [router.asPath]);
 
   useBlocks.setState({ preview: true });
+  /* lauouts shoudbe part of post (relation to blocks too) */
+  const layout = handlingLayouts();
 
   const blocks = useApp((state) => state.display.blocks) || [];
-  const { loading, error, data, refetch } = useQuery(GET_BLOCKS, {
+  const { data } = useQuery(GET_BLOCKS, {
     variables: {
       sort: { order: "asc" },
       filter: {
         post: {
-          in: [rMix.slugPath[1], layout, "below-footer-layout"],
+          in: layout,
         },
       },
     },
     onCompleted({ getBlocks: { list } } = data) {
-      list?.length &&
-        useApp.setState({
-          display: { blocks: list },
-        });
+      useApp.setState({
+        display: { blocks: list },
+        // display: { blocks: remapHandlers(list) },
+      });
     },
     optimisticResponse() {
       useApp.setState({ display: { blocks: [] } });
     },
   });
 
-  const [
-    createBlocks,
-    { createBlocksData, createBlocksLoading, createBlocksError },
-  ] = useMutation(CREATE_BLOCKS, {
+  const [createBlocks] = useMutation(CREATE_BLOCKS, {
     onCompleted(createBlocksData) {
       console.log("create", createBlocksData);
     },
@@ -121,13 +97,15 @@ const ComposerPage: React.FC = () => {
               ref: `activeTargeter`,
               data: false,
             });
-            router.push(`/${rMix.slugPath.join("/")}`);
+            router.push(
+              `/${getFromStore({ store: "router" }).slugPath.join("/")}`
+            );
           }}
           className="flex flex-1 items-center hover:bg-gray-100 p-2.5 cursor-pointer "
         >
           <FiFile />
           <div key={router.asPath} className="ml-1 flex-1">
-            {rMix.slugPath[1]}
+            {getFromStore({ store: "router" }).slugPath[1]}
           </div>
           <div className="flex items-center text-xs font-normal text-blue-400">
             <FiChevronLeft />
@@ -146,7 +124,14 @@ const ComposerPage: React.FC = () => {
           marginTop: "10px",
         }}
       >
-        {blocks.length > 0 && <EditMapper blocks={blocks} router={rMix} />}
+        {blocks.length > 0 && (
+          <EditMapper
+            blocks={blocks}
+            layout={layout}
+            router={getFromStore({ store: "router" })}
+            parentId={layout[0]}
+          />
+        )}
       </div>
       {blocksPocket && (
         <div style={{ zIndex: 10000, position: "relative" }}>

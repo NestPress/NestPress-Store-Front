@@ -4,23 +4,18 @@
 
 import dynamic from "next/dynamic";
 import { memo } from "react";
-import { useApp, getFromStore } from "store";
+import { useApp } from "store";
 import { Targeter } from "components/nestpress/Targeter";
 import { targetingAndIndexingBlocks } from "helpers";
 
 export const EditMapper: React.FC<Props> = memo(
-  ({ blocks, router, parentId = "0", level = 0, parentItem }: TreeProps) => {
-    const items = blocks.filter(
-      (el) =>
-        el.parentId === `${router?.slugPath[0]}-layout` ||
-        el.parentId === router?.slugPath[1] ||
-        el.parentId === parentId
-    );
+  ({ blocks, parentId, level = 0, parentItem, layout, router }: TreeProps) => {
+    const items = blocks.filter((el) => el?.parentId === parentId);
     if (!items.length) return null;
 
     const components = useApp((state) => state.components);
     const setStore = useApp((state) => state.setStore);
-    const targeter = getFromStore({ store: "custom", ref: "activeTargeter" });
+    // const targeter = getFromStore({ store: "custom", ref: "activeTargeter" });
 
     return (
       <>
@@ -72,6 +67,8 @@ export const EditMapper: React.FC<Props> = memo(
                   parentId={el.id}
                   level={level + 1}
                   parentItem={el}
+                  layout={layout}
+                  router={router}
                 />
               </Block>
             )

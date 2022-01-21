@@ -25,43 +25,6 @@ export const parseBlockAttrs = (attrs: any) => {
     ? JSON.parse(interpolate(JSON.stringify(attrs), partialData))
     : attrs;
 };
-/* 
-  handling layouts
-*/
-export const prepareBlocks = (list: blocksType, slugPath: string) => {
-  const outBlocks: blocksType = [];
-  const handlersBlocks: any = {};
-  if (slugPath[0] == "Page" || slugPath[0] == "Panel") {
-    // First iterator
-    let i = 0,
-      j = 0,
-      len_i = list.length;
-    while (i < len_i) {
-      list[i].parentId === "0"
-        ? (handlersBlocks[list[i].post] = { ...list[i], i })
-        : null;
-      outBlocks[i] = { ...list[i] };
-      i++;
-    }
-    setToStore({
-      store: "custom",
-      ref: `handlersBlocks`,
-      data: handlersBlocks,
-    });
-    // Second iterator
-    while (j < len_i) {
-      const out =
-        handlersBlocks[slugPath[1]]?.length > 0
-          ? outBlocks[handlersBlocks[slugPath[1]].i]
-          : null;
-      out && list[j]?.attrs?.handler ? (out.parentId = list[j].id) : null;
-      j++;
-    }
-    list = outBlocks;
-  }
-
-  return list;
-};
 
 /* 
   find parent by block name

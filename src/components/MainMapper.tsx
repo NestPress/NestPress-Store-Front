@@ -8,10 +8,8 @@ import { useApp } from "store";
 import { targetingAndIndexingBlocks } from "helpers";
 
 export const MainMapper: React.FC<Props> = memo(
-  ({ blocks, router, parentId = "0", level = 0, parentItem }: TreeProps) => {
-    const items = blocks.filter(
-      (el) => el.parentId === parentId || el.parentId === router?.slugPath[1]
-    );
+  ({ blocks, parentId, level = 0, parentItem, layout, router }: TreeProps) => {
+    const items = blocks.filter((el) => el?.parentId === parentId);
     if (!items.length) return null;
 
     const components = useApp((state) => state.components);
@@ -20,10 +18,10 @@ export const MainMapper: React.FC<Props> = memo(
     return (
       <>
         {items.map((el, i) => {
-          if (!components[el.block]) {
+          if (!components[el?.block]) {
             setStore({
               store: "components",
-              ref: el.block,
+              ref: el?.block,
               data: dynamic(() => import(`components/${el.block}`)),
             });
           } else {
@@ -48,6 +46,8 @@ export const MainMapper: React.FC<Props> = memo(
                   parentId={el.id}
                   level={level + 1}
                   parentItem={el}
+                  layout={layout}
+                  router={router}
                 />
               </Block>
             )
