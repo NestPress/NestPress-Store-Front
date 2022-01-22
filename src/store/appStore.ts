@@ -8,6 +8,7 @@ const useApp = create((set) => ({
   components:{},
   forms:{},
   queries:{},
+  vars:{},
   router:{
     slugPath:["Page","home"]
   },

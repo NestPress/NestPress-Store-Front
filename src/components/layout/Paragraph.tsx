@@ -9,7 +9,7 @@ import { parseBlockAttrs } from "helpers";
 interface Props {
   attrs: any;
 }
-const Paragraph: React.FC<Props> = memo(({ attrs, children }) => {
+const Paragraph: React.FC<Props> =memo(({ attrs, children }) => {
   attrs = attrs.dataTarget ? parseBlockAttrs(attrs) : attrs;
   return (
     <p className={`block ${attrs.classes}`}>

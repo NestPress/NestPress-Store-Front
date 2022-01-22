@@ -7,7 +7,7 @@ import { parseBlockAttrs } from "helpers";
 interface Props {
   attrs: any;
 }
-const NavButton: React.FC<Props> = ({ attrs, children }) => {
+const NavButton: React.FC<Props> = memo(({ attrs, children }) => {
   attrs = attrs.dataTarget ? parseBlockAttrs(attrs) : attrs;
   return (
     <Link href={attrs.to}>
@@ -19,5 +19,5 @@ const NavButton: React.FC<Props> = ({ attrs, children }) => {
       </a>
     </Link>
   );
-};
+});
 export default NavButton;

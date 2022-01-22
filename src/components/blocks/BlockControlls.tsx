@@ -167,11 +167,6 @@ export const BlockControlls: React.FC = () => {
     const copy = JSON.parse(JSON.stringify(refBlock.attrs));
     copy[res.key] = res.value;
 
-    /* TODO - for queries variables */
-    if (typeof res.value === "object") {
-      alert("object update todo");
-      console.log("start update object", res.key, res.value, copy);
-    }
 
     // /* -------------------------- */
     updateBlock({
@@ -195,7 +190,9 @@ export const BlockControlls: React.FC = () => {
       <div className="grid grid-cols-10 text-xs px-2 pt-2">
         <div className="col-span-2 p-px border-t border-l">ID</div>
         <div className="col-span-8 p-px border-t border-r border-l bg-gray-100 ">
+        <textarea style={{resize: 'none', overflow:'hidden', background:'transparent',outline:'none'}} rows="1" className="w-full">
           {targeter?.id || ""}
+        </textarea>
         </div>
         <div className="col-span-2 p-px border-t border-l ">ParentID</div>
         <div className="col-span-8 p-px border-t border-r bg-gray-100">

@@ -6,7 +6,7 @@ import { useApp } from "store";
 interface Props {
   attrs: any;
 }
-const InputField: React.FC<Props> = memo(({ attrs, children }) => {
+const InputField: React.FC<Props> = ({ attrs, children }) => {
   attrs = attrs.dataTarget ? parseBlockAttrs(attrs) : attrs;
   const { updateData, ref } = fieldHead(useApp, attrs);
 
@@ -43,5 +43,5 @@ const InputField: React.FC<Props> = memo(({ attrs, children }) => {
       {children}
     </div>
   );
-});
+};
 export default InputField;

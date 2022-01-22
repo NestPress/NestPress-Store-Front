@@ -22,3 +22,25 @@ query getPosts(
 
 filter.postType.eq  => Post  
 */
+
+
+
+
+/*
+mutation createPost(
+    $input: CreatePostInput!
+  ){
+    createPost(
+      input: $input
+    ){
+      id
+      slug
+      title
+      postType
+      customType
+    }
+  }
+
+input.postType => Post
+input.customType => cokolwiek
+*/

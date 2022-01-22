@@ -11,7 +11,7 @@ import { handlingLayouts, remapHandlers } from "helpers";
 
 const ComposerPage: React.FC = () => {
   const blocks = useApp((state) => state.display.blocks) || [];
-
+  const tick = useApp((state) => state.custom.tick);
   /* lauouts shoudbe part of post (relation to blocks too) */
   const layout = handlingLayouts();
 
