@@ -19,6 +19,12 @@ const ComposerPage: React.FC = () => {
   useBlocks.setState({ preview: true });
   /* lauouts shoudbe part of post (relation to blocks too) */
   const layout = handlingLayouts();
+  let displayLayout = "";
+  if (getFromStore({ store: "router" }).slugPath[0] == "Layout") {
+    displayLayout = getFromStore({ store: "router" }).slugPath[1];
+  } else {
+    displayLayout = layout[0];
+  }
 
   const blocks = useApp((state) => state.display.blocks) || [];
   const { data } = useQuery(GET_BLOCKS, {
@@ -31,10 +37,15 @@ const ComposerPage: React.FC = () => {
       },
     },
     onCompleted({ getBlocks: { list } } = data) {
-      useApp.setState({
-        // display: { blocks: list },
-        display: { blocks: remapHandlers(list) },
-      });
+      if (getFromStore({ store: "router" }).slugPath[0] == "Layout") {
+        useApp.setState({
+          display: { blocks: list },
+        });
+      } else {
+        useApp.setState({
+          display: { blocks: remapHandlers(list) },
+        });
+      }
     },
     optimisticResponse() {
       useApp.setState({ display: { blocks: [] } });
@@ -64,6 +75,7 @@ const ComposerPage: React.FC = () => {
 
   return (
     <div
+      className="composer"
       tabIndex="0"
       onKeyDown={(e) =>
         keysHandler(e, blocks, targeter, (res) => {
@@ -93,7 +105,7 @@ const ComposerPage: React.FC = () => {
         <div
           onClick={(e) => {
             setToStore({
-              store: "display",
+              store: "custom",
               ref: `activeTargeter`,
               data: false,
             });
@@ -129,7 +141,7 @@ const ComposerPage: React.FC = () => {
             blocks={blocks}
             layout={layout}
             router={getFromStore({ store: "router" })}
-            parentId={layout[0]}
+            parentId={displayLayout}
           />
         )}
       </div>

@@ -26,7 +26,6 @@ const ComposerPage: React.FC = () => {
     },
     onCompleted({ getBlocks: { list } } = data) {
       useApp.setState({
-        // display: { blocks: list },
         display: { blocks: remapHandlers(list) },
       });
     },

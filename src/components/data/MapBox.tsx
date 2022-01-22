@@ -13,8 +13,8 @@ const MapBox: React.FC<Props> = memo(({ attrs, children }) => {
     accessToken: attrs.token,
   });
   return (
-    <div className={`${attrs.classes}`}>
-      <Map
+    <div className={`block ${attrs.classes}`}>
+      {attrs.token ? <Map
         style={`mapbox://styles/mapbox/streets-v9`}
         containerStyle={{
           height: "100%",
@@ -25,7 +25,7 @@ const MapBox: React.FC<Props> = memo(({ attrs, children }) => {
           {/* // coordinates: startCoordinates, */}
           <Feature coordinates={[-0.481747846041145, 51.3233379650232]} />
         </Layer>
-      </Map>
+      </Map>:<div>Insert MapBox valid token</div>}
       {children}
     </div>
   );

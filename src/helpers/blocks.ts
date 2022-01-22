@@ -142,3 +142,14 @@ export const buildVariables = (variables: any) => {
   }
   return out;
 };
+
+export const sanitBlock = (block:blockType) => {
+  return {
+    id: block.id,
+    parentId: block.parentId,
+    block: block.block,
+    post: block.post,
+    attrs: block.attrs,
+    order: block.order
+  }
+}

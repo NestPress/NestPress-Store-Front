@@ -21,6 +21,8 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = (
   /* routing event use to change store data by routing*/
   useEffect(() => {
     router.asPath === "/" ? router.push("/Page/home") : null;
+    // escape from infinity handling layout (TODO: think about it)
+    router.query?.slugPath?.[0] === 'Layout' && router.pathname === '/[[...slugPath]]' ? router.push("/composer/Layout") : null; 
   }, [router.asPath]);
   return (
     <ApolloProvider client={client}>

@@ -32,7 +32,7 @@ export const MainTabs: React.FC = () => {
                 : "cursor-pointer"
             }`}
       >
-        <FiFileText /> <div className="hidden">Page</div>
+        <FiFileText /> 
       </div>
       <div
         onClick={(e) => {
@@ -51,7 +51,7 @@ export const MainTabs: React.FC = () => {
                 : "cursor-pointer"
             }`}
       >
-        <FiList /> <div className="hidden">Pages</div>
+        <FiList /> 
       </div>
       <div
         onClick={(e) => {
@@ -70,7 +70,7 @@ export const MainTabs: React.FC = () => {
                 : "cursor-pointer"
             }`}
       >
-        <FiGrid /> <div className="hidden">Reusable</div>
+        <FiGrid /> 
       </div>
       <div
         onClick={(e) => {
@@ -89,7 +89,7 @@ export const MainTabs: React.FC = () => {
                 : "cursor-pointer"
             }`}
       >
-        <FiImage /> <div className="hidden">Users</div>
+        <FiImage /> 
       </div>
       <div
         onClick={(e) => {
@@ -108,7 +108,7 @@ export const MainTabs: React.FC = () => {
                 : "cursor-pointer"
             }`}
       >
-        <FiDatabase /> <div className="hidden">Data</div>
+        <FiDatabase />
       </div>
       <div
         onClick={(e) => {
@@ -127,7 +127,7 @@ export const MainTabs: React.FC = () => {
                 : "cursor-pointer"
             }`}
       >
-        <FiSettings /> <div className="hidden">Settings</div>
+        <FiSettings /> 
       </div>
     </div>
   );

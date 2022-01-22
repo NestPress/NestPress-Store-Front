@@ -39,6 +39,11 @@ html {
 .block-editable:hover{
   outline: 1px solid #00000040;
 }
+.composer .hidden{
+  display: block !important;
+  outline: 2px dashed red;
+}
+
 /*.block-editable{
   position: relative;
   min-height: 20px;
