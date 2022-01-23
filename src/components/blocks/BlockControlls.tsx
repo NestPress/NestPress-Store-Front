@@ -308,8 +308,6 @@ export const BlockControlls: React.FC = () => {
                 />
               )}
 
-             
-
               {key === "dataTarget" && (
                 <DataTarget
                   key={`bgc-${index}`}
