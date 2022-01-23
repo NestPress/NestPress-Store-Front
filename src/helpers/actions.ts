@@ -96,3 +96,4 @@ const commands: any = {
 // display.blocks>FIND -id -3c951451-fc92-4310-8956-0bbda2820cd1>SET>custom.block
 // UID>SET>custom.block.id
 // custom.block>PUSH>display.blocks
+// RELOAD -/Page/events/${forms.filterForm.subject}/${forms.filterForm.city}

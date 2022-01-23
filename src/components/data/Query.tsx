@@ -26,6 +26,8 @@ const Query: React.FC<Props> = memo(({ attrs, children }) => {
     const { data } = useQuery( QUERY_GQL, res );  
     let reinitAttrs;
     if(active && attrs?.initActions && attrs?.initActions?.length>0){ 
+      // TODO
+      // check set two customTypes actions to one filter. One shouldbe real and second fake
       runCommands(attrs.initActions, router, attrs);
       reinitAttrs = getFromStore({store:"display", ref:`blocks.${attrs.index}.attrs`})
     }

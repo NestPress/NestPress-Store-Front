@@ -9,21 +9,12 @@ interface Props {
   attrs: any;
 }
 const ListData: React.FC<Props> = memo(({ attrs, children }) => {
-  // const targeter = useApp((state) => state.custom.activeTargeter);
   const targetedList = getFromStore(findStorage(attrs.dataTarget))
- 
-
-
   return (
     <div className={`block ${attrs.classes}`}>
       {targetedList  && Array.isArray(targetedList) && targetedList.length > 1
         ? targetedList.map((el,i)=><>{children}</>)  
         : <div>{children}</div>}
-
-      {/*{targetedList && Array.isArray(targetedList) && targetedList.length > 1 
-        ? targetedList.map((el,i)=><>{children}</>) 
-        : {children}}*/}
-
     </div>
   );
 });
