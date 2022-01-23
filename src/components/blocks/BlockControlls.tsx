@@ -335,8 +335,13 @@ export const BlockControlls: React.FC = () => {
                 />
               )}
 
+              {key === "index" && (
+                <div className="border px-2 py-3" key={`bgc-${index}`}>{targeter?.attrs[key]}</div>
+              )}
+
               {key !== "text" &&
                 key !== "mutation" &&
+                 key !== "index" &&
                 key !== "imglayout" &&
                 key !== "objectfit" &&
                 key !== "width" &&
