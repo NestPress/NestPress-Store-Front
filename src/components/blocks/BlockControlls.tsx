@@ -188,10 +188,10 @@ export const BlockControlls: React.FC = () => {
       <BlocksHeader title={targeter?.block || ""} />
       <div className="grid grid-cols-10 text-xs px-2 pt-2">
         <div className="col-span-2 p-px border-t border-l">ID</div>
-        <div className="col-span-8 p-px border-t border-r border-l bg-gray-100 ">
-        <textarea style={{resize: 'none', overflow:'hidden', background:'transparent',outline:'none'}} rows="1" className="w-full">
+        <div contentEditable="true" className="col-span-8 p-px border-t border-r border-l bg-gray-100 ">
+        
           {targeter?.id || ""}
-        </textarea>
+     
         </div>
         <div className="col-span-2 p-px border-t border-l ">ParentID</div>
         <div className="col-span-8 p-px border-t border-r bg-gray-100">
@@ -369,7 +369,7 @@ export const BlockControlls: React.FC = () => {
         })}
       </div>
 
-      {!targeter.attrs.handler &&
+      {!targeter.attrs?.handler &&
         <div
           style={{ position: "sticky", bottom: 0 }}
           className="bg-white px-2 mt-2 border-t pt-2 grid grid-cols-2 gap-1 text-sm"

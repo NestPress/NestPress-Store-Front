@@ -8,11 +8,11 @@ import { FiGrid, FiType, FiClipboard ,FiSave, FiHash, FiDatabase, FiLink, FiImag
  import { useRouter } from "next/router";
 
 export const BlocksPocket: React.FC = () => {
+  const targeter = useApp((state) => state.custom.activeTargeter);
    const router = useRouter();
   const slugPath = router.query?.slugPath || ["Page","home"];
   const blocks = useApp((state) => state.display.blocks) || [];
-  const selectedBlockId = useBlocks((state) => state.selectedBlockId);
-  const itemClass = 'text-xs p-1.5 border-b hover:bg-gray-100 grid grid-cols-10 gap-1'
+  const itemClass = 'text-xs p-1.5 border-b hover:bg-green-50 grid grid-cols-10 gap-1'
 
   return (
     <div className="fixed overflow-y-scroll h-screen shadow border-r border-gray-300 top-0 left-0 w-72 bg-white cursor-pointer">
@@ -31,7 +31,7 @@ export const BlocksPocket: React.FC = () => {
           //console.log( el, getFromStore({store:"custom", ref:"activeTargeter"}))
           router.push(`/composer/${slugPath.join('/')}#${el.id}`)
         }} 
-        className={`${itemClass} ${el.id === selectedBlockId ? 'bg-indigo-100' : null }`}>
+        className={`${itemClass} ${el.id === targeter.id ? 'bg-indigo-50' : null }`}>
           <div className="col-span-1 flex items-center">
             {el.block === 'layout/Grid' && <FiGrid/>}
             {(el.block === 'layout/Title' || el.block === 'layout/Paragraph') && <FiType/>}
