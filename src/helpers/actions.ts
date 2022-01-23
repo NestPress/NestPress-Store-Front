@@ -40,8 +40,6 @@ export const findStorage = (val: String, attrs) => {
     : { store: null, ref: arr[0] };
 };
 
-
-
 /* 
   runable commands
 */
@@ -69,7 +67,7 @@ const commands: any = {
       const block = `blocks.${commands.attrs.index}` 
       getFromStore({ store:'display', ref:`${block}.attrs.${input.ref}` })
       if(!Array.isArray(getFromStore({ store:'display', ref:`${block}.attrs.${input.ref}` }))){
-        setToStore({ store:'display', ref:`blocks.${commands.attrs.index}.attrs.${input.ref}`, data: [_in.prev]});
+        setToStore({ store:'display', ref:`${block}.attrs.${input.ref}`, data: [_in.prev]});
       }else{
         pushToStore({ store:'display', ref:`${block}.attrs.${input.ref}`, data: _in.prev});
       }
@@ -85,8 +83,16 @@ const commands: any = {
   },
 };
 
+// TODO
+// test 'this' edge cases
+// add BOLLEAN command
 
 
-
-
+// Examples
 // Post>SET>this.variables.filter.postType.eq 
+// router.slugPath>PUSH>this.variables.filter.postType.in 
+// bg-red-100 p-4 text-xl>SET>display.blocks.0.attrs.classes
+// bar>SET>custom.foo
+// display.blocks>FIND -id -3c951451-fc92-4310-8956-0bbda2820cd1>SET>custom.block
+// UID>SET>custom.block.id
+// custom.block>PUSH>display.blocks

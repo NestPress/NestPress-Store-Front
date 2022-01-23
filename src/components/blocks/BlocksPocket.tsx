@@ -20,7 +20,7 @@ export const BlocksPocket: React.FC = () => {
       <div className="p-2.5 text-gray-500 border-b">Flatten blocks list</div>
       <div className="text-gray-500 border-b flex text-xs">
         <div className="flex-1 text-center p-2.5 border-r border-t bg-gray-50">Blocks</div>
-        <div className="flex-1 text-center p-2.5">Pages</div>
+        <div className="flex-1 text-center p-2.5 opacity-10">Pages</div>
       </div>
       {blocks.map(el => el.post == slugPath[1] && <div 
         onClick={e=>{
