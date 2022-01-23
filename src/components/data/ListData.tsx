@@ -16,7 +16,7 @@ const ListData: React.FC<Props> = memo(({ attrs, children }) => {
 
   return (
     <div className={`block ${attrs.classes}`}>
-      {targetedList  && targetedList.length > 1
+      {targetedList  && Array.isArray(targetedList) && targetedList.length > 1
         ? targetedList.map((el,i)=><>{children}</>)  
         : <div>{children}</div>}
 

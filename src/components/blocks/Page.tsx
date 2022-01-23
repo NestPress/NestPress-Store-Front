@@ -16,7 +16,7 @@ import {
   CREATE_BLOCK,
 } from "components/blocks/gql/composer";
 
-export const Page: React.FC = () => {
+export const Page: React.FC = memo(() => {
   const router = useRouter();
   const slugPath = router.query?.slugPath || ["Page", "home"];
   const message = useBlocks((state) => state.message);
@@ -26,21 +26,21 @@ export const Page: React.FC = () => {
   const [activeCreate, setActiveCreate] = useState(true);
   
   
-    const haveBlocks = (blocks) => {
-      useEffect(() =>{
+    // const haveBlocks = (blocks) => {
+    //   useEffect(() =>{
 
-        const guard = false;
-        blocks.forEach((el) => {
-          if(el.post == slugPath[1]){
-            guard = true
-            return false
-          }
-        })
-        console.log('effect', guard)
-        setActiveCreate(guard)
-      }, [blocks])
-    }
-    haveBlocks(blocks)
+    //     const guard = false;
+    //     blocks.forEach((el) => {
+    //       if(el.post == slugPath[1]){
+    //         guard = true
+    //         return false
+    //       }
+    //     })
+    //     console.log('effect', guard)
+    //     setActiveCreate(guard)
+    //   }, [blocks])
+    // }
+    // haveBlocks(blocks)
  
   
 
@@ -375,4 +375,4 @@ export const Page: React.FC = () => {
       </form>
     </div>
   );
-};
+});
