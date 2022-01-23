@@ -366,7 +366,7 @@ export const BlockControlls: React.FC = () => {
         })}
       </div>
 
-      {!replace ? (
+      {!targeter.attrs.handler &&
         <div
           style={{ position: "sticky", bottom: 0 }}
           className="bg-white px-2 mt-2 border-t pt-2 grid grid-cols-2 gap-1 text-sm"
@@ -423,11 +423,15 @@ export const BlockControlls: React.FC = () => {
             <span className="ml-2">Remove</span>
           </button>
         </div>
-      ) : (
-        <div className="text-xs p-2 border-t border-b bg-yellow-100">
-          Select parent block to replace
-        </div>
-      )}
+      
+    }
     </div>
   );
 };
+
+
+// (
+//         <div className="text-xs p-2 border-t border-b bg-yellow-100">
+//           Select parent block to replace
+//         </div>
+//       )
