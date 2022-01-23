@@ -1,6 +1,7 @@
 /* TODO fix type */
 // @ts-ignore
 // @ts-nocheck
+import { memo, useEffect,useState } from "react";
 import { FiAnchor, FiType, FiMessageSquare, FiFile } from "react-icons/fi";
 import { useRouter, useHistory } from "next/router";
 import { useBlocks, useApp, pushToStore } from "store";
@@ -21,7 +22,29 @@ export const Page: React.FC = () => {
   const message = useBlocks((state) => state.message);
   const messageType = useBlocks((state) => state.messageType);
   const blocks = useApp((state) => state.display.blocks) || [];
-  const haveBlocks = useApp((state) => state.custom.handlersBlocks) || [];
+
+  const [activeCreate, setActiveCreate] = useState(true);
+  
+  
+    const haveBlocks = (blocks) => {
+      useEffect(() =>{
+
+        const guard = false;
+        blocks.forEach((el) => {
+          if(el.post == slugPath[1]){
+            guard = true
+            return false
+          }
+        })
+        console.log('effect', guard)
+        setActiveCreate(guard)
+      }, [blocks])
+    }
+    haveBlocks(blocks)
+ 
+  
+
+  // console.log('bb',haveBlocks(blocks))
 
   const buttonClass =
     " bg-blue-400 w-full p-2 rounded mt-1 text-white hover:bg-blue-500";
@@ -131,7 +154,7 @@ export const Page: React.FC = () => {
       });
       useApp.setState({ custom: { activeTargeter: block } });
       // router.push(`${slugPath[0]}/${slugPath[1]}/${Math.floor(Math.random() * 9999)}`)
-      window.location.reload();
+      // window.location.reload();
     },
 
     update: (cache) => {
@@ -173,7 +196,7 @@ export const Page: React.FC = () => {
         </div>
       )}
 
-      {!haveBlocks[slugPath[1]] && (
+      {!activeCreate && (
         <div className="text-xs px-4 py-2 border-b flex items-top gap-1 border-t border-b bg-yellow-100">
           <div className="w-3 mt-0.5">
             <FiFile />
@@ -189,7 +212,12 @@ export const Page: React.FC = () => {
                       parentId: slugPath[1],
                       block: "layout/Grid",
                       post: currentPage.slug,
-                      order: slugPath[0] == "Page" ? 600 : 10,
+                      order: 
+                        slugPath[0] == "Page" 
+                        ? 600  
+                        : slugPath[0] == "Panel" 
+                        ? 800
+                        : 0,
                       attrs: {
                         classes: "",
                         handler: "",

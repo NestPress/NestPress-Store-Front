@@ -12,6 +12,7 @@ const ListData: React.FC<Props> = memo(({ attrs, children }) => {
   const queries = useQueries((state) => state.queries);
   const targetedList = get(queries, attrs.dataTarget)
   const length = targetedList?.length
+  console.log('targetedList',targetedList)
   return (
     <div className={`${attrs.classes}`}>
       {preview && <p>Preview</p>}

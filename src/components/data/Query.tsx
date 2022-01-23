@@ -21,8 +21,10 @@ const Query: React.FC<Props> = memo(({ attrs, children }) => {
   const [active, setActive] = useState(true);
   const [res, setRes] = useState({ skip:true });
   
-  const QUERY_GQL = gql `${attrs.query}`
-  const { data } = useQuery( QUERY_GQL, res );  
+  try{
+    const QUERY_GQL = gql `${attrs.query}`
+    const { data } = useQuery( QUERY_GQL, res );  
+  }catch(e){}
 
   let reinitAttrs;
   if(active && attrs?.initActions && attrs?.initActions?.length>0){ 
@@ -30,7 +32,6 @@ const Query: React.FC<Props> = memo(({ attrs, children }) => {
     reinitAttrs = getFromStore({store:"display", ref:`blocks.${attrs.index}.attrs`})
   }
   useEffect(() =>{
-    console.log('reinitAttrs',reinitAttrs)
     setRes({
       skip: false,
       variables: reinitAttrs?.variables,
