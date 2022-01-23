@@ -20,15 +20,16 @@ export const handlingLayouts = () => {
 };
 
 export const remapHandlers = (list: any) => {
-  return list.map((el) =>
+  return list.map((el,i) =>
     el.attrs.handler
       ? {
           ...el,
           archiveId: el.id,
+          index:i,
           id: interpolate(el.attrs.handler, {
             router: getFromStore({ store: "router" }),
           }).toLowerCase(),
         }
-      : el
+      : {...el, attrs:{...el.attrs, index:i} }
   );
 };

@@ -8,14 +8,16 @@ import { useQuery } from "@apollo/client";
 import { GET_BLOCKS } from "components/nestpress";
 import { useApp, getFromStore } from "store";
 import { handlingLayouts, remapHandlers } from "helpers";
+import { useState } from "react";
 
 const ComposerPage: React.FC = () => {
+
   const blocks = useApp((state) => state.display.blocks) || [];
-  const tick = useApp((state) => state.custom.tick);
+  // const tick = useApp((state) => state.custom.tick);
   /* lauouts shoudbe part of post (relation to blocks too) */
   const layout = handlingLayouts();
 
-  const { data } = useQuery(GET_BLOCKS, {
+  const { loading, data } = useQuery(GET_BLOCKS, {
     variables: {
       sort: { order: "asc" },
       filter: {
@@ -29,14 +31,10 @@ const ComposerPage: React.FC = () => {
         display: { blocks: remapHandlers(list) },
       });
     },
-    optimisticResponse() {
-      useApp.setState({ display: { blocks: [] } });
-    },
   });
-
   return (
     <>
-      {blocks && blocks.length > 0 && (
+      {blocks.length > 0 && (
         <MainMapper
           blocks={blocks}
           layout={layout}

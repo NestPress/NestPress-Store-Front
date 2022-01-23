@@ -65,9 +65,10 @@ export const DataBlocks: React.FC = ({ type }) => {
             attrs: {
               refName: prefix.id,
               query: "",
-              variables: {},
               childrenSlots: [],
+              initActions:[],
               classes: "",
+
             },
           })
         }

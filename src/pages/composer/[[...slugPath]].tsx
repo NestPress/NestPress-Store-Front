@@ -47,9 +47,6 @@ const ComposerPage: React.FC = () => {
         });
       }
     },
-    optimisticResponse() {
-      useApp.setState({ display: { blocks: [] } });
-    },
   });
 
   const [createBlocks] = useMutation(CREATE_BLOCKS, {

@@ -166,8 +166,7 @@ export const BlockControlls: React.FC = () => {
     const refBlock = targeter;
     const copy = JSON.parse(JSON.stringify(refBlock.attrs));
     copy[res.key] = res.value;
-
-
+    delete copy.variables
     // /* -------------------------- */
     updateBlock({
       variables: {
@@ -280,7 +279,7 @@ export const BlockControlls: React.FC = () => {
                 />
               )}
 
-              {(key === "variables" ||
+              {(
                 key === "consts" ||
                 key === "styles") && (
                 <KeyValueField
@@ -291,7 +290,7 @@ export const BlockControlls: React.FC = () => {
                 />
               )}
 
-              {(key === "errorActions" || key === "successActions") && (
+              {(key === "errorActions" || key === "successActions" || key === "initActions") && (
                 <EnumField
                   key={`bgc-${index}`}
                   keyName={key}
@@ -309,8 +308,10 @@ export const BlockControlls: React.FC = () => {
                 />
               )}
 
-              {key === "query" && (
-                <QueryField
+             
+
+              {key === "dataTarget" && (
+                <DataTarget
                   key={`bgc-${index}`}
                   keyName={key}
                   res={res}
@@ -318,8 +319,8 @@ export const BlockControlls: React.FC = () => {
                 />
               )}
 
-              {key === "dataTarget" && (
-                <DataTarget
+               {key === "query" && (
+                <QueryField
                   key={`bgc-${index}`}
                   keyName={key}
                   res={res}
@@ -345,10 +346,11 @@ export const BlockControlls: React.FC = () => {
                 key !== "classes" &&
                 key !== "query" &&
                 key !== "options" &&
-                key !== "variables" &&
+                // key !== "variables" &&
                 key !== "consts" &&
                 key !== "errorActions" &&
                 key !== "successActions" &&
+                key !== "initActions" &&
                 key !== "childrenSlots" &&
                 key !== "dataTarget" &&
                 key !== "styles" && (

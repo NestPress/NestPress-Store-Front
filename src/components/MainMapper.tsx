@@ -33,7 +33,7 @@ export const MainMapper: React.FC<Props> = memo(
               <Block
                 attrs={{
                   id: el.id,
-                  i: i,
+                  // i: el.i,
                   ...(el.queryIndex && { queryIndex: el.queryIndex }),
                   ...(el.dataTarget && { dataTarget: el.dataTarget }),
                   ...el.attrs,

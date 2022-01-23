@@ -8,7 +8,6 @@ const useApp = create((set) => ({
   components:{},
   forms:{},
   queries:{},
-  vars:{},
   router:{
     slugPath:["Page","home"]
   },
@@ -55,7 +54,7 @@ const removeById = (_in) => {
 
 const pushToStore = (_in) => {
   const nextState = produce(useApp.getState()[_in.store] , draft => {
-    setBy(draft,`${_in.ref}`,[...getBy(draft, _in.ref), _in.data])
+   try{ setBy(draft,`${_in.ref}`,[...getBy(draft, _in.ref), _in.data]) } catch (error) { console.error('push to store error:',error) }
   })
   useApp.setState({[_in.store]: nextState});  
 }
@@ -80,3 +79,5 @@ const itemById = (_in) => {
 }
 
 export { useApp, getFromStore, setToStore, pushToStore, pushByIndex, removeById, itemById};
+
+

@@ -19,6 +19,7 @@
     "@fullcalendar/timegrid": "^5.10.1",
     "apollo-upload-client": "^17.0.0",
     "autoprefixer": "^10.4.0",
+    "gql-query-builder": "^3.5.7",
     "graphql": "^16.0.0",
     "immer": "^9.0.6",
     "mapbox-gl": "^2.5.1",

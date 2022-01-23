@@ -22,9 +22,9 @@ export const EnumField: React.FC<Props> = ({ keyName, res,  block }) => {
     <div className="">
       <div className="border-b">
         {Object.keys(block?.attrs[keyName]).map(function(key, index) {
-          return <div className="grid grid-cols-7  border-t">
+          return <div className="grid grid-cols-12  border-t">
             <div className="border-l border-r p-1 col-span-1 overflow-hidden">{key}</div>
-            <div className="border-r p-1 underline text-blue-800 col-span-5 overflow-hidden">
+            <div className="border-r p-1 underline text-blue-800 col-span-10 overflow-hidden">
             <textarea rows="1" style={{ whiteSpace: 'nowrap',resize: 'none', overflow:'hidden', background:'transparent',outline:'none'}} className="w-full">
               {block?.attrs[keyName][key]}
             </textarea>
@@ -35,7 +35,7 @@ export const EnumField: React.FC<Props> = ({ keyName, res,  block }) => {
                 out.splice(parseInt(key), 1);
                 update(out)
               }} 
-              className="text-center border-r p-1 text-blue-800 underline cursor-pointer hover:text-red-600">x</div>
+              className="text-center border-r p-1 text-blue-800 col-span-1 underline cursor-pointer hover:text-red-600">x</div>
           </div>;
         })}
       </div>

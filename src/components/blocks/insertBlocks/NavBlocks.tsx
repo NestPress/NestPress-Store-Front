@@ -97,6 +97,38 @@ export const NavBlocks: React.FC = ({ type }) => {
         onClick={(e) =>
           teachSetBlock({
             ...prefix,
+            block: "nav/RoutingTabs",
+            attrs: {
+              classes: "",
+            },
+          })
+        }
+      >
+        <FiLogOut />
+        <span className="ml-2">Routing tabs</span>
+      </button>
+
+       <button
+        className={buttonClass}
+        onClick={(e) =>
+          teachSetBlock({
+            ...prefix,
+            block: "nav/StatedTabs",
+            attrs: {
+              classes: "",
+            },
+          })
+        }
+      >
+        <FiLogOut />
+        <span className="ml-2">Stated tabs</span>
+      </button>
+
+      <button
+        className={buttonClass}
+        onClick={(e) =>
+          teachSetBlock({
+            ...prefix,
             block: "form/SubmitButton",
             attrs: {
               text: "Submit button",

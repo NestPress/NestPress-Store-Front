@@ -18,6 +18,8 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = (
     router: Object.assign({}, getFromStore({ store: "router" }), router.query),
   });
 
+  // useApp.setState({ display: { blocks: [] } });
+
   /* routing event use to change store data by routing*/
   useEffect(() => {
     router.asPath === "/" ? router.push("/Page/home") : null;

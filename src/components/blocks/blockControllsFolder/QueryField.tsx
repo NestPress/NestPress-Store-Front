@@ -20,7 +20,7 @@ export const QueryField: React.FC<Props> = ({ keyName, res, block }) => {
   const QUERY_GQL = targeter.attrs.query ? gql `${targeter.attrs.query}` : gql `query {a: Boolean}`
   const qres = {}
   // targeter.attrs.variables ? qres.variables = buildVariables(targeter.attrs.variables) : null
-  const [ myQuery, { queryLoading, data } ] = useLazyQuery(QUERY_GQL, {variables:buildVariables(targeter.attrs.variables)}) ;  
+  const [ myQuery, { queryLoading, data } ] = useLazyQuery(QUERY_GQL, targeter.attrs.variables ? {variables:  buildVariables(targeter.attrs.variables)} : {}) ;  
 
   if (data) {
     setToStore({store:"queries", ref:`${targeter.attrs.refName || targeter.attrs.id}`, data:data})
