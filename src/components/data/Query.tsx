@@ -24,22 +24,21 @@ const Query: React.FC<Props> = memo(({ attrs, children }) => {
   try{
     const QUERY_GQL = gql `${attrs.query}`
     const { data } = useQuery( QUERY_GQL, res );  
+    let reinitAttrs;
+    if(active && attrs?.initActions && attrs?.initActions?.length>0){ 
+      runCommands(attrs.initActions, router, attrs);
+      reinitAttrs = getFromStore({store:"display", ref:`blocks.${attrs.index}.attrs`})
+    }
+    useEffect(() =>{
+      setRes({
+        skip: false,
+        variables: reinitAttrs?.variables,
+        onCompleted: (data) => {
+          setToStore({store:"queries", ref:`${attrs.refName || attrs.id}`, data:data}) 
+          console.log('ok')
+        }});
+    }, [reinitAttrs])
   }catch(e){}
-
-  let reinitAttrs;
-  if(active && attrs?.initActions && attrs?.initActions?.length>0){ 
-    runCommands(attrs.initActions, router, attrs);
-    reinitAttrs = getFromStore({store:"display", ref:`blocks.${attrs.index}.attrs`})
-  }
-  useEffect(() =>{
-    setRes({
-      skip: false,
-      variables: reinitAttrs?.variables,
-      onCompleted: (data) => {
-        setToStore({store:"queries", ref:`${attrs.refName || attrs.id}`, data:data}) 
-        console.log('ok')
-      }});
-  }, [reinitAttrs])
 
   return (
     <div 

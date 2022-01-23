@@ -21,8 +21,14 @@ export const DataTarget: React.FC<Props> = ({ keyName, res, block }) => {
   const pathArray = block?.attrs[keyName] ? block?.attrs[keyName].split('.') : []
 
   const update = (value) => {
-    res({ key: keyName, value: value, mutation: false});
-    res({ key: keyName, value: value, mutation: true});
+    
+    if(block.childrenSlots.length == 0){
+      alert('insert children blocks to ListData component first')
+    }else{
+      res({ key: keyName, value: value, mutation: false});
+      res({ key: keyName, value: value, mutation: true});
+    }
+
     // res({ key: keyName, value: ``, mutation: true});
     // res({ key: keyName, value: ``, mutation: false});
   }
