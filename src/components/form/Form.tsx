@@ -1,7 +1,7 @@
 /* TODO fix type */
 // @ts-ignore
 // @ts-nocheck
-import { memo } from "react";
+import { memo, useState } from "react";
 import { parseBlockAttrs, buildFormOutput } from "helpers";
 import { gql, useMutation } from "@apollo/client";
 import { getFromStore, useApp, useActions, setToStore, pushToStore } from "store";
@@ -15,46 +15,27 @@ import { runCommands } from "helpers";
 interface Props {
   attrs: any;
 }
-const Form: React.FC<Props> = ({ attrs, children }) => {
-  const router = useRouter();
-  const slugPath = router.query?.slugPath || ["Page", "home"];
-  const blocks = useApp((state) => state.display.blocks) || [];
-  const setStore = useApp((state) => state.setStore);
-  const addAction = useActions((state) => state.addAction);
-  const form = getNestedChildren(blocks, attrs.id);
-  attrs = parseBlockAttrs(attrs);
+const Form: React.FC<Props> = memo(({ attrs, children }) => {
+  attrs = parseBlockAttrs(attrs)
 
-  
-
-  getFromStore({ ref: attrs.refName, store: "forms" })
-    ? null
-    : setStore({
-        store: "forms",
-        ref: attrs.refName,
-        data: buildFormOutput(form),
-      });
+  /* init */
+  const [active, setActive] = useState(true);
+  const router = useRouter()
+  if(active && attrs?.initActions && attrs?.initActions?.length>0){ 
+    runCommands(attrs.initActions, router, attrs);
+    setActive(false)
+  }
 
   /* mutation */
-  try {
-    if (attrs.mutation) {
-
-      const MUTATION = attrs.mutation
-        ? gql`
-            ${attrs.mutation}
-          `
-        : ``;
-      const [formMutation, { data, loading, error }] = useMutation(MUTATION, {
+  try { if (attrs.mutation) {
+      const MUTATION = attrs.mutation ? gql`${attrs.mutation}` : ``;
+      const [formMutation, { data }] = useMutation(MUTATION, {
         onCompleted(data) {
           setToStore({
             store: "forms",
             ref: `${attrs.refName}.response`,
             data: data,
           });
-          // setToStore({
-          //   store: "custom",
-          //   ref: `tick`,
-          //   data: Math.floor(Math.random() * 9999),
-          // });
           runCommands(attrs.successActions, router);
         },
         update: (cache) => {
@@ -63,46 +44,40 @@ const Form: React.FC<Props> = ({ attrs, children }) => {
         },
       });
     }
-  } catch (error) {
-    addAction({ type: "error", key: "submitForm", value: error });
-  }
-
-  const mergeDeep = (target, source) => {
-    for (const key of Object.keys(source)) {
-      if (source[key] instanceof Object) Object.assign(source[key], mergeDeep(target[key], source[key]))
-    }
-    Object.assign(target || {}, source)
-    return target
-  }
+  } catch (error) {}
 
   return (
     <form
       className={`block ${attrs.classes}`}
       onSubmit={(e) => {
         e.preventDefault();
-        if (!attrs.mutation && attrs.successActions) {
-          runCommands(attrs.successActions, router);
-        }
-        try {
-          if (attrs.mutation) {
+        const processedAttrs = getFromStore({store:"display", ref:`blocks.${attrs.index}.attrs`})
+        // store form input data
+        setToStore({
+            store: "forms",
+            ref: `${attrs.refName}`,
+            data: processedAttrs.variables,
+          });
+        
+        try { if (attrs.mutation) {
             formMutation({
-              variables: mergeDeep(
-                JSON.parse(JSON.stringify(getFromStore({store:"forms", ref:attrs.refName}))), 
-                JSON.parse(JSON.stringify(buildVariables(attrs.consts))), 
-                ),
+              variables: processedAttrs.variables
             }).catch((error) => {
-              addAction({
-                type: "error",
-                key: "submitForm",
-                value: error.message,
-              });
+              if (attrs.successActions) {
+                console.log('error')
+                runCommands(attrs.errorActions, router, attrs);
+              }
             });
           }
         } catch (error) {}
+
+        if (!attrs.mutation && attrs.successActions) {
+          runCommands(attrs.successActions, router, attrs);
+        }
       }}
     >
       {children}
     </form>
   );
-};
+});
 export default Form;

@@ -1,23 +1,22 @@
 // @ts-nocheck
-
 import { memo } from "react";
-import { parseBlockAttrs, fieldHead } from "helpers";
-import { useApp } from "store";
+import { parseBlockAttrs, findOutByBlock } from "helpers";
+import { useApp, getFromStore } from "store";
+import { useRouter } from "next/router";
+import { runCommands } from "helpers";
 
 interface Props {
   attrs: any;
 }
 const TextareaField: React.FC<Props> = memo(({ attrs, children }) => {
+  const router = useRouter()
+  const ref = findOutByBlock(useApp((state: any) => state.display.blocks), attrs.id, "form/Form")
   attrs = attrs.dataTarget ? parseBlockAttrs(attrs) : attrs;
-  const { blocks, updateData, ref } = fieldHead(useApp, attrs);
-
   if (attrs.default && ref) {
-    updateData({
-      ref: ref,
-      path: attrs.outputValue,
-      data: attrs.default,
-      store: "forms",
-    });
+    runCommands(
+      [`${attrs.default}>SET>display.blocks.${ref.attrs.index}.attrs.variables.${attrs.outputValue}`], 
+      router, attrs
+    );
   }
 
   return (
@@ -33,12 +32,10 @@ const TextareaField: React.FC<Props> = memo(({ attrs, children }) => {
         defaultValue={attrs.default}
         onChange={(e) => {
           ref
-            ? updateData({
-                ref: ref,
-                path: attrs.outputValue,
-                data: e.target.value,
-                store: "forms",
-              })
+            ? runCommands(
+              [`${e.target.value}>SET>display.blocks.${ref.attrs.index}.attrs.variables.${attrs.outputValue}`], 
+              router, attrs
+            )
             : null;
         }}
       />

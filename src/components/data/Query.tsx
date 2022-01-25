@@ -2,10 +2,10 @@
 // @ts-ignore
 // @ts-nocheck
 import { memo, useEffect } from "react";
-import { useQuery, gql } from '@apollo/client';
+import { useLazyQuery, gql } from '@apollo/client';
 import { useApp, setToStore, pushToStore, getFromStore} from "store";
-import { buildVariables, parseBlockAttrs,runCommands } from "helpers"
-import { useRouter, useHistory } from "next/router";
+import { parseBlockAttrs,runCommands } from "helpers"
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 interface Props {
@@ -16,30 +16,33 @@ const Query: React.FC<Props> = memo(({ attrs, children }) => {
   const router = useRouter()
   const slugPath = router.query?.slugPath || ["Page", "home"];
   const targeter = useApp((state) => state.custom.activeTargeter);
-  // const tick = useApp((state) => state.custom.tick);
+  const mutationTick = useApp((state) => state.custom.mutationTick);
 
   const [active, setActive] = useState(true);
   const [res, setRes] = useState({ skip:true });
   
   try{
     const QUERY_GQL = gql `${attrs.query}`
-    const { data } = useQuery( QUERY_GQL, res );  
+    const [runQuery, { data }] = useLazyQuery( QUERY_GQL, res );  
     let reinitAttrs;
     if(active && attrs?.initActions && attrs?.initActions?.length>0){ 
       // TODO
       // check set two customTypes actions to one filter. One shouldbe real and second fake
       runCommands(attrs.initActions, router, attrs);
       reinitAttrs = getFromStore({store:"display", ref:`blocks.${attrs.index}.attrs`})
+
     }
     useEffect(() =>{
+      console.log('1. run queryres',data)
       setRes({
         skip: false,
         variables: reinitAttrs?.variables,
         onCompleted: (data) => {
           setToStore({store:"queries", ref:`${attrs.refName || attrs.id}`, data:data}) 
-          console.log('ok')
+          pushToStore({store:"display", ref:`blocks`, data:{}}) 
         }});
-    }, [reinitAttrs])
+      runQuery()
+    }, [reinitAttrs, mutationTick])
   }catch(e){}
 
   return (

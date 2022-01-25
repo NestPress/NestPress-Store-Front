@@ -1,27 +1,26 @@
 /* TODO fix type */
 // @ts-ignore
 // @ts-nocheck
-import { memo, useState } from "react";
-import { useApp } from "store";
-import { parseBlockAttrs, fieldHead } from "helpers";
+import { memo,useState } from "react";
+import { parseBlockAttrs, findOutByBlock } from "helpers";
+import { useApp, getFromStore } from "store";
+import { useRouter } from "next/router";
+import { runCommands } from "helpers";
+
 
 interface Props {
   attrs: any;
 }
 
 const ButtonsField: React.FC<Props> = memo(({ attrs, children }) => {
-  attrs = attrs.dataTarget ? parseBlockAttrs(attrs, useQueries) : attrs;
-
+  const router = useRouter()
+  const ref = findOutByBlock(useApp((state: any) => state.display.blocks), attrs.id, "form/Form")
   attrs = attrs.dataTarget ? parseBlockAttrs(attrs) : attrs;
-  const { updateData, ref } = fieldHead(useApp, attrs);
-
   if (attrs.default && ref) {
-    updateData({
-      ref: ref,
-      path: attrs.outputValue,
-      data: attrs.default,
-      store: "forms",
-    });
+    runCommands(
+      [`${e.target.value}>SET>display.blocks.${ref.attrs.index}.attrs.variables.${attrs.outputValue}`], 
+      router, attrs
+    );
   }
 
   const [active, setActive] = useState(false);
@@ -39,12 +38,10 @@ const ButtonsField: React.FC<Props> = memo(({ attrs, children }) => {
               onClick={(e) => {
                 setActiveValue(el.value);
                 setActive(i);
-                updateData({
-                  ref: ref,
-                  path: attrs.outputValue,
-                  data: e.target.value,
-                  store: "forms",
-                });
+                runCommands(
+                  [`${e.target.value}>SET>display.blocks.${ref.attrs.index}.attrs.variables.${attrs.outputValue}`], 
+                  router, attrs
+                );
               }}
               className={`${
                 active == i

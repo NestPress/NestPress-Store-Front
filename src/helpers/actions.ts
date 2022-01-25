@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { setToStore, getFromStore, pushToStore } from "store";
 
 export const runCommands = (cmd: any, router: any, attrs = {}) => {
-  const cmdList = ["SET", "PUSH", "FIND", "UID", "RELOAD"];
+  const cmdList = ["SET", "PUSH", "FIND", "ARRAY","OBJECT","UID", "RELOAD"];
   commands.router = router;
   for (const i in cmd) {
     const c: any = cmd[i].split(">");
@@ -36,7 +36,7 @@ export const findStorage = (val: String, attrs) => {
     arr[0] === "display"
     ? { store: arr[0], ref: arr.slice(1).join(".") }
     : arr[0] === "this" 
-    ? { store: 'display', ref: arr.slice(1).join(".") }
+    ? { store: 'this', ref: arr.slice(1).join(".") }
     : { store: null, ref: arr[0] };
 };
 
@@ -50,8 +50,8 @@ const commands: any = {
   router: {},
   SET: (_in: any) => {
     const input = findStorage(_in.next, commands.attrs)
-    if(input.store === 'display'){
-      setToStore({ store:'display', ref:`blocks.${commands.attrs.index}.attrs.${input.ref}`, data: _in.prev});
+    if(input.store === 'this'){
+      setToStore({ store:'display', ref:`blocks.${commands.attrs.index}.attrs.${input.ref}`, data: commands.dataRef});
     }else{
       setToStore({ data: commands.dataRef, ...findStorage(_in.next) });
     }
@@ -63,7 +63,7 @@ const commands: any = {
   },
   PUSH: (_in: any) => {
     const input = findStorage(_in.next, commands.attrs)
-    if(input.store === 'display'){
+    if(input.store === 'this'){
       const block = `blocks.${commands.attrs.index}` 
       getFromStore({ store:'display', ref:`${block}.attrs.${input.ref}` })
       if(!Array.isArray(getFromStore({ store:'display', ref:`${block}.attrs.${input.ref}` }))){
@@ -74,6 +74,12 @@ const commands: any = {
     }else{
       pushToStore({ data: commands.dataRef, ...findStorage(_in.next) });
     }
+  },
+  ARRAY: (_in: any) => {
+    commands.dataRef = [];
+  },
+  OBJECT: (_in: any) => {
+    commands.dataRef = {};
   },
   UID: (_in: any) => {
     commands.dataRef = uuidv4();

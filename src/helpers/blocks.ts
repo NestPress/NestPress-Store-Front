@@ -135,13 +135,13 @@ export const targetingAndIndexingBlocks = (
 /* 
   Build variables 
 */
-export const buildVariables = (variables: any) => {
-  const out = {};
-  for (const [key, value] of Object.entries(variables)) {
-    setBy(out, key, value);
-  }
-  return out;
-};
+// export const buildVariables = (variables: any) => {
+//   const out = {};
+//   for (const [key, value] of Object.entries(variables)) {
+//     setBy(out, key, value);
+//   }
+//   return out;
+// };
 
 export const sanitBlock = (block:blockType) => {
   return {

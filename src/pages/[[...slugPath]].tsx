@@ -13,6 +13,7 @@ import { useState } from "react";
 const ComposerPage: React.FC = () => {
 
   const blocks = useApp((state) => state.display.blocks) || [];
+   const queryTick = useApp((state) => state.custom.queryTick);
   // const tick = useApp((state) => state.custom.tick);
   /* lauouts shoudbe part of post (relation to blocks too) */
   const layout = handlingLayouts();
@@ -33,7 +34,7 @@ const ComposerPage: React.FC = () => {
     },
   });
   return (
-    <>
+    <div>
       {blocks.length > 0 && (
         <MainMapper
           blocks={blocks}
@@ -43,7 +44,7 @@ const ComposerPage: React.FC = () => {
         />
       )}
       <BottomBar />
-    </>
+    </div>
   );
 };
 export default ComposerPage;
