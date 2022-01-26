@@ -50,6 +50,7 @@ export const NavBlocks: React.FC = ({ type }) => {
       alert("added to layout handling block is locked");
     } else {
       /* Set to zustand state */
+      !block.order ?  block.order=600 : null
       addNewBlock({ variables: { input: block } });
     }
   };

@@ -23,24 +23,24 @@ export const Page: React.FC = memo(() => {
   const messageType = useBlocks((state) => state.messageType);
   const blocks = useApp((state) => state.display.blocks) || [];
 
-  const [activeCreate, setActiveCreate] = useState(true);
+  const [activeCreate, setActiveCreate] = useState(false);
   
-  
-    // const haveBlocks = (blocks) => {
-    //   useEffect(() =>{
+  const guard = true;
+    const haveBlocks = (blocks) => {
+      useEffect(() =>{
 
-    //     const guard = false;
-    //     blocks.forEach((el) => {
-    //       if(el.post == slugPath[1]){
-    //         guard = true
-    //         return false
-    //       }
-    //     })
-    //     console.log('effect', guard)
-    //     setActiveCreate(guard)
-    //   }, [blocks])
-    // }
-    // haveBlocks(blocks)
+        const guard = false;
+        blocks.forEach((el) => {
+          if(el.post == slugPath[1]){
+            guard = true
+            return false
+          }
+        })
+        console.log('effect', guard)
+        setActiveCreate(guard)
+      }, [blocks])
+    }
+    haveBlocks(blocks)
  
   
 
