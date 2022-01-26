@@ -16,19 +16,21 @@ interface Props {
   attrs: any;
 }
 const Form: React.FC<Props> = memo(({ attrs, children }) => {
-  attrs = parseBlockAttrs(attrs)
+  const pAttrs = parseBlockAttrs(attrs)
 
   /* init */
   const [active, setActive] = useState(true);
   const router = useRouter()
   if(active && attrs?.initActions && attrs?.initActions?.length>0){ 
-    runCommands(attrs.initActions, router, attrs);
+    if(pAttrs){
+      runCommands(attrs.initActions, router, pAttrs);
+    }
     setActive(false)
   }
 
   /* mutation */
   try { if (attrs.mutation) {
-      const MUTATION = attrs.mutation ? gql`${attrs.mutation}` : ``;
+      const MUTATION = pAttrs.mutation ? gql`${pAttrs.mutation}` : ``;
       const [formMutation, { data }] = useMutation(MUTATION, {
         onCompleted(data) {
           setToStore({
@@ -36,7 +38,7 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
             ref: `${attrs.refName}.response`,
             data: data,
           });
-          runCommands(attrs.successActions, router);
+          runCommands(attrs.successActions, router, pAttrs);
         },
         update: (cache) => {
           cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
@@ -51,17 +53,19 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
       className={`block ${attrs.classes}`}
       onSubmit={(e) => {
         e.preventDefault();
-        const processedAttrs = getFromStore({store:"display", ref:`blocks.${attrs.index}.attrs`})
+        // const processedAttrs = getFromStore({store:"display", ref:`blocks.${attrs.index}.attrs`})
         // store form input data
         setToStore({
             store: "forms",
             ref: `${attrs.refName}`,
-            data: processedAttrs.variables,
+            data: pAttrs.variables,
           });
+
+        // console.log(pAttrs)
         
         try { if (attrs.mutation) {
             formMutation({
-              variables: processedAttrs.variables
+              variables: pAttrs.variables
             }).catch((error) => {
               if (attrs.successActions) {
                 console.log('error')
