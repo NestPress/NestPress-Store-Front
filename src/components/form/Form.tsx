@@ -38,6 +38,12 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
             ref: `${attrs.refName}.response`,
             data: data,
           });
+          setToStore({
+            store: "custom",
+            ref: `mutationTick`,
+            data: Math.floor(Math.random() * 9999),
+          });
+
           runCommands(attrs.successActions, router, pAttrs);
         },
         update: (cache) => {

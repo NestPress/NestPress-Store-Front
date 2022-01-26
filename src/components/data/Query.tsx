@@ -33,7 +33,6 @@ const Query: React.FC<Props> = memo(({ attrs, children }) => {
 
     }
     useEffect(() =>{
-      console.log('1. run queryres',data)
       setRes({
         skip: false,
         variables: reinitAttrs?.variables,
