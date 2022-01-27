@@ -51,8 +51,11 @@ const commands: any = {
   SET: (_in: any) => {
     const input = findStorage(_in.next, commands.attrs)
     if(input.store === 'this'){
+      // transform numericstring to int
+       !isNaN(commands.dataRef) ? commands.dataRef = parseInt(commands.dataRef) : null
       setToStore({ store:'display', ref:`blocks.${commands.attrs.index}.attrs.${input.ref}`, data: commands.dataRef});
     }else{
+
       setToStore({ data: commands.dataRef, ...findStorage(_in.next) });
     }
   },
