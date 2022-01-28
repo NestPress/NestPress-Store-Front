@@ -96,8 +96,9 @@ export const FILTER_POSTS = gql`
     $limit: Int
     $offset: Int
     $filter: PostsFilter
+    $sort: JSON  = { slug: ASC }
   ) {
-    getPosts(filter: $filter, query: $query, offset: $offset, limit: $limit) {
+    getPosts(filter: $filter, query: $query, offset: $offset, limit: $limit, sort:$sort) {
       list {
         id
         slug
@@ -136,6 +137,10 @@ export const CREATE_ASSET = gql`
     createAssets(input: $input) {
       ... on Asset {
         id
+        width
+        height
+        source
+        preview
       }
     }
   }

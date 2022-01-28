@@ -17,7 +17,7 @@ interface Props {
 }
 const Form: React.FC<Props> = memo(({ attrs, children }) => {
   const pAttrs = parseBlockAttrs(attrs)
-
+// console.log(pAttrs)
   /* init */
   const [active, setActive] = useState(true);
   const router = useRouter()
@@ -67,7 +67,7 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
             data: pAttrs.variables,
           });
 
-        // console.log(pAttrs)
+       console.log(pAttrs.variables)
         
         try { if (attrs.mutation) {
             formMutation({
