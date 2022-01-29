@@ -11,6 +11,7 @@ const useApp = create((set) => ({
   router:{
     slugPath:["Page","home"]
   },
+  history:[],
   display:{
     layout:[],
     blocks:[]

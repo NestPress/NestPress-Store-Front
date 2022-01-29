@@ -8,6 +8,9 @@ import { useApp, getFromStore, setToStore } from "store";
 export const BottomBar: React.FC = () => {
   const router = useRouter()
   const r = getFromStore({store:"router",ref:"slugPath"})
+
+
+
   
   return (
     <div style={{zIndex:2000}} className="sticky border-t bottom-0 w-full bg-pink-500 text-white flex items-center">
@@ -20,6 +23,12 @@ export const BottomBar: React.FC = () => {
         className="p-3 border-r underline text-xs cursor-pointer flex items-center gap-1">
         <FiEdit/>Open {r[1]} {r[0]} with composer
       </div>    
+      
+      <div
+        className="border p-1 ml-2 cursor-pointer"  
+        onClick={e=>{
+          router.push(['console',...r].join('/'))
+        }}>~</div>
     </div>
   );
 };

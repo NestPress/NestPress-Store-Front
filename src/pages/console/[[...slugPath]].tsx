@@ -3,9 +3,8 @@
 // @ts-nocheck
 
 import { MainMapper } from "components/MainMapper";
-import { BottomBar } from "components/blocks";
 import { useQuery } from "@apollo/client";
-import { GET_BLOCKS } from "components/nestpress";
+import { GET_BLOCKS, Console } from "components/nestpress";
 import { useApp, getFromStore } from "store";
 import { handlingLayouts, remapHandlers } from "helpers";
 import { useState } from "react";
@@ -13,7 +12,6 @@ import { useState } from "react";
 const ComposerPage: React.FC = () => {
 
   const blocks = useApp((state) => state.display.blocks) || [];
-
   /* lauouts shoudbe part of post (relation to blocks too) */
   const layout = handlingLayouts();
 
@@ -33,7 +31,8 @@ const ComposerPage: React.FC = () => {
     },
   });
   return (
-    <div>
+    <div className="grid grid-cols-4">
+      <div className="col-span-3">
       {blocks.length > 0 && (
         <MainMapper
           blocks={blocks}
@@ -42,7 +41,8 @@ const ComposerPage: React.FC = () => {
           parentId={layout[0]}
         />
       )}
-      <BottomBar />
+      </div>
+      <Console />
     </div>
   );
 };
