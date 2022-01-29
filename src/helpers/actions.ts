@@ -20,6 +20,11 @@ export const runCommands = (cmd: any, router: any, attrs = {}) => {
         commands.storeRef = findStorage(c[j], attrs);
         commands.storeRef ? commands.dataRef = getFromStore(commands.storeRef) :null
       }
+      if(c.length-1 == j){
+        // console.log('storage finish command', commands.dataRef)
+        setToStore({ store:'actions', ref:`output`, data: commands.dataRef});
+      }
+     
     }
   }
 };
@@ -55,7 +60,6 @@ const commands: any = {
        !isNaN(commands.dataRef) ? commands.dataRef = parseInt(commands.dataRef) : null
       setToStore({ store:'display', ref:`blocks.${commands.attrs.index}.attrs.${input.ref}`, data: commands.dataRef});
     }else{
-
       setToStore({ data: commands.dataRef, ...findStorage(_in.next) });
     }
   },

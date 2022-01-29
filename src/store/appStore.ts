@@ -4,14 +4,19 @@ import produce from "immer";
 import { setBy, getBy ,setImmutable} from "helpers"
 
 const useApp = create((set) => ({
-  custom:{activeTargeter:false},
+  custom:{
+    activeTargeter:false
+  },
   components:{},
   forms:{},
   queries:{},
   router:{
     slugPath:["Page","home"]
   },
-  history:[],
+  actions:{
+    history:[],
+    output:{}
+  },
   display:{
     layout:[],
     blocks:[]
