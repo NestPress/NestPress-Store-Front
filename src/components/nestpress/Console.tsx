@@ -1,6 +1,9 @@
 /* TODO fix type */
 // @ts-ignore
 // @ts-nocheck
+// change focus example
+// https://stackblitz.com/edit/focushook?file=index.js
+
 import React, { useState, useEffect } from "react";
 import { useApp } from "store";
 import { getBy, runCommands } from "helpers";
@@ -41,10 +44,12 @@ const consoleSchema = {
 
 export const Console: React.FC = () => {
 
+
+
   const [selected, setSelected] = useState(0);
   const [help, setHelp] = useState([]);
   const [command, setCommand] = useState('');
-  const [output, setOutput] = useState(<><h1>NPress.console vo.i</h1><p className="text-xs">Focus console and press Tab to start</p></>);
+  const [output, setOutput] = useState([<><h1>NPress.console vo.i</h1><p className="text-xs">Focus console and press Tab to start</p></>]);
   const data = {
       queries: useApp((state) => state.queries),
       forms: useApp((state) => state.forms),
@@ -52,6 +57,19 @@ export const Console: React.FC = () => {
       router: useApp((state) => state.router),
     ...consoleSchema
   }
+  const commandOut = useApp((state) => state.actions.output)
+
+  useEffect(() =>{
+    // console.log(commandOut)
+    if(typeof commandOut === 'string' || typeof commandOut === 'number'){
+      setOutput([...output, <p className="text-pink-400 border border-gray-800 m-px p-1">> {commandOut}</p>])
+    }
+    if(typeof commandOut === 'object'){
+      setOutput([...output, <p className="text-pink-400 border border-gray-800 m-px p-1">> [object]</p>])
+    }
+  }, [commandOut])
+
+  
 
   const getData = (path) =>{
     const last = command.split('.')[command.split('.').length-1]
@@ -60,7 +78,7 @@ export const Console: React.FC = () => {
       if(dTarget){
         // TODO number condition not working
         if(typeof dTarget === 'string' || typeof dTarget === 'number'){
-          setOutput(<>{output}<p className="text-indigo-400">> {dTarget} </p></>)
+          setOutput([...output, <p className="text-indigo-400 border border-gray-800 m-px p-1">&lt; {dTarget}</p>])
         }else{
           setHelp(Object.keys(dTarget))
         }
@@ -119,7 +137,6 @@ export const Console: React.FC = () => {
           setHelp([])
         }else{
           runCommands([command])
-          setOutput(<>{output}<p className="text-pink-400">Out: {command} </p></>)
         }
         
       break;
@@ -141,7 +158,7 @@ export const Console: React.FC = () => {
       className="p-1 bg-gray-900 text-white fixed w-1/4 right-0 h-full font-mono text-sm grid grid-rows-6"
     >
       <div className="self-end border-b pb-1 mb-1 border-pink-500 overflow-hidden row-span-5">
-        {output}
+        {output.map(el=>el)}
         <div className="border-b border-pink-500 pb-1 mb-1 "></div>
           {help.length > 0 && <div className="border-t border-gray-600 text-indigo-300">
             {help.length > 0 
