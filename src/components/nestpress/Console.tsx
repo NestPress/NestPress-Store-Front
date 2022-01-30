@@ -7,6 +7,7 @@
 import React, { useState, useEffect } from "react";
 import { useApp } from "store";
 import { getBy, runCommands } from "helpers";
+import { JSONview } from ".";
 
 
 const consoleSchema = {
@@ -65,7 +66,7 @@ export const Console: React.FC = () => {
       setOutput([...output, <p className="text-pink-400 border border-gray-800 m-px p-1">> {commandOut}</p>])
     }
     if(typeof commandOut === 'object'){
-      setOutput([...output, <p className="text-pink-400 border border-gray-800 m-px p-1">> [object]</p>])
+      setOutput([...output, <p className="text-pink-400 border border-gray-800 m-px p-1">> <JSONview data={commandOut}/></p>])
     }
   }, [commandOut])
 
