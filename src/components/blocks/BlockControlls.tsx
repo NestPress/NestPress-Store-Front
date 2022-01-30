@@ -355,7 +355,7 @@ export const BlockControlls: React.FC = () => {
                 key !== "successActions" &&
                 key !== "initActions" &&
                 key !== "childrenSlots" &&
-                key !== "dataTarget" &&
+                // key !== "dataTarget" &&
                 key !== "styles" && (
                   <InputField
                     key={`brd-${index}`}

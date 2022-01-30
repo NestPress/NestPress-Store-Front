@@ -16,19 +16,17 @@ interface Props {
   attrs: any;
 }
 const Form: React.FC<Props> = memo(({ attrs, children }) => {
-  const pAttrs = parseBlockAttrs(attrs)
-// console.log(pAttrs)
-  /* init */
-  const [active, setActive] = useState(true);
-  const router = useRouter()
-  if(active && attrs?.initActions && attrs?.initActions?.length>0){ 
-    if(pAttrs){
-      runCommands(attrs.initActions, router, pAttrs);
-    }
-    setActive(false)
-  }
+  console.log('init form')
 
-  /* mutation */
+  // Interploate attributes
+  const pAttrs = parseBlockAttrs(attrs)
+  const router = useRouter()
+  const [submit, setSubmit] = useState(false);
+
+  /* 
+    MUTATION 
+
+  */
   try { if (attrs.mutation) {
       const MUTATION = pAttrs.mutation ? gql`${pAttrs.mutation}` : ``;
       const [formMutation, { data }] = useMutation(MUTATION, {
@@ -54,37 +52,39 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
       });
     }
   } catch (error) {}
+  
+  /* 
+    SUBMIT
+
+  */
+  if(submit){
+    console.log('submit',pAttrs)
+    setToStore({
+      store: "forms",
+      ref: `${attrs.refName}`,
+      data: pAttrs.variables,
+    });
+    try { if (attrs.mutation) {
+      formMutation({
+        variables: pAttrs.variables
+      }).catch((error) => {
+        if (attrs.successActions) {
+            console.log('error')
+            runCommands(pAttrs.errorActions, router, attrs);
+          }
+        });
+      }
+    } catch (error) {}
+    setSubmit(false)
+  }
 
   return (
     <form
       className={`block ${attrs.classes}`}
       onSubmit={(e) => {
         e.preventDefault();
-        // const processedAttrs = getFromStore({store:"display", ref:`blocks.${attrs.index}.attrs`})
-        // store form input data
-        setToStore({
-            store: "forms",
-            ref: `${attrs.refName}`,
-            data: pAttrs.variables,
-          });
-
-        console.log(pAttrs.variables)
-        
-        // try { if (attrs.mutation) {
-        //     formMutation({
-        //       variables: pAttrs.variables
-        //     }).catch((error) => {
-        //       if (attrs.successActions) {
-        //         console.log('error')
-        //         runCommands(attrs.errorActions, router, attrs);
-        //       }
-        //     });
-        //   }
-        // } catch (error) {}
-
-        if (!attrs.mutation && attrs.successActions) {
-          runCommands(attrs.successActions, router, attrs);
-        }
+        setSubmit(true)
+        runCommands(pAttrs.initActions, router, pAttrs);
       }}
     >
       {children}
@@ -92,3 +92,4 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
   );
 });
 export default Form;
+  
