@@ -43,11 +43,12 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
             ref: `mutationTick`,
             data: Math.floor(Math.random() * 9999),
           });
-
-          runCommands(attrs.successActions, router, pAttrs);
+          runCommands(pAttrs.successActions, router, pAttrs);
         },
         update: (cache) => {
+          // TODO add this to form params
           cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
+          cache.evict({ id: "ROOT_QUERY", fieldName: "getRelatedPosts" });
           cache.evict({ id: "ROOT_QUERY", fieldName: "getPostTaxonomyValues" });
         },
       });
@@ -67,7 +68,7 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
             data: pAttrs.variables,
           });
 
-       console.log(pAttrs.variables)
+       // console.log(pAttrs.variables)
         
         try { if (attrs.mutation) {
             formMutation({
