@@ -68,19 +68,19 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
             data: pAttrs.variables,
           });
 
-       // console.log(pAttrs.variables)
+        console.log(pAttrs.variables)
         
-        try { if (attrs.mutation) {
-            formMutation({
-              variables: pAttrs.variables
-            }).catch((error) => {
-              if (attrs.successActions) {
-                console.log('error')
-                runCommands(attrs.errorActions, router, attrs);
-              }
-            });
-          }
-        } catch (error) {}
+        // try { if (attrs.mutation) {
+        //     formMutation({
+        //       variables: pAttrs.variables
+        //     }).catch((error) => {
+        //       if (attrs.successActions) {
+        //         console.log('error')
+        //         runCommands(attrs.errorActions, router, attrs);
+        //       }
+        //     });
+        //   }
+        // } catch (error) {}
 
         if (!attrs.mutation && attrs.successActions) {
           runCommands(attrs.successActions, router, attrs);
