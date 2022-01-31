@@ -46,6 +46,7 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
         update: (cache) => {
           // TODO add this to form params
           cache.evict({ id: "ROOT_QUERY", fieldName: "getPosts" });
+          cache.evict({ id: "ROOT_QUERY", fieldName: "getPostBySlug" });
           cache.evict({ id: "ROOT_QUERY", fieldName: "getRelatedPosts" });
           cache.evict({ id: "ROOT_QUERY", fieldName: "getPostTaxonomyValues" });
         },
