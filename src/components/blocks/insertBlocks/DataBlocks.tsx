@@ -109,6 +109,23 @@ export const DataBlocks: React.FC = ({ type }) => {
         List data
       </button>
 
+       <button
+        className={buttonClass}
+        onClick={(e) =>
+          teachSetBlock({
+            ...prefix,
+            block: "data/ParseDate",
+            attrs: {
+              dateFormat:"en-US",
+              text:"2022-01-28T09:07:07.305Z",
+              classes: "",
+            },
+          })
+        }
+      >
+        Parse date
+      </button>
+
       <button
         className={buttonClass}
         onClick={(e) =>
