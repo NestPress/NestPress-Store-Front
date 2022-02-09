@@ -21,6 +21,7 @@ const useApp = create((set) => ({
     layout:[],
     blocks:[]
   },
+  params:[],
   setStore: (_in) =>
     set(
       produce((_) => {

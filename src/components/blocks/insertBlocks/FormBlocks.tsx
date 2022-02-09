@@ -167,6 +167,26 @@ export const FormBlocks: React.FC = ({ type }) => {
         onClick={(e) =>
           teachSetBlock({
             ...prefix,
+            block: "form/EnumField",
+            attrs: {
+              label: "Example label",
+              outputValue: "data.keys_value",
+              selected: "",
+              default: "",
+              classes: "",
+            },
+          })
+        }
+      >
+        <FiList />
+        <span className="ml-2"> Enum field</span>
+      </button>
+
+      <button
+        className={buttonClass}
+        onClick={(e) =>
+          teachSetBlock({
+            ...prefix,
             block: "form/SwithField",
             attrs: {
               label: "Example label",

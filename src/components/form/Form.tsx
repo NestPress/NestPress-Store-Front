@@ -16,12 +16,14 @@ interface Props {
   attrs: any;
 }
 const Form: React.FC<Props> = memo(({ attrs, children }) => {
-  console.log('init form')
+ 
 
   // Interploate attributes
   const pAttrs = parseBlockAttrs(attrs)
   const router = useRouter()
   const [submit, setSubmit] = useState(false);
+
+  // console.log('init form',pAttrs.variables)
 
   /* 
     MUTATION 
@@ -59,12 +61,13 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
 
   */
   if(submit){
-    console.log('submit',pAttrs)
+    // console.log('submit',pAttrs)
     setToStore({
       store: "forms",
       ref: `${attrs.refName}`,
       data: pAttrs.variables,
     });
+    
     try { if (attrs.mutation) {
       formMutation({
         variables: pAttrs.variables

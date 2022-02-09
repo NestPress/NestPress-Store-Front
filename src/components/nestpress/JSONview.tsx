@@ -2,26 +2,22 @@
 // @ts-ignore
 // @ts-nocheck
 import React, { useState } from "react";
+import { FiArrowDownLeft } from "react-icons/fi";
+
 export const JSONview = ({
   data,
-  toggled = true,
   name = null,
   isLast = true,
-  isChildElement = false,
-  isParentToggled = true
 }) => {
-  const [isToggled, setIsToggled] = useState(toggled);
   const isDataArray = Array.isArray(data);
   return (
     <div
-      className={`text-xs mx-1`}
+      className={`text-xs ml-2 ${isDataArray && "flex flex-wrap items-center"}`}
     >
-      <span
-        className=""
-        onClick={() => setIsToggled(!isToggled)}
-      />
-      {name ? <div className={`key  ${isDataArray && "inline leading-6"}`}>{name}:</div> : <span></span>}
-
+      {name 
+        ? <div className={`key flex items-end ${isDataArray && ""}`}>{name}: 
+          {!isDataArray&&<FiArrowDownLeft/>}</div> 
+        : <span>></span>}
       {
        data && Object.keys(data).map((v, i, a) =>
         typeof data[v] === 'object' ? 
@@ -30,13 +26,14 @@ export const JSONview = ({
             data={data[v]}
             isLast={i === a.length - 1}
             name={isDataArray ? null : v}
-            isChildElement
-            isParentToggled={isParentToggled && isToggled}
           />
          : 
           <p
             key={`${name}-${v}-${i}`} 
-            className={`p-px my-px ${isDataArray ? "inline leading-4 px-1 border-r border-gray-700 mx-px" : 'pl-3'}`}
+            className={`p-px my-px 
+              ${isDataArray 
+                ? " px-1 border border-gray-700 mx-px" 
+                : 'pl-2'}`}
           >
             {isDataArray ? '' : <span className="key ">{v}: </span>}
             <span className="text-indigo-500 cursor-pointer hover:underline">{data[v]}</span>

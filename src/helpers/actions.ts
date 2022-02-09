@@ -1,30 +1,86 @@
 // @ts-ignore
 import { v4 as uuidv4 } from "uuid";
 import { setToStore, getFromStore, pushToStore } from "store";
+import { transformNumStringToInt } from "helpers"
+
+export const actionsSchema = {
+  SET: '~SET left value to right > target',
+  PUSH: '~PUSH left value to right > target',
+  FIND: '~FIND value and set as left',
+  ISTRUE: 'stop pipe is left value isnt true',
+  ISFALSE: 'stop pipe is left value isnt false',
+  ARRAY: '~ARRAY return empty array',
+  OBJECT: '~OBJECT return empty object',
+  UID: '~UID return unique string',
+  RELOAD: {
+    '-Page/home':0,
+    '-Panel/profile':0
+  },
+  REMOVE: '~REMOVE left value',
+  // custom actions - create blocks
+  $FOCUS: {
+    params: {'-Id': 'string'},
+    actions:[
+      'param.0>ISTRUE>display.blocks>FIND -id -param.0>SET>custom.activeTargeter',
+      'param.0>ISFALSE>display.blocks>FIND -post -router.slugPath.1>SET>custom.thisPageBlocks>custom.thisPageBlocks.0>SET>custom.activeTargeter'
+    ]
+  }
+  // _IDS: {
+  //   params: null,
+  //   actions:[
+  //     'display.blocks>LIST>id:id',
+  //     'display.blocks>LIST>name:block',
+  //   ]
+  // }
+}
+
+const customAction = {
+  foo: [
+    'pipe1',
+    'pipe2',
+    'pipe${param.1}'
+  ]
+}
 
 export const runCommands = (cmd: any, router: any, attrs = {}) => {
-  const cmdList = ["SET", "PUSH", "FIND", "ARRAY","OBJECT","UID", "RELOAD"];
+  const cmdList = Object.keys(actionsSchema);
   commands.router = router;
   for (const i in cmd) {
+    /*  execute n'th pipe */
     const c: any = cmd[i].split(">");
     for (const j in c) {
+      /*  execute pipe parts */
       const sanitCMD = c[j].split(" -");
       if (cmdList.includes(sanitCMD[0])) {
-        commands[sanitCMD[0]]({
-          prev: c[parseInt(j) - 1],
-          next: c[parseInt(j) + 1],
-          params: sanitCMD,
-        });
+        /*  sanit and run commands */
+        if(sanitCMD[0].charAt(0) == '$'){
+          /*  run custom command */
+          commands['CUSTOM_COMMAND']({
+            prev: c[parseInt(j) - 1],
+            next: c[parseInt(j) + 1],
+            params: sanitCMD,
+          })
+        }else{
+          /*  run regular command */
+          commands[sanitCMD[0]]({
+            prev: c[parseInt(j) - 1],
+            next: c[parseInt(j) + 1],
+            params: sanitCMD,
+          });
+        }
+        /*  break after ISTRUE or ISFALSE condition */
+        if(commands.dataRef == '__throw') break   
       } else {
-        commands.attrs = attrs;
-        commands.storeRef = findStorage(c[j], attrs);
-        commands.storeRef ? commands.dataRef = getFromStore(commands.storeRef) :null
+          /*  sanit and get data from pipe */
+          commands.attrs = attrs;
+          commands.storeRef = findStorage(c[j], attrs);
+          commands.storeRef ? commands.dataRef = getFromStore(commands.storeRef) :null
+        
       }
+      /*  finish process */
       if(c.length-1 == j){
-        // console.log('storage finish command', commands.dataRef)
         setToStore({ store:'actions', ref:`output`, data: commands.dataRef});
       }
-     
     }
   }
 };
@@ -38,6 +94,7 @@ export const findStorage = (val: String, attrs) => {
     arr[0] === "forms" ||
     arr[0] === "queries" ||
     arr[0] === "router" ||
+    arr[0] === "params" ||
     arr[0] === "display"
     ? { store: arr[0], ref: arr.slice(1).join(".") }
     : arr[0] === "this" 
@@ -56,8 +113,7 @@ const commands: any = {
   SET: (_in: any) => {
     const input = findStorage(_in.next, commands.attrs)
     if(input.store === 'this'){
-      // transform numeric string to int
-      !isNaN(commands.dataRef) && !Array.isArray(commands.dataRef) ? commands.dataRef = parseInt(commands.dataRef) : null
+      commands.dataRef = transformNumStringToInt(commands.dataRef)
       setToStore({ store:'display', ref:`blocks.${commands.attrs.index}.attrs.${input.ref}`, data: commands.dataRef});
     }else{
       setToStore({ data: commands.dataRef, ...findStorage(_in.next) });
@@ -79,8 +135,15 @@ const commands: any = {
         pushToStore({ store:'display', ref:`${block}.attrs.${input.ref}`, data: _in.prev});
       }
     }else{
+      commands.dataRef = transformNumStringToInt(commands.dataRef)
       pushToStore({ data: commands.dataRef, ...findStorage(_in.next) });
     }
+  },
+  ISTRUE: (_in: any) => {
+    commands.dataRef ? null : commands.dataRef = '__throw'    
+  },
+  ISFALSE: (_in: any) => {
+    commands.dataRef ? commands.dataRef = '__throw' : null    
   },
   ARRAY: (_in: any) => {
     commands.dataRef = [];
@@ -94,6 +157,9 @@ const commands: any = {
   RELOAD: (_in: any) => {
     commands.router.push(findStorage(_in.params[1]).ref);
   },
+  CUSTOM_COMMAND: (_in: any) => {
+    console.log('runCustomCommand', findStorage('params'))
+  }
 };
 
 // TODO

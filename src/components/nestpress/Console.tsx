@@ -6,337 +6,205 @@
 
 import React, { useState, useEffect } from "react";
 import { useApp } from "store";
-import { getBy, runCommands } from "helpers";
+import { getBy, runCommands, actionsSchema } from "helpers";
 import { JSONview } from ".";
+import { HelpList } from "components/nestpress/console/HelpList";
 
 
-const consoleSchema = {
-  
-  SET: '~SET left value to right > target',
-  PUSH: '~PUSH left value to right > target',
-  FIND: '~FIND value and set as left',
-  REMOVE: '~REMOVE left value',
-  FALSE: '~FALSE return boolean false',
-  UID: '~UID return unique string',
-  RELOAD: {
-    '-Page/home':0,
-    '-Panel/profile':0
-  },
-  CREATEBLOCK: {
-    '-data/ListData': 'create block',
-    '-data/PlainData': 'create block',
-    '-data/Query': 'create block',
-    '-form/Form': 'create block',
-    '-form/InputField': 'create block',
-    '-form/SubmitButton': 'create block',
-    '-form/TextareaField': 'create block',
-    '-layout/Breakpoints': 'create block',
-    '-layout/Grid': 'create block',
-    '-layout/Image': 'create block',
-    '-layout/Paragraph': 'create block',
-    '-layout/Title': 'create block',
-    '-nav/NavButton': 'create block',
-    '-nav/NavLink': 'create block',
-  },
-  ADDCLASS: 'type to insert Tailwind class',
-  REMOVECLASS: 'type to remove Tailwind class',
-}
+
+// const consoleSchema = {
+//   SET: '~SET left value to right > target',
+//   PUSH: '~PUSH left value to right > target',
+//   FIND: '~FIND value and set as left',
+//   REMOVE: '~REMOVE left value',
+//   FALSE: '~FALSE return boolean false',
+//   UID: '~UID return unique string',
+//   RELOAD: {
+//     '-Page/home':0,
+//     '-Panel/profile':0
+//   },
+// }
+
 
 
 export const Console: React.FC = () => {
-
-
-
-  const [selected, setSelected] = useState(0);
-  const [help, setHelp] = useState([]);
-  const [command, setCommand] = useState('');
+  const [ctrl, pressCtrl] = useState(false);
+  const [shift, pressShift] = useState(false);
+  const [history, setHistory] = useState([]);
+  const [historyIndex, setHistoryIndex] = useState(0);
+  const [command, printCommand] = useState('');
+  const [copyLastCommand, setCopyLastCommand] = useState('');
+  const [helpList, setHelpList] = useState([]);
+  const [helpListIndex, setHelpListIndex] = useState(0);
   const [output, setOutput] = useState([<><h1>NPress.console vo.i</h1><p className="text-xs">Focus console and press Tab to start</p></>]);
+
   const data = {
       queries: useApp((state) => state.queries),
       forms: useApp((state) => state.forms),
       custom: useApp((state) => state.custom),
       router: useApp((state) => state.router),
-    ...consoleSchema
-  }
-  const commandOut = useApp((state) => state.actions.output)
+      // this: useApp((state) => state.custom.activeTargeter),
+      QUERY:{
+        getPosts:{},
+        getPostById:{},
+        getPostBySlug:{},
+        getPostTaxonomyValues:{},
+        getPostTaxonomyValueById:{},
+        getRelatedPosts:{},
+        getRelatedPostById:{}
+      },
+      MUTATION:{
 
+      },
+    ...actionsSchema
+  }
+
+  const commandOut = useApp((state) => state.actions.output)
   useEffect(() =>{
-    // console.log(commandOut)
     if(typeof commandOut === 'string' || typeof commandOut === 'number'){
-      setOutput([...output, <p className="text-pink-400 border border-gray-800 m-px p-1">> {commandOut}</p>])
+      setOutput([...output, <p className="text-pink-400 border border-gray-800 m-px p-2 text-xs">
+        <span className="mr-2">></span> 
+        {commandOut}</p>])
     }
     if(typeof commandOut === 'object'){
-      setOutput([...output, <p className="text-pink-400 border border-gray-800 m-px p-1">> <JSONview data={commandOut}/></p>])
+      setOutput([...output, <p className="text-pink-400 border border-gray-800 m-px pt-2"> 
+        <JSONview data={commandOut}/></p>])
     }
   }, [commandOut])
 
-  
+  // Print from history
+  useEffect(() =>{
+    const out = history[historyIndex-1];
+    printCommand(`${out ? out : copyLastCommand}`)
+  }, [historyIndex])
 
-  const getData = (path) =>{
-    const last = command.split('.')[command.split('.').length-1]
-    if(path){
-      const dTarget = getBy(data,path)
-      if(dTarget){
-        // TODO number condition not working
-        if(typeof dTarget === 'string' || typeof dTarget === 'number'){
-          setOutput([...output, <p className="text-indigo-400 border border-gray-800 m-px p-1">&lt; {dTarget}</p>])
-        }else{
-          setHelp(Object.keys(dTarget))
-        }
-      }else{
-        setHelp(Object.keys(data).filter( 
-          (str) => { return str.includes(command[command.length-1])} 
-        ))
-      }
-    }else{  
-      setHelp(Object.keys(data))
-    }
-  }
-  
-  const consoleKeysEvent = (e) => {
+  // Find help
+  // useEffect(() =>{
+  //   if(helpList.length > 0){
+  //     console.log('find',command)
+  //   } 
+  // }, [command])
+
+  const consoleKeyDown = (e) => {
     e.preventDefault()
-    if(e.key == 'Enter'){
-      setCommand('')
-    }
     switch (e.key) {
-      case 'Shift': break;
+      case 'CapsLock': break;
       case 'Alt': break;
       case 'AltGraph': break;
-      case 'Control': break;
+      case 'Control':
+        pressCtrl(true)
+      break;
+      case 'Shift':
+        pressShift(true)
+      break;
       case 'ArrowUp':
-        selected > 0 
-          ? setSelected(parseInt(selected)-1)
-          : setSelected(help.length-1)
+        if(helpList.length > 0){
+          if(0 < helpListIndex){
+            setHelpListIndex(parseInt(helpListIndex)-1)
+          }
+        }else{
+          if(history.length > historyIndex){
+            setHistoryIndex(parseInt(historyIndex)+1)
+          }
+        }
       break;
       case 'ArrowDown':
-        selected < help.length-1 
-          ? setSelected(parseInt(selected)+1)
-          : setSelected(0)
-      break;
-      case 'ArrowLeft':
-          const a = command.split('.').slice(0, -1)
-          setCommand(a.join('.'))
+        if(helpList.length > 0){
+          if(helpList.length > helpListIndex+1){
+            setHelpListIndex(parseInt(helpListIndex)+1)
+          }
+        }else{
+          if(0 < historyIndex){
+            setHistoryIndex(parseInt(historyIndex)-1)
+          }
+        }
       break;
       case 'ArrowRight':
-          setCommand(command+'>')
-      break;
-      case 'Tab':
-        getData(getPipePart(command))
-      break;
-      case 'Escape':
-        setHelp([])
+          printCommand(command+'>')
+          setCopyLastCommand(copyLastCommand+'>')
       break;
       case 'Enter':
-        if(help.length>0){
-          if(command){
-            const sep = command.charAt(command.length - 1) == '>' ? '' : '.'
-            help[selected].charAt(0) == '-' ? sep = ' ' : null
-            setCommand(command+sep+help[selected])
-          }else{
-            setCommand(help[selected])
-          }
-          setHelp([])
-        }else{
+        if(command){ 
           runCommands([command])
+          setHistory([command,...history])
+          printCommand('')
+          setCopyLastCommand('')
         }
-        
+      break;
+      case 'Tab':
+        if(helpList.length > 0){
+          setHelpList([])
+          console.log('createCommand', helpList[helpListIndex])
+        } else{
+          readHelp(parsePipe(command))
+        }
       break;
       case 'Backspace':
-        setCommand(command.substring(0, command.length - 1))
+        printCommand(command.substring(0, command.length - 1))
+        setCopyLastCommand(copyLastCommand.substring(0, copyLastCommand.length - 1))
       break;
       default:
-        setCommand(command+e.key)
+        printCommand(command+e.key)
+        setCopyLastCommand(copyLastCommand+e.key)
     }
-    
   }
-  return (
-    <pre 
-      suppressContentEditableWarning={true}
-      onKeyDown={(e) => consoleKeysEvent(e)} 
+  const consoleKeyUp = (e) => {
+    e.preventDefault()
+    switch (e.key) {
+      case 'Shift':
+        pressShift(false)
+      break;
+      case 'Control':
+        pressCtrl(false)
+      break;
+    }
+  }
 
+  const readHelp = (parsedPipe) => {
+    const last = parsedPipe[parsedPipe.length-1];
+    // firstGetAll
+    if(last == ''){
+      setHelpList(Object.keys(data));
+    }else{
+      const dTarget = getBy(data, last.join('.'))
+      if(typeof dTarget === 'string' || typeof dTarget === 'number'){
+        // set state - command out
+        // commandOut = dTarget
+      }else{
+        if(dTarget){
+          setHelpList(Array.isArray(dTarget) ? dTarget : Object.keys(dTarget) );
+        }else{
+          console.log('find')
+        }
+      }
+    }
+  }
+  
+  return (
+    <code
+      autofocus
+      suppressContentEditableWarning={true}
+      onKeyDown={(e) => consoleKeyDown(e)} 
+      onKeyUp={(e) => consoleKeyUp(e)} 
       contentEditable="true" 
       style={{caretColor: "transparent"}}
       className="p-1 bg-gray-900 text-white fixed w-1/4 right-0 h-full font-mono text-sm grid grid-rows-6"
     >
-      <div className="self-end border-b pb-1 mb-1 border-pink-500 overflow-hidden row-span-5">
-        {output.map(el=>el)}
-        <div className="border-b border-pink-500 pb-1 mb-1 "></div>
-          {help.length > 0 && <div className="border-t border-gray-600 text-indigo-300">
-            {help.length > 0 
-              ? help.map((el, i)=><div
-                  key={i} 
-                  className={`py-px px-1 border-b border-gray-600 ${selected === i ? 'bg-gray-700' : null}`}>{el}</div>)
-              : <span>nothing math</span> 
-          }
-          </div>}
-      </div>
+    { helpList.length == 0 && <div className="self-end border-b pb-1 mb-1 border-pink-500 overflow-hidden row-span-5">
+        {output}
+      </div> }  
+
+      { helpList.length > 0 && <HelpList items={helpList} selected={helpListIndex}/> }  
      
       <div className="row-span-1">
         <span>{command}</span>
-        <span className="bg-gray-200">&nbsp;</span>
+        <span className={`${shift ? 'bg-gray-600' : 'bg-gray-100'}`}>&nbsp;</span>
       </div>
-    </pre>
+    </code>
   );
 };
 
-
-
-const getPipePart = (cmd) => {
-  return cmd ? cmd.split('>').pop() : cmd
+const parsePipe = (cmd) => {
+  return cmd.split('>').map(el=>el.split('.'))
 }
-
-
-// /* TODO fix type */
-// // @ts-ignore
-// // @ts-nocheck
-// import React, { useState } from "react";
-// import { useApp } from "store";
-// import { getBy } from "helpers";
-
-// // const data = {
-// //   this: 0,
-// //   display:0,
-// //   router: 0,
-// //   forms: 0,
-// //   queries: 0,
-// //   custom: 0,
-
-// //   SET: 0,
-// //   PUSH: 0,
-// //   FIND: 0,
-// //   REMOVE: 0,
-// //   IF: 0,
-// //   ARRAY: 0,
-// //   OBJECT: 0,
-// //   TRUE: 0,
-// //   FALSE: 0,
-// //   UID: 0,
-// //   RELOAD: 0,
-// //   CREATEBLOCK: {
-// //     '-layout/Grid':0,
-// //     '-layout/Paragraph':0,
-// //   },
-// //   ADDCLASS: {},
-// //   REMOVECLASS: 0,
-// // }
-
-
-
-// let helpCommands = [];
-// const mergeScript = (d,s) => {
-//   const a = s.split('>');
-//   a[a.length-1] = d
-//   return a.join('>')
-// }
-
-
-// export const Console: React.FC = () => {
-//   const data = {
-//     this:0,
-//     queries: useApp((state) => state.queries),
-//     forms: useApp((state) => state.forms),
-//     custom: useApp((state) => state.custom),
-//     router: useApp((state) => state.router)
-//   };
-//   const [script, setScript] = useState('');
-//   const [output, setOutput] = useState('');
-//   const [selectedHelp, setSelectedHelp ] = useState(false);
-//   const consoleKeysEvent = (e) => {
-//     e.preventDefault()
-//     if(e.key == 'Enter'){
-//       setScript('')
-//     }
-//     switch (e.key) {
-//       case 'Shift':
-//         // dont print
-//       break;
-//       case 'Alt':
-//         // dont print
-//       break;
-//       case 'AltGraph':
-//         // dont print
-//       break;
-//       case 'Control':
-//         // dont print
-//       break;
-//       case 'ArrowUp':
-//         if(selectedHelp) { 
-          
-//           setSelectedHelp(parseInt(selectedHelp)-1)
-//           setScript(mergeScript(Object.keys(data)[selectedHelp-2],script))
-          
-//         }
-//       break;
-//       case 'ArrowDown':
-//         if(selectedHelp) { 
-
-//           setSelectedHelp(parseInt(selectedHelp)+1)
-//           setScript(mergeScript(Object.keys(data)[selectedHelp],script))
-
-//         }
-//       break;
-//       case 'Tab':
-//         if(selectedHelp){
-//           const partOfSctipt = script.split('>').pop();
-//           const deep = getBy(data,partOfSctipt)
-//           if(typeof deep === 'object' && deep !== null ) {
-//            helpCommands = Object.keys(deep)
-//            setSelectedHelp(1) 
-//           }
-//           console.log(Object.keys(deep))
-//         }else{
-//           const partOfSctipt = script.split('>').pop();
-//           helpCommands = partOfSctipt 
-//             ? Object.keys(data).filter(function (str) { return str.includes(partOfSctipt)})
-//             : Object.keys(data)
-//           setSelectedHelp(1);
-//           helpCommands.length>0 
-//             ? setScript(mergeScript(helpCommands[0],script)) 
-//             : null
-//         }
-//       break;
-//       case 'Enter':
-//         if(selectedHelp){
-//            helpCommands = script 
-//             ? Object.keys(data).filter(function (str) { return str.includes(script)})
-//             : Object.keys(data)
-//           setSelectedHelp(false);
-//           setScript(mergeScript(helpCommands[0],script))
-//         }else{
-//           setSelectedHelp(false)
-//           setOutput(<>{output}<p className="text-pink-500">Out: {script}</p></>)
-//         }
-        
-        
-//       break;
-//       case 'Backspace':
-//         setScript(script.substring(0, script.length - 1))
-//       break;
-    
-//       default:
-//         setSelectedHelp(false)
-//         setScript(script+e.key)
-//     }
-    
-//   }
-//   return (
-//     <div 
-//       onKeyDown={(e) => consoleKeysEvent(e)} 
-//       contentEditable="true" 
-//       style={{caretColor: "transparent"}}
-//       className="p-1 bg-gray-900 text-white fixed w-1/4 right-0 h-full font-mono text-sm"
-//     >
-//       <div className="border-b pb-1 mb-1 border-pink-500">{output}</div>
-//       <div key={selectedHelp} className="border-b border-pink-500 pb-1 mb-1 "></div>
-//       {selectedHelp != false && <div className="border-t border-gray-600 text-indigo-300">
-//         {helpCommands.length > 0 
-//           ? helpCommands.map((el, i)=><div 
-//               className={`py-px px-1 border-b border-gray-600 ${selectedHelp == i+1 ? 'bg-gray-700' : null}`}>{el}</div>)
-//           : <span>nothing math</span> 
-//       }
-//       </div>}
-//       <div>{script}<span className="bg-gray-200">&nbsp;</span></div>
-//     </div>
-//   );
-// };
 

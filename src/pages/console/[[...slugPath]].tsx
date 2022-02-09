@@ -2,7 +2,8 @@
 // @ts-ignore
 // @ts-nocheck
 
-import { MainMapper } from "components/MainMapper";
+import { ConsoleMapper } from "components/nestpress/ConsoleMapper";
+
 import { useQuery } from "@apollo/client";
 import { GET_BLOCKS, Console } from "components/nestpress";
 import { useApp, getFromStore } from "store";
@@ -34,7 +35,7 @@ const ComposerPage: React.FC = () => {
     <div className="grid grid-cols-4">
       <div className="col-span-3">
       {blocks.length > 0 && (
-        <MainMapper
+        <ConsoleMapper
           blocks={blocks}
           layout={layout}
           router={getFromStore({ store: "router" })}

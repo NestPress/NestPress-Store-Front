@@ -43,26 +43,3 @@ html {
   display: block !important;
   outline: 2px dashed red;
 }
-
-/*.block-editable{
-  position: relative;
-  min-height: 20px;
-  min-width: 20px;
-  outline: 1px dotted #00000020;
-
-}
-.block-editable:hover{
-  outline: 1px solid #00000060;
-}
-.block-edit-handler{
-  visibility: hidden;
-}
-.block-edit-handler.forced-visible{
-  visibility: visible;
-}
-.block-editable:hover > .block-edit-handler{
-  visibility: visible;
-}*/
-
-
-

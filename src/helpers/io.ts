@@ -41,3 +41,6 @@ export const setBy = (obj, path, val) => {
   }
 }
 
+export const transformNumStringToInt = (val: string) => {
+  return !isNaN(val) && !Array.isArray(val) ? parseInt(val) : val
+}
