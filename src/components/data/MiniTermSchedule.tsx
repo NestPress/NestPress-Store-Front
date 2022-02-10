@@ -2,6 +2,7 @@
 // @ts-ignore
 // @ts-nocheck
 
+
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { memo } from "react";
 import { parseBlockAttrs } from "helpers"
@@ -45,76 +46,29 @@ const MiniTermSchedule: React.FC<Props> = memo(({ attrs,  children }) => {
   }
 
   const getTerm = (el) => {
-    alert(el.t)
+    alert('Rezerwacja na:'+el.t+', godz:'+el.h)
   }
 
   return (
-    <div className={`block flex ${attrs.classes}`}>
-{/*      {format(new Date(), 'MM/dd/yyyy HH')}*/}
-     
-      
-      <div className="grid grid-cols-5 text-center"> 
-        {rows.map((el,i)=><div className="p-1">
-          <div>{formatted(el,'iii',new Date())}</div>
-          <div className="text-xs">{formatted(i*-1,'MM/dd',new Date())}</div>
-        </div>)} 
-        {dataNodes.map(el=><div 
-          onClick={e=>getTerm(el)}
-          className="py-1 px-2 cursor-pointer text-indigo-400 hover:bg-gray-50">{el.h}</div>)} 
+    <div className={`block ${attrs.classes}`}>
+      <div className={`text-center font-bold`}>Wolne terminy</div>
+      <div className={`flex gap-2`}>
+        {/*{format(new Date(), 'MM/dd/yyyy HH')}*/}
+        <div className="mt-2 text-gray-400"><FiChevronLeft/></div>
+        <div className="grid grid-cols-5 text-center gap-1"> 
+          {rows.map((el,i)=><div className="p-1">
+            <div>{formatted(el,'iii',new Date())}</div>
+            <div className="text-xs text-gray-500">{formatted(i*-1,'MM/dd',new Date())}</div>
+          </div>)} 
+          {dataNodes.map(el=><div 
+            onClick={e=>getTerm(el)}
+            className="py-1 px-2 m-px text-xs cursor-pointer text-indigo-400 bg-blue-50 rounded-lg border hover:border-blue-500">{el.h}</div>)} 
+        </div>
+        <div className="mt-2 text-gray-400"><FiChevronRight/></div>
       </div>
-
-
-      
-
-      {children}  
+    {children}  
     </div>
   );
 });
 export default MiniTermSchedule;
 
-
-
-// <div>
-//         <div className="p-2 bg-blue-100 rounded-2xl h-min cursor-pointer">
-//           <FiChevronLeft className=" "/>
-//         </div>
-//       </div>
-//       <div className="grid grid-cols-4 items-center justify-between text-xs text-center flex-1 gap-2">
-//         <div className="pb-1">
-//           <div className="text-sm">Dziś</div>
-//           <div className="text-gray-400">10 Paź</div>
-//         </div>
-//         <div className="pb-1">
-//           <div className="text-sm">Jutro</div>
-//           <div className="text-gray-400">10 Paź</div>
-//         </div>
-//         <div className="pb-1">
-//           <div className="text-sm">Wt</div>
-//           <div className="text-gray-400">10 Paź</div>
-//         </div>
-//         <div className="pb-1">
-//           <div className="text-sm">Śr</div>
-//           <div className="text-gray-400">10 Paź</div>
-//         </div>
-
-       
-//         <div className="text-gray-400">-</div>
-//         <div className="text-blue-600 border py-1 rounded bg-blue-100">10:45</div>
-//         <div className="text-blue-600 border py-1 rounded bg-blue-100">14:00</div>
-//         <div className="text-gray-400">-</div>
-
-//         <div className="text-gray-400">-</div>
-//         <div className="text-gray-400">-</div>
-//         <div className="text-gray-400">-</div>
-//         <div className="text-gray-400">-</div>
-
-//         <div className="text-blue-600 border py-1 rounded bg-blue-100">10:45</div>
-//         <div className="text-blue-600 border py-1 rounded bg-blue-100">14:00</div>
-
-       
-//       </div>
-//      <div>
-//         <div className="p-2 bg-blue-100 rounded-2xl h-min cursor-pointer">
-//           <FiChevronRight className=" "/>
-//         </div>
-//       </div>

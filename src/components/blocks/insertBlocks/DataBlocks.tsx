@@ -171,6 +171,36 @@ export const DataBlocks: React.FC = ({ type }) => {
       >
         Map box
       </button>
+
+      <button
+        className={buttonClass}
+        onClick={(e) =>
+          teachSetBlock({
+            ...prefix,
+            block: "data/Stars",
+            attrs: {
+              classes: "",
+            },
+          })
+        }
+      >
+        Stars
+      </button>
+
+      <button
+        className={buttonClass}
+        onClick={(e) =>
+          teachSetBlock({
+            ...prefix,
+            block: "data/StatedTabs",
+            attrs: {
+              classes: "",
+            },
+          })
+        }
+      >
+        Stated Tabs
+      </button>
     </div>
   );
 };

@@ -32,9 +32,9 @@ export const fHead = (useApp: any, attrs: any, router:any) => {
 /* 
   Build form output object
 */
-export const buildFormOutput = (blocks) => {
+export const buildFormOutput = (blocks:any) => {
   const out = {}
-  blocks.map((el)=>{
+  blocks.map((el:any)=>{
     el.attrs.outputValue ? setBy(out, el.attrs.outputValue, el.attrs.defaultValue || '') : null
   })
   console.log('s',out)

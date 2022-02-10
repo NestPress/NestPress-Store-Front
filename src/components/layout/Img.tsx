@@ -7,8 +7,9 @@ interface Props {
 const Img: React.FC<Props> = memo(({ attrs, children }) => {
   attrs = attrs.dataTarget ? parseBlockAttrs(attrs) : attrs;
   return (
-    <div className={`block ${attrs.classes}`}>
+    <>
       <Image
+        className={`block ${attrs.classes}`}
         layout={attrs.imglayout ? attrs.imglayout : "fill"}
         objectFit={attrs.objectfit}
         width={attrs.width ? attrs.width : 0}
@@ -17,7 +18,7 @@ const Img: React.FC<Props> = memo(({ attrs, children }) => {
         alt={attrs.alt}
       />
       {children}
-    </div>
+    </>
   );
 });
 export default Img;

@@ -17,7 +17,7 @@ export const JSONview = ({
       {name 
         ? <div className={`key flex items-end ${isDataArray && ""}`}>{name}: 
           {!isDataArray&&<FiArrowDownLeft/>}</div> 
-        : <span>></span>}
+        : <span>&gt;</span>}
       {
        data && Object.keys(data).map((v, i, a) =>
         typeof data[v] === 'object' ? 

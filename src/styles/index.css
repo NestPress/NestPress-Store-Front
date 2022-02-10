@@ -29,12 +29,11 @@ html {
 .dark-text{
   @apply text-gray-700;
 }
-.block{
-  position: relative;
-}
+
 .block-editable{
   min-height: 20px;
   min-width: 20px;
+  position: relative;
 }
 .block-editable:hover{
   outline: 1px solid #00000040;

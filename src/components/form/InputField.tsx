@@ -18,7 +18,7 @@ const InputField: React.FC<Props> = memo(({ attrs, children }) => {
       ) : null}
       <input
         placeholder={pAttrs.placeholder}
-        className="bg-white p-3 rounded-sm w-full text-gray-500 text-sm border mt-1"
+        className="bg-white p-4 rounded-sm w-full text-gray-500 text-sm border mt-1"
         type={pAttrs.type || "text"}
         defaultValue={pAttrs.default}
         onChange={(e) => {

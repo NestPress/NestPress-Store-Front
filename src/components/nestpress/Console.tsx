@@ -63,7 +63,7 @@ export const Console: React.FC = () => {
   useEffect(() =>{
     if(typeof commandOut === 'string' || typeof commandOut === 'number'){
       setOutput([...output, <p className="text-pink-400 border border-gray-800 m-px p-2 text-xs">
-        <span className="mr-2">></span> 
+        <span className="mr-2">&gt;</span> 
         {commandOut}</p>])
     }
     if(typeof commandOut === 'object'){

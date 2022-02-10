@@ -35,13 +35,6 @@ const App: NextComponentType<AppContext, AppInitialProps, AppLayoutProps> = (
 
 export default App;
 
-{
-  /*<ApolloProvider client={client}>
-  <Component {...pageProps} />
-  getLayout(<Component {...pageProps} />)
-  <Message/>
-</ApolloProvider>*/
-}
 
 // p-2
 // bg-white
@@ -153,3 +146,4 @@ export default App;
 // rounded-tr
 // bg-pink-600
 // mt-6
+

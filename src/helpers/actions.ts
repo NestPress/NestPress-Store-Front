@@ -73,14 +73,15 @@ export const runCommands = (cmd: any, router: any, attrs = {}) => {
       } else {
           /*  sanit and get data from pipe */
           commands.attrs = attrs;
-          commands.storeRef = findStorage(c[j], attrs);
+          commands.storeRef = findStorage(c[j]);
           commands.storeRef ? commands.dataRef = getFromStore(commands.storeRef) :null
         
       }
       /*  finish process */
-      if(c.length-1 == j){
-        setToStore({ store:'actions', ref:`output`, data: commands.dataRef});
-      }
+      // if(c.length-1 == j){
+      //   setToStore({ store:'actions', ref:`output`, data: commands.dataRef});
+      // }
+      
     }
   }
 };
@@ -88,7 +89,7 @@ export const runCommands = (cmd: any, router: any, attrs = {}) => {
 /* 
   prepare value type
 */
-export const findStorage = (val: String, attrs) => {
+export const findStorage = (val: String) => {
   const arr = val.split(".");
   return arr[0] === "custom" ||
     arr[0] === "forms" ||
@@ -111,7 +112,7 @@ const commands: any = {
   attrs:{},
   router: {},
   SET: (_in: any) => {
-    const input = findStorage(_in.next, commands.attrs)
+    const input = findStorage(_in.next)
     if(input.store === 'this'){
       commands.dataRef = transformNumStringToInt(commands.dataRef)
       setToStore({ store:'display', ref:`blocks.${commands.attrs.index}.attrs.${input.ref}`, data: commands.dataRef});
@@ -125,7 +126,7 @@ const commands: any = {
     );
   },
   PUSH: (_in: any) => {
-    const input = findStorage(_in.next, commands.attrs)
+    const input = findStorage(_in.next)
     if(input.store === 'this'){
       const block = `blocks.${commands.attrs.index}` 
       getFromStore({ store:'display', ref:`${block}.attrs.${input.ref}` })

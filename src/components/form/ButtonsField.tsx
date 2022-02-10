@@ -47,7 +47,7 @@ const ButtonsField: React.FC<Props> = memo(({ attrs, children }) => {
                 active == i
                   ? "border-blue-600 text-gray-800"
                   : "border-gray-200 text-gray-500 cursor-pointer"
-              } block select-none flex items-center border border-b-2  border-opacity-80 px-5 py-2 rounded-sm w-full`}
+              } block select-none flex items-center border  px-5 py-2 rounded-3xl`}
             >
               {el.label}
             </div>
