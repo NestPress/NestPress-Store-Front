@@ -1,30 +1,55 @@
 /* TODO fix type */
 // @ts-ignore
 // @ts-nocheck
-
+// import Image from "next/image";
 import { memo } from "react";
-import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
+import 'mapbox-gl/dist/mapbox-gl.css'
+import ReactMapboxGl, { Marker} from "react-mapbox-gl";
 interface Props {
   attrs: any;
 }
 const MapBox: React.FC<Props> = memo(({ attrs, children }) => {
+  const style = {
+    border:'4px solid black',
+    borderRadius:'30px',
+    width:'60px',
+    height:'60px',
+    // transform: 'translate3d(150px, -600px, 0 )',
+  }
+
   const Map = ReactMapboxGl({
     // TODO do it more secure
     accessToken: attrs.token,
+    
   });
   return (
     <div className={`block ${attrs.classes}`}>
       {attrs.token ? <Map
+        center={[17.038538, 51.107883]}
+        zoom={[13]}
         style={`mapbox://styles/mapbox/streets-v9`}
         containerStyle={{
           height: "100%",
           width: "100%",
         }}
       >
-        <Layer type="symbol" id="marker" layout={{ "icon-image": "marker-15" }}>
-          {/* // coordinates: startCoordinates, */}
-          <Feature coordinates={[-0.481747846041145, 51.3233379650232]} />
-        </Layer>
+          
+
+  <Marker
+    // offset={[200, -800]}
+    coordinates={[17.038538, 51.107883]}
+    anchor="bottom">
+    <img style={style} src={'/face1.png'}/>
+  </Marker>
+
+  <Marker
+    coordinates={[17.034138, 51.101083]}
+    anchor="bottom">
+    <img style={style} src={'/face1.png'}/>
+  </Marker>
+
+
+
       </Map>:<div>Insert MapBox valid token</div>}
       {children}
     </div>

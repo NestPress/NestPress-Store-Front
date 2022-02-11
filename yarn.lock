@@ -4380,6 +4380,11 @@ json5@^2.1.0, json5@^2.1.2:
   dependencies:
     minimist "^1.2.5"
 
+jsonata@^1.8.6:
+  version "1.8.6"
+  resolved "https://registry.yarnpkg.com/jsonata/-/jsonata-1.8.6.tgz#e5f0e6ace870a34bac881a182ca2b31227122791"
+  integrity sha512-ZH2TPYdNP2JecOl/HvrH47Xc+9imibEMQ4YqKy/F/FrM+2a6vfbGxeCX23dB9Fr6uvGwv+ghf1KxWB3iZk09wA==
+
 kdbush@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/kdbush/-/kdbush-3.0.0.tgz#f8484794d47004cc2d85ed3a79353dbe0abc2bf0"

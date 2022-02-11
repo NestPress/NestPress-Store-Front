@@ -2,9 +2,15 @@
 // @ts-ignore
 // @ts-nocheck
 import { useMutation } from "@apollo/client";
+import { FiGrid, FiType, FiImage, FiMonitor } from "react-icons/fi";
 import { v4 as uuidv4 } from "uuid";
-
-import { getFromStore, useApp, pushToStore, useBlocks } from "store";
+import {
+  getFromStore,
+  useApp,
+  pushToStore,
+  useBlocks,
+  setToStore,
+} from "store";
 import { CREATE_BLOCK } from "components/blocks/gql/composer";
 interface Props {
   type: string;
@@ -35,10 +41,9 @@ export const IconsBlocks: React.FC = ({ type }) => {
   const [addNewBlock, { data, loading, error }] = useMutation(CREATE_BLOCK, {
     onCompleted(data) {
       const payload = Object.assign({}, data.createBlock);
-      payload.parentId === "0" ? (payload.parentId = 0) : null;
       pushToStore({ store: "display", ref: `blocks`, data: payload });
+      setToStore({ store: "display", ref: `activeTargeter`, data: payload });
 
-      useApp.setState({ custom: { activeTargeter: payload } });
       useBlocks.setState({ panel: "block", composerTab: null });
     },
     update: (cache) => {
@@ -50,6 +55,7 @@ export const IconsBlocks: React.FC = ({ type }) => {
       alert("added to layout handling block is locked");
     } else {
       /* Set to zustand state */
+      !block.order ?  block.order=600 : null
       addNewBlock({ variables: { input: block } });
     }
   };
@@ -61,18 +67,14 @@ export const IconsBlocks: React.FC = ({ type }) => {
         onClick={(e) =>
           teachSetBlock({
             ...prefix,
-            block: "data/Query",
+            block: "icons/FIcoAlertCircle",
             attrs: {
-              refName: prefix.id,
-              query: "",
-              variables: {},
-              childrenSlots: [],
               classes: "",
             },
           })
         }
       >
-        Query
+        FiAlertCircle
       </button>
 
       <button
@@ -80,15 +82,14 @@ export const IconsBlocks: React.FC = ({ type }) => {
         onClick={(e) =>
           teachSetBlock({
             ...prefix,
-            block: "data/PlainData",
+            block: "icons/FIcoHeart",
             attrs: {
-              dataTarget: "",
               classes: "",
             },
           })
         }
       >
-        Plain data
+        FiHeart
       </button>
 
       <button
@@ -96,15 +97,14 @@ export const IconsBlocks: React.FC = ({ type }) => {
         onClick={(e) =>
           teachSetBlock({
             ...prefix,
-            block: "data/ListData",
+            block: "icons/FIcoHome",
             attrs: {
-              dataTarget: "",
               classes: "",
             },
           })
         }
       >
-        List data
+        FiHome
       </button>
 
       <button
@@ -112,14 +112,14 @@ export const IconsBlocks: React.FC = ({ type }) => {
         onClick={(e) =>
           teachSetBlock({
             ...prefix,
-            block: "data/Schedule",
+            block: "icons/FIcoPhoneForwarded",
             attrs: {
               classes: "",
             },
           })
         }
       >
-        Schedule
+        FiPhoneForwarded
       </button>
 
       <button
@@ -127,14 +127,14 @@ export const IconsBlocks: React.FC = ({ type }) => {
         onClick={(e) =>
           teachSetBlock({
             ...prefix,
-            block: "data/MiniTermSchedule",
+            block: "icons/FIcoThumbsUp",
             attrs: {
               classes: "",
             },
           })
         }
       >
-        Mini term schedule
+        FiThumbsUp
       </button>
 
       <button
@@ -142,15 +142,14 @@ export const IconsBlocks: React.FC = ({ type }) => {
         onClick={(e) =>
           teachSetBlock({
             ...prefix,
-            block: "data/MapBox",
+            block: "icons/FIcoUserPlus",
             attrs: {
-              token: "",
               classes: "",
             },
           })
         }
       >
-        Map box
+        FiUserPlus
       </button>
     </div>
   );

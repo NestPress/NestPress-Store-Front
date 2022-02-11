@@ -51,7 +51,7 @@ export const FormBlocks: React.FC = ({ type }) => {
       alert("added to layout handling block is locked");
     } else {
       /* Set to zustand state */
-      !block.order ?  block.order=600 : null
+      !block.order ? (block.order = 600) : null;
       addNewBlock({ variables: { input: block } });
     }
   };
@@ -128,9 +128,11 @@ export const FormBlocks: React.FC = ({ type }) => {
             ...prefix,
             block: "form/SelectField",
             attrs: {
+              dataTarget: "",
               label: "Example label",
               outputValue: "data.select_value",
               placeholder: "Example placeholder",
+              filterActions: [],
               options: [],
               classes: "",
             },

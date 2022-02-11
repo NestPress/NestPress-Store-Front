@@ -2,7 +2,7 @@
 // @ts-ignore
 // @ts-nocheck
 import { memo, useState } from "react";
-import { parseBlockAttrs, buildFormOutput } from "helpers";
+import { parseBlockAttrs, buildFormOutput, interpolate } from "helpers";
 import { gql, useMutation } from "@apollo/client";
 import { getFromStore, useApp, useActions, setToStore, pushToStore } from "store";
 import {
@@ -22,7 +22,6 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
   const pAttrs = parseBlockAttrs(attrs)
   const router = useRouter()
   const [submit, setSubmit] = useState(false);
-
   // console.log('init form',pAttrs.variables)
 
   /* 
@@ -61,24 +60,29 @@ const Form: React.FC<Props> = memo(({ attrs, children }) => {
 
   */
   if(submit){
-    // console.log('submit',pAttrs)
+   
     setToStore({
       store: "forms",
       ref: `${attrs.refName}`,
       data: pAttrs.variables,
     });
     
-    try { if (attrs.mutation) {
-      formMutation({
-        variables: pAttrs.variables
-      }).catch((error) => {
-        if (attrs.successActions) {
-            console.log('error')
-            runCommands(pAttrs.errorActions, router, attrs);
+    try { 
+      if (attrs.mutation) {
+        formMutation({
+          variables: pAttrs.variables
+        }).catch((error) => {
+          if (attrs.successActions) {
+              console.log('error')
+              runCommands(pAttrs.errorActions, router, attrs);
+            }
           }
-        });
+        );
+      }else{
+        // TODO - fix it
+        runCommands([interpolate(attrs.successActions[0], {this: pAttrs.variables})], router, pAttrs);
       }
-    } catch (error) {}
+    } catch (error) {console.log(error)}
     setSubmit(false)
   }
 

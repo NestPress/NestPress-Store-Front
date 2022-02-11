@@ -8,7 +8,7 @@ interface Props {
   attrs: any;
 }
 
-const ParseDate: React.FC<Props> =memo(({ attrs, children }) => {
+const ParseDate: React.FC<Props> = memo(({ attrs, children }) => {
   // const enUS = new Intl.DateTimeFormat('en-US');
   attrs = attrs.dataTarget ? parseBlockAttrs(attrs) : attrs;
   return (

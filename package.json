@@ -23,6 +23,7 @@
     "gql-query-builder": "^3.5.7",
     "graphql": "^16.0.0",
     "immer": "^9.0.6",
+    "jsonata": "^1.8.6",
     "mapbox-gl": "^2.5.1",
     "next": "@latest",
     "next-compose-plugins": "^2.2.0",

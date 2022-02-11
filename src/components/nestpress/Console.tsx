@@ -188,7 +188,7 @@ export const Console: React.FC = () => {
       onKeyUp={(e) => consoleKeyUp(e)} 
       contentEditable="true" 
       style={{caretColor: "transparent"}}
-      className="p-1 bg-gray-900 text-white fixed w-1/4 right-0 h-full font-mono text-sm grid grid-rows-6"
+      className="select-none p-1 bg-gray-900 text-white fixed w-1/4 right-0 h-full font-mono text-sm grid grid-rows-6"
     >
     { helpList.length == 0 && <div className="self-end border-b pb-1 mb-1 border-pink-500 overflow-hidden row-span-5">
         {output}

@@ -3,9 +3,9 @@
 // @ts-nocheck
 
 import { memo } from "react";
-import { parseBlockAttrs, findOutByBlock } from "helpers";
+import { parseBlockAttrs, findOutByBlock, findStorage } from "helpers";
 import { useState } from "react";
-import { useApp } from "store";
+import { useApp, getFromStore } from "store";
 import { useRouter } from "next/router";
 import { runCommands } from "helpers";
 
@@ -18,19 +18,33 @@ interface Props {
 }
 
 const SelectField: React.FC<Props> = ({ attrs, children }) => {
-  
-  const router = useRouter()
-  const ref = findOutByBlock(useApp((state: any) => state.display.blocks), attrs.id, "form/Form")
+  const router = useRouter();
+  const ref = findOutByBlock(
+    useApp((state: any) => state.display.blocks),
+    attrs.id,
+    "form/Form"
+  );
   attrs = attrs.dataTarget ? parseBlockAttrs(attrs) : attrs;
   if (attrs.default && ref) {
     runCommands(
-      [`${e.target.value}>SET>display.blocks.${ref.attrs.index}.attrs.variables.${attrs.outputValue}`], 
-      router, attrs
+      [
+        `${e.target.value}>SET>display.blocks.${ref.attrs.index}.attrs.variables.${attrs.outputValue}`,
+      ],
+      router,
+      attrs
     );
   }
 
   const [active, setActive] = useState(false);
   const [activeValue, setActiveValue] = useState(attrs.value);
+
+  /* get data from target with filter */
+  if (attrs.dataTarget) {
+    attrs.options = getFromStore(findStorage(attrs.dataTarget));
+    runCommands([`this.options>MAP -value/label>this.attrs`], router, attrs);
+    // MAP - value / label;
+  }
+
   return (
     <div className={`block ${attrs.classes}`}>
       {active ? (
@@ -50,11 +64,14 @@ const SelectField: React.FC<Props> = ({ attrs, children }) => {
           value={activeValue}
           onChange={(e) => {
             setActiveValue(e.target.value);
-            
+
             runCommands(
-              [`${e.target.value}>SET>display.blocks.${ref.attrs.index}.attrs.variables.${attrs.outputValue}`], 
-            router, attrs
-          );
+              [
+                `${e.target.value}>SET>display.blocks.${ref.attrs.index}.attrs.variables.${attrs.outputValue}`,
+              ],
+              router,
+              attrs
+            );
           }}
         />
         {/* dropdownicon */}
@@ -80,8 +97,11 @@ const SelectField: React.FC<Props> = ({ attrs, children }) => {
                       setActiveValue(el.value);
                       setActive(!active);
                       runCommands(
-                        [`${el.value}>SET>display.blocks.${ref.attrs.index}.attrs.variables.${attrs.outputValue}`], 
-                        router, attrs
+                        [
+                          `${el.value}>SET>display.blocks.${ref.attrs.index}.attrs.variables.${attrs.outputValue}`,
+                        ],
+                        router,
+                        attrs
                       );
                     }}
                     className="w-64 px-3 py-1 leading-8 border-b hover:bg-gray-100"

@@ -3,7 +3,7 @@
 // @ts-nocheck
 import { FiCornerRightDown, FiArrowDown } from "react-icons/fi";
 import { BlocksHeader } from "components/blocks";
-import { DataBlocks, FormBlocks, LayoutBlocks, NavBlocks } from "components/blocks/insertBlocks";
+import { DataBlocks, FormBlocks, LayoutBlocks, NavBlocks, IconsBlocks } from "components/blocks/insertBlocks";
 import { useBlocks } from "store/blocksStore";
 
 interface Props {
@@ -30,6 +30,15 @@ export const InsertBlock: React.FC<Props> = ({ type }) => {
           Layout
         </div>
         <div
+          onClick={(e) => useBlocks.setState({ insertBlocksType: "ico" })}
+          className={`p-3 flex-1 border-r text-center 
+            ${
+              insertBlocksType === "ico" ? "bg-gray-100" : "cursor-pointer"
+            }`}
+        >
+          Icon
+        </div>
+        <div
           onClick={(e) => useBlocks.setState({ insertBlocksType: "nav" })}
           className={`p-3 flex-1 border-r text-center 
             ${insertBlocksType === "nav" ? "bg-gray-100" : "cursor-pointer"}`}
@@ -53,6 +62,10 @@ export const InsertBlock: React.FC<Props> = ({ type }) => {
       </div>
       {insertBlocksType === "layout" && (
         <LayoutBlocks type={type}/>
+      )}
+
+      {insertBlocksType === "ico" && (
+        <IconsBlocks type={type}/>
       )}
 
       {insertBlocksType === "form" && (

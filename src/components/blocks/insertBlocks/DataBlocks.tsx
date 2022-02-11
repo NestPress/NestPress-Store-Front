@@ -50,7 +50,7 @@ export const DataBlocks: React.FC = ({ type }) => {
       alert("added to layout handling block is locked");
     } else {
       /* Set to zustand state */
-      !block.order ?  block.order=600 : null
+      !block.order ? (block.order = 600) : null;
       addNewBlock({ variables: { input: block } });
     }
   };
@@ -67,9 +67,8 @@ export const DataBlocks: React.FC = ({ type }) => {
               refName: prefix.id,
               query: "",
               childrenSlots: [],
-              initActions:[],
+              initActions: [],
               classes: "",
-
             },
           })
         }
@@ -101,6 +100,7 @@ export const DataBlocks: React.FC = ({ type }) => {
             block: "data/ListData",
             attrs: {
               dataTarget: "",
+              filterActions: [],
               classes: "",
             },
           })
@@ -109,15 +109,15 @@ export const DataBlocks: React.FC = ({ type }) => {
         List data
       </button>
 
-       <button
+      <button
         className={buttonClass}
         onClick={(e) =>
           teachSetBlock({
             ...prefix,
             block: "data/ParseDate",
             attrs: {
-              dateFormat:"en-US",
-              text:"2022-01-28T09:07:07.305Z",
+              dateFormat: "en-US",
+              text: "2022-01-28T09:07:07.305Z",
               classes: "",
             },
           })
