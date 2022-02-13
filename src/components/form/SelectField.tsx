@@ -41,7 +41,10 @@ const SelectField: React.FC<Props> = ({ attrs, children }) => {
   /* get data from target with filter */
   if (attrs.dataTarget) {
     attrs.options = getFromStore(findStorage(attrs.dataTarget));
-    runCommands([`this.options>MAP -value/label>this.attrs`], router, attrs);
+    attrs.options = attrs?.options.length > 0 ? attrs.options.map((el)=>{
+      return {...el, value: el.value, label:el.value }
+    }) : attrs.options
+    // runCommands([`this.options>MAP -value/label>this.attrs`], router, attrs);
     // MAP - value / label;
   }
 

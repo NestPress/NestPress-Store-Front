@@ -2,57 +2,48 @@
 // @ts-ignore
 // @ts-nocheck
 import { TestMapper } from "pages/test/TestMapper";
-import React, { useState, memo } from "react";
+import { app, useKeys } from "store";
+import { useQuery } from "@apollo/client";
+import { GET_BLOCKS, Console } from "components/nestpress";
 
-const data = [
-  {
-    "id": "1",
-    "attrs":{classes:"border p-2"},
-    "block":"layout/Grid",
-    "parentId":0
-  },
-  {
-    "id": "2",
-    "attrs":{classes:"border p-2"},
-    "block":"layout/Grid",
-    "parentId":"1"
-  },
-  {
-    "id": "3",
-    "attrs":{classes:"border p-2"},
-    "block":"layout/Grid",
-    "parentId":"1"
-  },
-  {
-    "id": "4",
-    "attrs":{classes:"border p-2"}, 
-    "block":"layout/Grid",
-    "parentId":"1"
-  },
-]
-  
 const Test: React.FC = () => {
-  const app = {
-    _blocks:data,
-    _router:{},
-    _forms:{},
-    _queries:{},
-    _user:{}
-  };
-  const components = {};
-  const [blockKeys, setBlockKey] = useState([]);
-
+  const keys = useKeys((state) => state.keys);
+  const addKeys = useKeys((state) => state.addKeys);
+  const { loading, data } = useQuery(GET_BLOCKS, {
+    variables: {
+      sort: { order: "asc" },
+      filter: {
+        post: {
+          in: 'actions',
+        },
+      },
+    },
+    onCompleted({ getBlocks: { list } } = data) { 
+      addKeys(
+        data.getBlocks.list.reduce((obj, el) => {
+          return {
+            ...obj,
+            [el['id']]: {
+              key:el.id,
+              attrs:el.attrs
+            },
+          };
+        },{})
+      )
+    },
+  });
   return (
-    <div>
-      {app._blocks.length > 0 && (
+    <div className="grid grid-cols-4">
+    <div className="col-span-3">
+      {Array.isArray(data?.getBlocks.list) && Object.keys(keys).length !== 0 && (
         <TestMapper
+          blocks={data.getBlocks.list}
           app={app}
-          blockKeys={blockKeys}
-          setBlockKey={setBlockKey}
-          components={components}
-          parentId={0}
+          parentId={'actions'}
         />
       )}
+    </div>
+    <Console />
     </div>
   );
 };
